@@ -52,3 +52,6 @@
 
 // enables macOS FN key
 #define APPLE_FN_ENABLE
+
+// prevent acccidentally triggered modifer keys when interrupting a mod tap key.
+#define IGNORE_MOD_TAP_INTERRUPT
