@@ -28,11 +28,10 @@ enum preonic_keycodes {
   QWERTY = SAFE_RANGE,
   LOWER,
   RAISE,
-  BACKLIT
-  OPT-RIGHT
-  OPT-LEFT
-  OPT-UP
-  OPT-DOWN
+  OPTRIGHT,
+  OPTLEFT,
+  OPTUP,
+  OPTDOWN
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -52,40 +51,40 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_QWERTY] = LAYOUT_preonic_grid(
   KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    RCTL_T(KC_MINS),
-  KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    ROPT_T(KC_DEL),
-  KC_GRV,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, RCMD_T(KC_QUOT),
+  KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    RCMD_T(KC_DEL),
+  KC_GRV,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, ROPT_T(KC_QUOT),
   SFT_T(KC_ESC), KC_Z, KC_X, KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RSFT_T(KC_ENT),
   _______, KC_LCTL, KC_LOPT, KC_LCMD, LT(_LOWER, KC_ENT), SFT_T(KC_SPC), SFT_T(KC_SPC), LT(_RAISE, KC_BSPC), RCMD_T(KC_LBRC), ROPT_T(KC_RBRC), RCTL_T(KC_BSLS), KC_EQL
 ),
 
 /* Lower
  * ,-----------------------------------------------------------------------------------.
- * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
+ * |   `  |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 | Ctrl |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Tab  |   Q  |  Up  |   E  |   R  |   T  |   Y  |   U  |  Up  |   [  |   ]  | Opt  |
+ * |      |      |  OUp |      |      |      |      |      |  Up  |   {  |   }  | Cmd  |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |   `  | Left | Down |Right |   F  |   G  |   H  | Left | Down |Right |   ]  | Cmd  |
+ * |      |OLeft |ODown |ORight|      |      |      | Left | Down |Right |      | Opt  |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |Enter |
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      | Ctrl | Opt  | Cmd  |Lower |    Space    |Raise |   [  |   ]  |   \  |   =  |
+ * |      |      |      |      |      |             |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_LOWER] = LAYOUT_preonic_grid(
   KC_GRV,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_RCTL,
-  KC_TAB,  KC_Q,    KC_UP,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_UP,   KC_LBRC, KC_RBRC, KC_ROPT,
-  KC_GRV,  KC_LEFT, KC_DOWN, KC_RGHT, KC_F,    KC_G,    KC_H,    KC_LEFT, KC_DOWN, KC_RGHT, KC_RBRC, KC_RCMD,
-  SFT_T(KC_ESC), KC_Z, KC_X, KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RSFT_T(KC_ENT),
-  _______, KC_LCTL, KC_LOPT, KC_LCMD, LT(_LOWER, KC_ENT), SFT_T(KC_SPC), SFT_T(KC_SPC), LT(_RAISE, KC_BSPC), RCMD_T(KC_LBRC), ROPT_T(KC_RBRC), RCTL_T(KC_BSLS), KC_EQL
+  _______, _______, OPTUP,   _______, _______, _______, _______, _______, KC_UP,   KC_LCBR, KC_RCBR, KC_RCMD,
+  _______, OPTLEFT, OPTDOWN, OPTRIGHT,_______, _______, _______, _______, KC_DOWN, KC_RGHT, _______, KC_ROPT,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 ),
 
 /* Raise
  * ,-----------------------------------------------------------------------------------.
  * |   `  |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 | Ctrl |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |   `  |      |   7  |   8  |   9  |   -  |   /  |   -  |  Up  |   [  |   ]  | Opt  |
+ * |   `  |      |   7  |   8  |   9  |   -  |   /  |   -  |  |   |   [  |   ]  | Cmd  |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * | Del  |   .  |   4  |   5  |   6  |   +  |   *  | Left | Down |Right |   ]  | Cmd  |
+ * | Del  |   .  |   4  |   5  |   6  |   +  |   *  |   _  |   +  |   {  |   }  | Opt  |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |   0  |   1  |   2  |   3  |Enter |   =  |ISO # |ISO / | Pg Up| Pg Dn| Shift|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -94,8 +93,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_RAISE] = LAYOUT_preonic_grid(
   KC_GRV,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_RCTL,
-  KC_GRV,  _______, KC_P7,   KC_P8,   KC_P9,   KC_PMNS, KC_PSLS, KC_MINS, KC_UP,   KC_LBRC, KC_RBRC, KC_ROPT,
-  KC_DEL,  KC_PDOT, KC_P4,   KC_P5,   KC_P6,   KC_PPLS, KC_PAST, KC_LEFT, KC_DOWN, KC_RGHT, KC_RBRC, KC_RCMD,
+  KC_GRV,  _______, KC_P7,   KC_P8,   KC_P9,   KC_PMNS, KC_PSLS, KC_MINS, KC_PIPE, KC_LBRC, KC_RBRC, KC_RCMD,
+  KC_DEL,  KC_PDOT, KC_P4,   KC_P5,   KC_P6,   KC_PPLS, KC_PAST, KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_ROPT,
   _______, KC_P0,   KC_P1,   KC_P2,   KC_P3,   KC_PENT, KC_PEQL, KC_NUHS, KC_NUBS, KC_PGUP, KC_PGDN, KC_RSFT,
   _______, _______, _______, _______, _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY
 ),
@@ -152,25 +151,50 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           }
           return false;
           break;
-        case BACKLIT:
+
+        case OPTRIGHT:
           if (record->event.pressed) {
-            register_code(KC_RSFT);
-            #ifdef BACKLIGHT_ENABLE
-              backlight_step();
-            #endif
-            #ifdef RGBLIGHT_ENABLE
-              rgblight_step();
-            #endif
-            #ifdef __AVR__
-            writePinLow(E6);
-            #endif
+            // when keycode OPTRIGHT is pressed
+            register_code(KC_LOPT);  // press the Opt key
+            register_code(KC_RIGHT);  // press the Right Arrow key
           } else {
-            unregister_code(KC_RSFT);
-            #ifdef __AVR__
-            writePinHigh(E6);
-            #endif
+            // when keycode OPTRIGHT is released
+            unregister_code(KC_RIGHT);  // release Right Arrow key
+            unregister_code(KC_LOPT);  // release Opt key
           }
-          return false;
+          break;
+        case OPTLEFT:
+          if (record->event.pressed) {
+            // when keycode OPTLEFT is pressed
+            register_code(KC_LOPT);  // press the Opt key
+            register_code(KC_LEFT);  // press the Left Arrow key
+          } else {
+            // when keycode OPTLEFT is released
+            unregister_code(KC_LEFT);  // release Left Arrow key
+            unregister_code(KC_LOPT);  // release Opt key
+          }
+          break;
+        case OPTUP:
+          if (record->event.pressed) {
+            // when keycode OPTUP is pressed
+            register_code(KC_LOPT);  // press the Opt key
+            register_code(KC_UP);  // press the Right Arrow key
+          } else {
+            // when keycode OPTUP is released
+            unregister_code(KC_UP);  // release Right Arrow key
+            unregister_code(KC_LOPT);  // release Opt key
+          }
+          break;
+        case OPTDOWN:
+          if (record->event.pressed) {
+            // when keycode OPTDOWN is pressed
+            register_code(KC_LOPT);  // press the Opt key
+            register_code(KC_DOWN);  // press the Left Arrow key
+          } else {
+            // when keycode OPTDOWN is released
+            unregister_code(KC_DOWN);  // release Left Arrow key
+            unregister_code(KC_LOPT);  // release Opt key
+          }
           break;
       }
     return true;
