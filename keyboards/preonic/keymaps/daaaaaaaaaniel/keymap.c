@@ -28,7 +28,7 @@ enum preonic_keycodes {
   QWERTY = SAFE_RANGE,
   LOWER,
   RAISE,
-  OPTRIGHT,
+  OPTRGHT,
   OPTLEFT,
   OPTUP,
   OPTDOWN
@@ -63,19 +63,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |      |  Up  |   {  |   }  | Cmd  |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |      |      |      |      |      |      | Left | Down |Right |      | Opt  |
+ * |      |      |      |      |      |      |OLeft | Left | Down |Right |ORight| Opt  |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |OLeft |  OUp |ORight|      |      |
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |             |             |ODown |      |      |      |
+ * |      |      |      |      |             |             |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_LOWER] = LAYOUT_preonic_2x2u(
   KC_GRV,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_RCTL,
   _______, _______, _______, _______, _______, _______, _______, _______, KC_UP,   KC_LCBR, KC_RCBR, KC_RCMD,
-  _______, _______, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, KC_ROPT,
-  _______, _______, _______, _______, _______, _______, _______, OPTLEFT, OPTUP,  OPTRIGHT, _______, _______,
-  _______, _______, _______, _______,     _______,          _______,      OPTDOWN, _______, _______, _______
+  _______, _______, _______, _______, _______, _______, OPTLEFT, KC_LEFT, KC_DOWN, KC_RGHT, OPTRGHT, KC_ROPT,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______,     _______,          _______,      _______, _______, _______, _______
 ),
 
 /* Raise
@@ -152,13 +152,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           return false;
           break;
 
-        case OPTRIGHT:
+        case OPTRGHT:
           if (record->event.pressed) {
-            // when keycode OPTRIGHT is pressed
+            // when keycode OPTRGHT is pressed
             register_code(KC_LOPT);  // press the Opt key
             register_code(KC_RIGHT);  // press the Right Arrow key
           } else {
-            // when keycode OPTRIGHT is released
+            // when keycode OPTRGHT is released
             unregister_code(KC_RIGHT);  // release Right Arrow key
             unregister_code(KC_LOPT);  // release Opt key
           }
@@ -171,28 +171,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           } else {
             // when keycode OPTLEFT is released
             unregister_code(KC_LEFT);  // release Left Arrow key
-            unregister_code(KC_LOPT);  // release Opt key
-          }
-          break;
-        case OPTUP:
-          if (record->event.pressed) {
-            // when keycode OPTUP is pressed
-            register_code(KC_LOPT);  // press the Opt key
-            register_code(KC_UP);  // press the Right Arrow key
-          } else {
-            // when keycode OPTUP is released
-            unregister_code(KC_UP);  // release Right Arrow key
-            unregister_code(KC_LOPT);  // release Opt key
-          }
-          break;
-        case OPTDOWN:
-          if (record->event.pressed) {
-            // when keycode OPTDOWN is pressed
-            register_code(KC_LOPT);  // press the Opt key
-            register_code(KC_DOWN);  // press the Left Arrow key
-          } else {
-            // when keycode OPTDOWN is released
-            unregister_code(KC_DOWN);  // release Left Arrow key
             unregister_code(KC_LOPT);  // release Opt key
           }
           break;
