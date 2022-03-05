@@ -50,8 +50,14 @@
 // reduce advertised power consumption for use with iOS/iPadOS devices
 #define USB_MAX_POWER_CONSUMPTION 100
 
-// enables macOS FN key
-#define APPLE_FN_ENABLE
-
 // prevent acccidentally triggered modifer keys when interrupting a mod tap key.
 #define IGNORE_MOD_TAP_INTERRUPT
+
+// enables macOS FN key
+#undef PRODUCT_ID
+#define PRODUCT_ID      0x0341
+#undef VENDOR_ID
+#define VENDOR_ID       0x05ac
+#undef PRODUCT
+#define PRODUCT         Preonic Rev3
+#define APPLE_FN_ENABLE
