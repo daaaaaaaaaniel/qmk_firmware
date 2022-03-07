@@ -55,10 +55,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    RCMD_T(KC_BSPC),
   KC_GRV,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, ROPT_T(KC_QUOT),
   SFT_T(KC_ESC), KC_Z, KC_X, KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RSFT_T(KC_ENT),
-  TG(_MIDI),   KC_LCTL, KC_LOPT, LCMD_T(KC_DEL), LT(_LOWER, KC_SPC), LT(_RAISE, KC_SPC), RCMD_T(KC_BSPC), ROPT_T(KC_LBRC), RCTL_T(KC_RBRC), KC_RBRC
+  _______, KC_LCTL, KC_LOPT, LCMD_T(KC_DEL), LT(_LOWER, KC_SPC), LT(_RAISE, KC_SPC), RCMD_T(KC_BSPC), ROPT_T(KC_LBRC), RCTL_T(KC_RBRC), KC_BSLS
 ),
 
-/* Lower
+/* Raise
  * ,-----------------------------------------------------------------------------------.
  * |   `  |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 | Ctrl |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -66,38 +66,38 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * |      |      |      |      |      |      |OLeft | Left | Down |Right |ORight| Opt  |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |      |      |      |      |      |      |      |      |      |      |      | Shift|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |             |             |      |      |      |      |
- * `-----------------------------------------------------------------------------------'
- */
-[_LOWER] = LAYOUT_preonic_2x2u(
-  KC_GRV,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_RCTL,
-  _______, _______, _______, _______, _______, _______, _______, _______, KC_UP,   KC_LCBR, KC_RCBR, KC_RCMD,
-  _______, _______, _______, _______, _______, _______, OPTLEFT, KC_LEFT, KC_DOWN, KC_RGHT, OPTRGHT, KC_ROPT,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______,     _______,          _______,      _______, _______, _______, _______
-),
-
-/* Raise
- * ,-----------------------------------------------------------------------------------.
- * |   `  |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 | Ctrl |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |   `  |      |   7  |   8  |   9  |   -  |   /  |   -  |  |   |   [  |   ]  | Cmd  |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
- * | Del  |   .  |   4  |   5  |   6  |   +  |   *  |   _  |   +  |   {  |   }  | Opt  |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |   0  |   1  |   2  |   3  |Enter |   =  |ISO # |ISO / | Pg Up| Pg Dn| Shift|
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |             |             | Next | Vol- | Vol+ | Play |
+ * | MIDI |      |      |      |             |             |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_RAISE] = LAYOUT_preonic_2x2u(
   KC_GRV,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_RCTL,
-  KC_GRV,  _______, KC_P7,   KC_P8,   KC_P9,   KC_PMNS, KC_PSLS, KC_MINS, KC_PIPE, KC_LBRC, KC_RBRC, KC_RCMD,
-  KC_DEL,  KC_PDOT, KC_P4,   KC_P5,   KC_P6,   KC_PPLS, KC_PAST, KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_ROPT,
+  _______, _______, _______, _______, _______, _______, _______, _______, KC_UP,   KC_LCBR, KC_RCBR, KC_RCMD,
+  _______, _______, _______, _______, _______, _______, OPTLEFT, KC_LEFT, KC_DOWN, KC_RGHT, OPTRGHT, KC_ROPT,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_RSFT,
+  TG(_MIDI), _______, _______, _______,    _______,         _______,      _______, _______, _______, _______
+),
+
+/* Lower
+ * ,-----------------------------------------------------------------------------------.
+ * |      |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 | Ctrl |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |   7  |   8  |   9  |   -  |   /  |   -  |  |   |   {  |   }  | Cmd  |
+ * |------+------+------+------+------+-------------+------+------+------+------+------|
+ * | Del  |   .  |   4  |   5  |   6  |   +  |   *  |   _  |   +  |   [  |   ]  | Opt  |
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * |      |   0  |   1  |   2  |   3  |Enter |   =  |ISO # |ISO / | Pg Up| Pg Dn| Shift|
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * | MIDI |      |      |      |             |             | Next | Vol- | Vol+ | Play |
+ * `-----------------------------------------------------------------------------------'
+ */
+[_LOWER] = LAYOUT_preonic_2x2u(
+  _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_RCTL,
+  _______, _______, KC_P7,   KC_P8,   KC_P9,   KC_PMNS, KC_PSLS, KC_MINS, KC_PIPE, KC_LCBR, KC_RCBR, KC_RCMD,
+  KC_DEL,  KC_PDOT, KC_P4,   KC_P5,   KC_P6,   KC_PPLS, KC_PAST, KC_UNDS, KC_PLUS, KC_LBRC, KC_RBRC, KC_ROPT,
   _______, KC_P0,   KC_P1,   KC_P2,   KC_P3,   KC_PENT, KC_PEQL, KC_NUHS, KC_NUBS, KC_PGUP, KC_PGDN, KC_RSFT,
-  _______, _______, _______, _______,     _______,          _______,      KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY
+  TG(_MIDI), _______, _______, _______,    _______,         _______,      KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY
 ),
 
 /* MIDI
@@ -118,7 +118,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   MI_C_1,  MI_Db_1, MI_D_1,  MI_Eb_1, MI_E_1,  MI_F_1,  MI_Gb_1, MI_G_1,  MI_Ab_1, MI_A_1,  MI_Bb_1, MI_B_1,
   MI_C_2,  MI_Db_2, MI_D_2,  MI_Eb_2, MI_E_2,  MI_F_2,  MI_Gb_2, MI_G_2,  MI_Ab_2, MI_A_2,  MI_Bb_2, MI_B_2,
   MI_C_3,  MI_Db_3, MI_D_3,  MI_Eb_3, MI_E_3,  MI_F_3,  MI_Gb_3, MI_G_3,  MI_Ab_3, MI_A_3,  MI_Bb_3, MI_B_3,
-  _______, MI_ALLOFF, MI_VELD, MI_VELU,    MI_BENDD,        MI_BENDU,     MI_OCTD, MI_OCTU, MI_TRNSD, MI_TRNSU
+  TG(_MIDI), MI_ALLOFF, MI_VELD, MI_VELU,    MI_BENDD,      MI_BENDU,     MI_OCTD, MI_OCTU, MI_TRNSD, MI_TRNSU
 ),
 
 /* Adjust (Lower + Raise)
