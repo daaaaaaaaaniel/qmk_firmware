@@ -22,7 +22,7 @@ enum preonic_layers {
   _LOWER,
   _RAISE,
   _MIDI,
-  _ADJUSTh
+  _ADJUST
 };
 
 enum preonic_keycodes {
