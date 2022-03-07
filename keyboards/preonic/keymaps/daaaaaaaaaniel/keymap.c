@@ -69,7 +69,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |      |      |      |      | Shift|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | MIDI |      |      |      |             |             |      |      |      |      |
+ * |      |      |      |      |             |             |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_RAISE] = LAYOUT_preonic_2x2u(
@@ -77,7 +77,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, _______, _______, _______, _______, _______, KC_UP,   KC_LCBR, KC_RCBR, KC_RCMD,
   _______, _______, _______, _______, _______, _______, OPTLEFT, KC_LEFT, KC_DOWN, KC_RGHT, OPTRGHT, KC_ROPT,
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_RSFT,
-  MIDI,    _______, _______, _______,      _______,         _______,      _______, _______, _______, _______
+  _______, _______, _______, _______,      _______,         _______,      _______, _______, _______, _______
 ),
 
 /* Lower
@@ -150,14 +150,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
         case QWERTY:
           if (record->event.pressed) {
-            set_single_persistent_default_layer(_QWERTY);
+            // set_single_persistent_default_layer(_QWERTY);
             layer_move(_QWERTY);
+            PLAY_SONG(tone_qwerty);
           }
           return false;
           break;
         case MIDI:
           if (record->event.pressed) {
-            layer_move(_MIDI);
+            layer_on(_MIDI);
+            PLAY_SONG(tone_qwerty);
           }
           return false;
           break;
