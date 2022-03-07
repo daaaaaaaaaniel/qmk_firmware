@@ -135,7 +135,10 @@
  lib/lufa/LUFA/Drivers/USB/Core/../../../Common/Common.h \
  lib/lufa/LUFA/Drivers/USB/Core/USBMode.h \
  lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBController_AVR8.h \
- tmk_core/protocol/host.h tmk_core/protocol/host_driver.h quantum/led.h \
+ tmk_core/protocol/host.h tmk_core/protocol/host_driver.h \
+ tmk_core/protocol/midi/midi.h tmk_core/protocol/midi/midi_device.h \
+ tmk_core/protocol/midi/midi_function_types.h \
+ tmk_core/protocol/midi/bytequeue/bytequeue.h quantum/led.h \
  quantum/logging/debug.h quantum/logging/print.h quantum/util.h \
  quantum/bitwise.h quantum/logging/sendchar.h lib/printf/printf.h \
  quantum/keycode_config.h quantum/eeconfig.h quantum/quantum_keycodes.h \
@@ -484,6 +487,14 @@ lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBController_AVR8.h:
 tmk_core/protocol/host.h:
 
 tmk_core/protocol/host_driver.h:
+
+tmk_core/protocol/midi/midi.h:
+
+tmk_core/protocol/midi/midi_device.h:
+
+tmk_core/protocol/midi/midi_function_types.h:
+
+tmk_core/protocol/midi/bytequeue/bytequeue.h:
 
 quantum/led.h:
 

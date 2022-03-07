@@ -132,24 +132,28 @@
  lib/lufa/LUFA/Drivers/USB/Core/../../../Common/Common.h \
  lib/lufa/LUFA/Drivers/USB/Core/USBMode.h \
  lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBController_AVR8.h \
- tmk_core/protocol/host_driver.h quantum/led.h quantum/keymap.h \
- quantum/action.h quantum/keyboard.h quantum/action_code.h \
- quantum/logging/debug.h quantum/logging/print.h quantum/util.h \
- quantum/bitwise.h quantum/logging/sendchar.h lib/printf/printf.h \
- quantum/keycode_config.h quantum/eeconfig.h quantum/quantum_keycodes.h \
- quantum/sequencer/sequencer.h platforms/timer.h \
- platforms/chibios/_timer.h quantum/quantum_keycodes_legacy.h \
- platforms/bootloader.h quantum/action_layer.h quantum/action_util.h \
- platforms/sleep_led.h quantum/command.h quantum/quantum.h \
- platforms/chibios/platform_deps.h platforms/chibios/chibios_config.h \
- quantum/matrix.h quantum/rgblight/rgblight.h \
- quantum/rgblight/rgblight_modes.h drivers/ws2812.h quantum/color.h \
- quantum/rgblight/rgblight_list.h quantum/bootmagic/bootmagic.h \
- quantum/bootmagic/bootmagic_lite.h quantum/sync_timer.h platforms/gpio.h \
- platforms/chibios/gpio.h platforms/atomic_util.h \
- platforms/chibios/atomic_util.h quantum/action_tapping.h \
- quantum/send_string.h quantum/send_string_keycodes.h platforms/suspend.h \
- quantum/audio/audio.h quantum/audio/voices.h quantum/audio/luts.h \
+ tmk_core/protocol/host_driver.h tmk_core/protocol/midi/midi.h \
+ tmk_core/protocol/midi/midi_device.h \
+ tmk_core/protocol/midi/midi_function_types.h \
+ tmk_core/protocol/midi/bytequeue/bytequeue.h quantum/led.h \
+ quantum/keymap.h quantum/action.h quantum/keyboard.h \
+ quantum/action_code.h quantum/logging/debug.h quantum/logging/print.h \
+ quantum/util.h quantum/bitwise.h quantum/logging/sendchar.h \
+ lib/printf/printf.h quantum/keycode_config.h quantum/eeconfig.h \
+ quantum/quantum_keycodes.h quantum/sequencer/sequencer.h \
+ platforms/timer.h platforms/chibios/_timer.h \
+ quantum/quantum_keycodes_legacy.h platforms/bootloader.h \
+ quantum/action_layer.h quantum/action_util.h platforms/sleep_led.h \
+ quantum/command.h quantum/quantum.h platforms/chibios/platform_deps.h \
+ platforms/chibios/chibios_config.h quantum/matrix.h \
+ quantum/rgblight/rgblight.h quantum/rgblight/rgblight_modes.h \
+ drivers/ws2812.h quantum/color.h quantum/rgblight/rgblight_list.h \
+ quantum/bootmagic/bootmagic.h quantum/bootmagic/bootmagic_lite.h \
+ quantum/sync_timer.h platforms/gpio.h platforms/chibios/gpio.h \
+ platforms/atomic_util.h platforms/chibios/atomic_util.h \
+ quantum/action_tapping.h quantum/send_string.h \
+ quantum/send_string_keycodes.h platforms/suspend.h quantum/audio/audio.h \
+ quantum/audio/voices.h quantum/audio/luts.h \
  platforms/chibios/drivers/audio_dac.h \
  quantum/process_keycode/process_audio.h \
  quantum/process_keycode/process_music.h \
@@ -469,6 +473,14 @@ lib/lufa/LUFA/Drivers/USB/Core/USBMode.h:
 lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBController_AVR8.h:
 
 tmk_core/protocol/host_driver.h:
+
+tmk_core/protocol/midi/midi.h:
+
+tmk_core/protocol/midi/midi_device.h:
+
+tmk_core/protocol/midi/midi_function_types.h:
+
+tmk_core/protocol/midi/bytequeue/bytequeue.h:
 
 quantum/led.h:
 

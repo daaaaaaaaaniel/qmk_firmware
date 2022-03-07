@@ -130,7 +130,10 @@
  lib/chibios/os/hal/ports/STM32/LLD/TIMv1/hal_st_lld.h \
  lib/chibios/os/hal/include/hal_mmc_spi.h \
  lib/chibios/os/hal/include/hal_serial_usb.h \
- tmk_core/protocol/host_driver.h quantum/logging/debug.h \
+ tmk_core/protocol/host_driver.h tmk_core/protocol/midi/midi.h \
+ tmk_core/protocol/midi/midi_device.h \
+ tmk_core/protocol/midi/midi_function_types.h \
+ tmk_core/protocol/midi/bytequeue/bytequeue.h quantum/logging/debug.h \
  quantum/logging/print.h quantum/util.h quantum/bitwise.h \
  quantum/logging/sendchar.h lib/printf/printf.h platforms/gpio.h \
  platforms/chibios/gpio.h
@@ -436,6 +439,14 @@ lib/chibios/os/hal/include/hal_mmc_spi.h:
 lib/chibios/os/hal/include/hal_serial_usb.h:
 
 tmk_core/protocol/host_driver.h:
+
+tmk_core/protocol/midi/midi.h:
+
+tmk_core/protocol/midi/midi_device.h:
+
+tmk_core/protocol/midi/midi_function_types.h:
+
+tmk_core/protocol/midi/bytequeue/bytequeue.h:
 
 quantum/logging/debug.h:
 

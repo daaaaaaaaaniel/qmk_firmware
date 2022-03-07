@@ -132,13 +132,17 @@
  lib/lufa/LUFA/Drivers/USB/Core/../../../Common/Common.h \
  lib/lufa/LUFA/Drivers/USB/Core/USBMode.h \
  lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBController_AVR8.h \
- tmk_core/protocol/host.h tmk_core/protocol/host_driver.h quantum/led.h \
+ tmk_core/protocol/host.h tmk_core/protocol/host_driver.h \
+ tmk_core/protocol/midi/midi.h tmk_core/protocol/midi/midi_device.h \
+ tmk_core/protocol/midi/midi_function_types.h \
+ tmk_core/protocol/midi/bytequeue/bytequeue.h quantum/led.h \
  quantum/keyboard.h quantum/action.h quantum/action_code.h \
  quantum/action_util.h tmk_core/protocol/usb_device_state.h \
  quantum/mousekey.h quantum/logging/sendchar.h quantum/logging/debug.h \
  quantum/logging/print.h quantum/util.h quantum/bitwise.h \
- lib/printf/printf.h platforms/suspend.h platforms/wait.h \
- platforms/chibios/_wait.h platforms/chibios/_wait.c
+ lib/printf/printf.h tmk_core/protocol/midi/qmk_midi.h \
+ platforms/suspend.h platforms/wait.h platforms/chibios/_wait.h \
+ platforms/chibios/_wait.c
 
 keyboards/preonic/config.h:
 
@@ -442,6 +446,14 @@ tmk_core/protocol/host.h:
 
 tmk_core/protocol/host_driver.h:
 
+tmk_core/protocol/midi/midi.h:
+
+tmk_core/protocol/midi/midi_device.h:
+
+tmk_core/protocol/midi/midi_function_types.h:
+
+tmk_core/protocol/midi/bytequeue/bytequeue.h:
+
 quantum/led.h:
 
 quantum/keyboard.h:
@@ -467,6 +479,8 @@ quantum/util.h:
 quantum/bitwise.h:
 
 lib/printf/printf.h:
+
+tmk_core/protocol/midi/qmk_midi.h:
 
 platforms/suspend.h:
 

@@ -1,5 +1,5 @@
-.build/obj_preonic_rev3_drop_daaaaaaaaaniel/keyboards/preonic/rev3_drop/rev3_drop.o: \
- keyboards/preonic/rev3_drop/rev3_drop.c keyboards/preonic/config.h \
+.build/obj_preonic_rev3_drop_daaaaaaaaaniel/quantum/process_keycode/process_midi.o: \
+ quantum/process_keycode/process_midi.c keyboards/preonic/config.h \
  quantum/config_common.h platforms/pin_defs.h \
  platforms/chibios/pin_defs.h quantum/audio/song_list.h \
  quantum/audio/musical_notes.h keyboards/preonic/rev3_drop/config.h \
@@ -8,10 +8,10 @@
  keyboards/preonic/keymaps/daaaaaaaaaniel/config.h \
  platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h \
  quantum/rgblight/rgblight_post_config.h \
- keyboards/preonic/rev3_drop/rev3_drop.h keyboards/preonic/preonic.h \
- quantum/quantum.h platforms/chibios/platform_deps.h \
- lib/chibios/os/hal/include/hal.h lib/chibios/os/hal/osal/rt-nil/osal.h \
- lib/chibios/os/rt/include/ch.h keyboards/preonic/rev3_drop/chconf.h \
+ quantum/process_keycode/process_midi.h quantum/quantum.h \
+ platforms/chibios/platform_deps.h lib/chibios/os/hal/include/hal.h \
+ lib/chibios/os/hal/osal/rt-nil/osal.h lib/chibios/os/rt/include/ch.h \
+ keyboards/preonic/rev3_drop/chconf.h \
  platforms/chibios/boards/common/configs/chconf.h \
  lib/chibios/os/rt/include/chchecks.h lib/chibios/os/license/chlicense.h \
  lib/chibios/os/license/chcustomer.h \
@@ -163,7 +163,7 @@
  quantum/process_keycode/process_magic.h \
  quantum/process_keycode/process_grave_esc.h \
  quantum/process_keycode/process_rgb.h quantum/dip_switch.h \
- quantum/encoder.h
+ quantum/encoder.h tmk_core/protocol/midi/qmk_midi.h
 
 keyboards/preonic/config.h:
 
@@ -189,9 +189,7 @@ platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h:
 
 quantum/rgblight/rgblight_post_config.h:
 
-keyboards/preonic/rev3_drop/rev3_drop.h:
-
-keyboards/preonic/preonic.h:
+quantum/process_keycode/process_midi.h:
 
 quantum/quantum.h:
 
@@ -594,3 +592,5 @@ quantum/process_keycode/process_rgb.h:
 quantum/dip_switch.h:
 
 quantum/encoder.h:
+
+tmk_core/protocol/midi/qmk_midi.h:
