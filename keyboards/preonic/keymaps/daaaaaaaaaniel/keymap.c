@@ -36,6 +36,11 @@ enum preonic_keycodes {
   MIDI
 };
 
+#ifdef AUDIO_ENABLE
+  float song_preonic_sound[][2] = SONG(PREONIC_SOUND);
+  float song_qwerty_sound[][2]  = SONG(QWERTY_SOUND);
+#endif
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Qwerty
@@ -152,14 +157,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           if (record->event.pressed) {
             // set_single_persistent_default_layer(_QWERTY);
             layer_move(_QWERTY);
-            //PLAY_SONG(VOICE_CHANGE_SOUND);
+            stop_all_notes();
+            PLAY_SONG(song_qwerty_sound);
           }
           return false;
           break;
         case MIDI:
           if (record->event.pressed) {
             layer_on(_MIDI);
-            //PLAY_SONG(MUSIC_ON_SOUND);
+            stop_all_notes();
+            PLAY_SONG(song_preonic_sound);
           }
           return false;
           break;
