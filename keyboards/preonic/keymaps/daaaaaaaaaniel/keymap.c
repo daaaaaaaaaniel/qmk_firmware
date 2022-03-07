@@ -36,10 +36,10 @@ enum preonic_keycodes {
   MIDI
 };
 
-#ifdef AUDIO_ENABLE
+// #ifdef AUDIO_ENABLE
   float song_preonic_sound[][2] = SONG(PREONIC_SOUND);
   float song_qwerty_sound[][2]  = SONG(QWERTY_SOUND);
-#endif
+// #endif
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -156,6 +156,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case QWERTY:
           if (record->event.pressed) {
             // set_single_persistent_default_layer(_QWERTY);
+            layer_off(_MIDI);
             layer_move(_QWERTY);
             stop_all_notes();
             PLAY_SONG(song_qwerty_sound);
@@ -291,12 +292,14 @@ void matrix_scan_user(void) {
 #endif
 }
 
-bool music_mask_user(uint16_t keycode) {
-  switch (keycode) {
-    case RAISE:
-    case LOWER:
-      return false;
-    default:
-      return true;
-  }
-}
+/* 
+ * bool music_mask_user(uint16_t keycode) {
+ *   switch (keycode) {
+ *     case RAISE:
+ *     case LOWER:
+ *       return false;
+ *     default:
+ *       return true;
+ *   }
+ * }
+ */

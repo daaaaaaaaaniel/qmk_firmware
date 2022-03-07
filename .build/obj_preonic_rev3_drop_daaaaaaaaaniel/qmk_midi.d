@@ -158,8 +158,6 @@
  platforms/chibios/drivers/audio_dac.h \
  quantum/process_keycode/process_audio.h \
  quantum/process_keycode/process_music.h \
- quantum/process_keycode/process_unicode.h \
- quantum/process_keycode/process_unicode_common.h \
  quantum/process_keycode/process_terminal_nop.h \
  quantum/process_keycode/process_space_cadet.h \
  quantum/process_keycode/process_magic.h \
@@ -580,10 +578,6 @@ platforms/chibios/drivers/audio_dac.h:
 quantum/process_keycode/process_audio.h:
 
 quantum/process_keycode/process_music.h:
-
-quantum/process_keycode/process_unicode.h:
-
-quantum/process_keycode/process_unicode_common.h:
 
 quantum/process_keycode/process_terminal_nop.h:
 
