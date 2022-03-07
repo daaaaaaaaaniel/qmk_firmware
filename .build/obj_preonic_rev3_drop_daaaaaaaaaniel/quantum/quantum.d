@@ -150,7 +150,8 @@
  quantum/sync_timer.h platforms/gpio.h platforms/chibios/gpio.h \
  platforms/atomic_util.h platforms/chibios/atomic_util.h \
  quantum/action_util.h quantum/action_tapping.h quantum/send_string.h \
- quantum/send_string_keycodes.h platforms/suspend.h quantum/audio/audio.h \
+ quantum/send_string_keycodes.h platforms/suspend.h \
+ quantum/process_keycode/process_midi.h quantum/audio/audio.h \
  quantum/audio/voices.h quantum/audio/luts.h \
  platforms/chibios/drivers/audio_dac.h \
  quantum/process_keycode/process_audio.h \
@@ -162,7 +163,7 @@
  quantum/process_keycode/process_magic.h \
  quantum/process_keycode/process_grave_esc.h \
  quantum/process_keycode/process_rgb.h quantum/dip_switch.h \
- quantum/encoder.h quantum/process_keycode/process_midi.h
+ quantum/encoder.h
 
 keyboards/preonic/config.h:
 
@@ -560,6 +561,8 @@ quantum/send_string_keycodes.h:
 
 platforms/suspend.h:
 
+quantum/process_keycode/process_midi.h:
+
 quantum/audio/audio.h:
 
 quantum/audio/voices.h:
@@ -589,5 +592,3 @@ quantum/process_keycode/process_rgb.h:
 quantum/dip_switch.h:
 
 quantum/encoder.h:
-
-quantum/process_keycode/process_midi.h:

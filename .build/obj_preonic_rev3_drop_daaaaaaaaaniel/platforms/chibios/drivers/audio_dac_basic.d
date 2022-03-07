@@ -151,6 +151,7 @@
  platforms/atomic_util.h platforms/chibios/atomic_util.h \
  quantum/action_util.h quantum/action_tapping.h quantum/send_string.h \
  quantum/send_string_keycodes.h platforms/suspend.h \
+ quantum/process_keycode/process_midi.h \
  quantum/process_keycode/process_audio.h \
  quantum/process_keycode/process_music.h \
  quantum/process_keycode/process_unicode.h \
@@ -563,6 +564,8 @@ quantum/send_string.h:
 quantum/send_string_keycodes.h:
 
 platforms/suspend.h:
+
+quantum/process_keycode/process_midi.h:
 
 quantum/process_keycode/process_audio.h:
 
