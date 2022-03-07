@@ -152,14 +152,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           if (record->event.pressed) {
             // set_single_persistent_default_layer(_QWERTY);
             layer_move(_QWERTY);
-            PLAY_SONG(tone_qwerty);
+            PLAY_SONG(VOICE_CHANGE_SOUND);
           }
           return false;
           break;
         case MIDI:
           if (record->event.pressed) {
             layer_on(_MIDI);
-            PLAY_SONG(tone_qwerty);
+            PLAY_SONG(MUSIC_ON_SOUND);
           }
           return false;
           break;
