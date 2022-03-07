@@ -21,8 +21,8 @@ enum preonic_layers {
   _QWERTY,
   _LOWER,
   _RAISE,
-  _ADJUST,
-  _MIDI
+  _MIDI,
+  _ADJUSTh
 };
 
 enum preonic_keycodes {
@@ -32,7 +32,8 @@ enum preonic_keycodes {
   OPTRGHT,
   OPTLEFT,
   OPTUP,
-  OPTDOWN
+  OPTDOWN,
+  MIDI
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -76,7 +77,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, _______, _______, _______, _______, _______, KC_UP,   KC_LCBR, KC_RCBR, KC_RCMD,
   _______, _______, _______, _______, _______, _______, OPTLEFT, KC_LEFT, KC_DOWN, KC_RGHT, OPTRGHT, KC_ROPT,
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_RSFT,
-  TG(_MIDI), _______, _______, _______,    _______,         _______,      _______, _______, _______, _______
+  MIDI,    _______, _______, _______,      _______,         _______,      _______, _______, _______, _______
 ),
 
 /* Lower
@@ -97,7 +98,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, KC_P7,   KC_P8,   KC_P9,   KC_PMNS, KC_PSLS, KC_MINS, KC_PIPE, KC_LCBR, KC_RCBR, KC_RCMD,
   KC_DEL,  KC_PDOT, KC_P4,   KC_P5,   KC_P6,   KC_PPLS, KC_PAST, KC_UNDS, KC_PLUS, KC_LBRC, KC_RBRC, KC_ROPT,
   _______, KC_P0,   KC_P1,   KC_P2,   KC_P3,   KC_PENT, KC_PEQL, KC_NUHS, KC_NUBS, KC_PGUP, KC_PGDN, KC_RSFT,
-  TG(_MIDI), _______, _______, _______,    _______,         _______,      KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY
+  MIDI,    _______, _______, _______,      _______,         _______,      KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY
 ),
 
 /* MIDI
@@ -110,7 +111,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |  C3  |  D♭3 |  D3  |  E♭3 |  E3  |  F3  |  G♭3 |  G3  |  A♭3 |  A3  |  B♭3 |  B3  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |  Off | Vel-1| Vel+1| Pitch Bend+ | Pitch Bend- |Oct-1 |Oct+1 |Note-1|Note+1|
+ * |Qwerty|      | Vel-1| Vel+1| Pitch Bend+ | Pitch Bend- |Oct-1 |Oct+1 |Note-1|Note+1|
  * `-----------------------------------------------------------------------------------'
  */
 [_MIDI] = LAYOUT_preonic_2x2u(
@@ -118,7 +119,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   MI_C_1,  MI_Db_1, MI_D_1,  MI_Eb_1, MI_E_1,  MI_F_1,  MI_Gb_1, MI_G_1,  MI_Ab_1, MI_A_1,  MI_Bb_1, MI_B_1,
   MI_C_2,  MI_Db_2, MI_D_2,  MI_Eb_2, MI_E_2,  MI_F_2,  MI_Gb_2, MI_G_2,  MI_Ab_2, MI_A_2,  MI_Bb_2, MI_B_2,
   MI_C_3,  MI_Db_3, MI_D_3,  MI_Eb_3, MI_E_3,  MI_F_3,  MI_Gb_3, MI_G_3,  MI_Ab_3, MI_A_3,  MI_Bb_3, MI_B_3,
-  TG(_MIDI), MI_ALLOFF, MI_VELD, MI_VELU,    MI_BENDD,      MI_BENDU,     MI_OCTD, MI_OCTU, MI_TRNSD, MI_TRNSU
+  QWERTY, _______,  MI_VELD, MI_VELU,     MI_BENDD,         MI_BENDU,     MI_OCTD, MI_OCTU, MI_TRNSD, MI_TRNSU
 ),
 
 /* Adjust (Lower + Raise)
@@ -127,7 +128,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      | Reset| Debug|      |      |      |      |TermOf|TermOn|      |      |  Del |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |      |Aud cy|Aud on|AudOff|AGnorm|AGswap|Qwerty|Colemk|Dvorak|      |      |
+ * |      |      |Aud cy|Aud on|AudOff|AGnorm|AGswap|Qwerty|      |      |      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |Voice-|Voice+|Mus on|MusOff|MidiOn|MidOff|      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -150,6 +151,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case QWERTY:
           if (record->event.pressed) {
             set_single_persistent_default_layer(_QWERTY);
+            layer_move(_QWERTY);
+          }
+          return false;
+          break;
+        case MIDI:
+          if (record->event.pressed) {
+            layer_move(_MIDI);
           }
           return false;
           break;
