@@ -36,10 +36,24 @@ enum preonic_keycodes {
   MIDI
 };
 
-// #ifdef AUDIO_ENABLE
+// Sounds
+#ifdef AUDIO_ENABLE
   float song_preonic_sound[][2] = SONG(PREONIC_SOUND);
   float song_qwerty_sound[][2]  = SONG(QWERTY_SOUND);
-// #endif
+#endif
+
+// Combos
+enum combos {
+//  ADJ_LAYER,
+  SPC_ENTER,
+};
+
+const uint16_t PROGMEM adj_combo[] = {LT(_LOWER, KC_SPC), LT(_RAISE, KC_SPC), COMBO_END};
+
+combo_t key_combos[COMBO_COUNT] = {
+  [SPC_ENTER] = COMBO(adj_combo, KC_ENT),
+//  [ADJ_LAYER] = COMBO(adj_combo, MO(_ADJUST)),
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -171,26 +185,26 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           }
           return false;
           break;
-        case LOWER:
-          if (record->event.pressed) {
-            layer_on(_LOWER);
-            update_tri_layer(_LOWER, _RAISE, _ADJUST);
-          } else {
-            layer_off(_LOWER);
-            update_tri_layer(_LOWER, _RAISE, _ADJUST);
-          }
-          return false;
-          break;
-        case RAISE:
-          if (record->event.pressed) {
-            layer_on(_RAISE);
-            update_tri_layer(_LOWER, _RAISE, _ADJUST);
-          } else {
-            layer_off(_RAISE);
-            update_tri_layer(_LOWER, _RAISE, _ADJUST);
-          }
-          return false;
-          break;
+//         case LOWER:
+//           if (record->event.pressed) {
+//             layer_on(_LOWER);
+//             update_tri_layer(_LOWER, _RAISE, _ADJUST);
+//           } else {
+//             layer_off(_LOWER);
+//             update_tri_layer(_LOWER, _RAISE, _ADJUST);
+//           }
+//           return false;
+//           break;
+//         case RAISE:
+//           if (record->event.pressed) {
+//             layer_on(_RAISE);
+//             update_tri_layer(_LOWER, _RAISE, _ADJUST);
+//           } else {
+//             layer_off(_RAISE);
+//             update_tri_layer(_LOWER, _RAISE, _ADJUST);
+//           }
+//           return false;
+//           break;
 
         case OPTRGHT:
           if (record->event.pressed) {
