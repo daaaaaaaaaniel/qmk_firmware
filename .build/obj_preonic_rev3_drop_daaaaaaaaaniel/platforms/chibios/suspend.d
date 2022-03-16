@@ -114,27 +114,9 @@
  lib/chibios/os/hal/include/hal_serial_usb.h quantum/matrix.h \
  quantum/action.h platforms/progmem.h quantum/keyboard.h \
  quantum/keycode.h quantum/keycode_legacy.h quantum/action_code.h \
- quantum/action_util.h tmk_core/protocol/report.h \
- tmk_core/protocol/usb_descriptor.h \
- tmk_core/protocol/chibios/lufa_utils/LUFA/Drivers/USB/USB.h \
- lib/lufa/LUFA/Drivers/USB/Class/Common/HIDClassCommon.h \
- lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/StdDescriptors.h \
- lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/../../../Common/Common.h \
- lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/USBMode.h \
- lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/Events.h \
- lib/lufa/LUFA/Drivers/USB/Class/Common/HIDParser.h \
- lib/lufa/LUFA/Drivers/USB/Class/Common/HIDReportData.h \
- lib/lufa/LUFA/Drivers/USB/Class/Common/CDCClassCommon.h \
- lib/lufa/LUFA/Drivers/USB/Class/Common/AudioClassCommon.h \
- lib/lufa/LUFA/Drivers/USB/Class/Common/MIDIClassCommon.h \
- lib/lufa/LUFA/Drivers/USB/Class/Common/AudioClassCommon.h \
- lib/lufa/LUFA/Drivers/USB/Core/USBController.h \
- lib/lufa/LUFA/Drivers/USB/Core/../../../Common/Common.h \
- lib/lufa/LUFA/Drivers/USB/Core/USBMode.h \
- lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBController_AVR8.h \
- quantum/mousekey.h tmk_core/protocol/host.h \
- tmk_core/protocol/host_driver.h tmk_core/protocol/midi/midi.h \
- tmk_core/protocol/midi/midi_device.h \
+ quantum/action_util.h tmk_core/protocol/report.h quantum/mousekey.h \
+ tmk_core/protocol/host.h tmk_core/protocol/host_driver.h \
+ tmk_core/protocol/midi/midi.h tmk_core/protocol/midi/midi_device.h \
  tmk_core/protocol/midi/midi_function_types.h \
  tmk_core/protocol/midi/bytequeue/bytequeue.h quantum/led.h \
  quantum/programmable_button.h platforms/suspend.h platforms/wait.h \
@@ -411,40 +393,6 @@ quantum/action_code.h:
 quantum/action_util.h:
 
 tmk_core/protocol/report.h:
-
-tmk_core/protocol/usb_descriptor.h:
-
-tmk_core/protocol/chibios/lufa_utils/LUFA/Drivers/USB/USB.h:
-
-lib/lufa/LUFA/Drivers/USB/Class/Common/HIDClassCommon.h:
-
-lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/StdDescriptors.h:
-
-lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/../../../Common/Common.h:
-
-lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/USBMode.h:
-
-lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/Events.h:
-
-lib/lufa/LUFA/Drivers/USB/Class/Common/HIDParser.h:
-
-lib/lufa/LUFA/Drivers/USB/Class/Common/HIDReportData.h:
-
-lib/lufa/LUFA/Drivers/USB/Class/Common/CDCClassCommon.h:
-
-lib/lufa/LUFA/Drivers/USB/Class/Common/AudioClassCommon.h:
-
-lib/lufa/LUFA/Drivers/USB/Class/Common/MIDIClassCommon.h:
-
-lib/lufa/LUFA/Drivers/USB/Class/Common/AudioClassCommon.h:
-
-lib/lufa/LUFA/Drivers/USB/Core/USBController.h:
-
-lib/lufa/LUFA/Drivers/USB/Core/../../../Common/Common.h:
-
-lib/lufa/LUFA/Drivers/USB/Core/USBMode.h:
-
-lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBController_AVR8.h:
 
 quantum/mousekey.h:
 

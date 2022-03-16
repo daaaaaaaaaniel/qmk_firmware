@@ -52,14 +52,16 @@
 // prevent acccidentally triggered modifer keys when interrupting a mod tap key.
 #define IGNORE_MOD_TAP_INTERRUPT
 
+/* //disables macOS FN key to allow compatibility with Vial etc. If using Karabiner, remap Caps Locks to Apple FN, or adjust the Modifier Keys in Systems Preferences so that Caps Locks triggers FN.
 // enables macOS FN key
 #undef PRODUCT_ID
-#define PRODUCT_ID      0x0341
+#define PRODUCT_ID      0x029c
 #undef VENDOR_ID
 #define VENDOR_ID       0x05ac
 #undef PRODUCT
 #define PRODUCT         Preonic Rev3
 #define APPLE_FN_ENABLE
+*/
 
 // How many combos?
 #define COMBO_COUNT 1

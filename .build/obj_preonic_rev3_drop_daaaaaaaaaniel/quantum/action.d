@@ -9,25 +9,14 @@
  platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h \
  quantum/rgblight/rgblight_post_config.h tmk_core/protocol/host.h \
  tmk_core/protocol/report.h quantum/keycode.h quantum/keycode_legacy.h \
- tmk_core/protocol/usb_descriptor.h \
- tmk_core/protocol/chibios/lufa_utils/LUFA/Drivers/USB/USB.h \
- platforms/progmem.h \
- lib/lufa/LUFA/Drivers/USB/Class/Common/HIDClassCommon.h \
- lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/StdDescriptors.h \
- lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/../../../Common/Common.h \
- lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/USBMode.h \
- lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/Events.h \
- lib/lufa/LUFA/Drivers/USB/Class/Common/HIDParser.h \
- lib/lufa/LUFA/Drivers/USB/Class/Common/HIDReportData.h \
- lib/lufa/LUFA/Drivers/USB/Class/Common/CDCClassCommon.h \
- lib/lufa/LUFA/Drivers/USB/Class/Common/AudioClassCommon.h \
- lib/lufa/LUFA/Drivers/USB/Class/Common/MIDIClassCommon.h \
- lib/lufa/LUFA/Drivers/USB/Class/Common/AudioClassCommon.h \
- lib/lufa/LUFA/Drivers/USB/Core/USBController.h \
- lib/lufa/LUFA/Drivers/USB/Core/../../../Common/Common.h \
- lib/lufa/LUFA/Drivers/USB/Core/USBMode.h \
- lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBController_AVR8.h \
- lib/chibios/os/hal/include/hal.h lib/chibios/os/hal/osal/rt-nil/osal.h \
+ tmk_core/protocol/host_driver.h tmk_core/protocol/midi/midi.h \
+ tmk_core/protocol/midi/midi_device.h \
+ tmk_core/protocol/midi/midi_function_types.h \
+ tmk_core/protocol/midi/bytequeue/bytequeue.h quantum/led.h \
+ quantum/keyboard.h quantum/mousekey.h quantum/programmable_button.h \
+ quantum/command.h quantum/action_layer.h quantum/action.h \
+ platforms/progmem.h quantum/action_code.h quantum/action_tapping.h \
+ quantum/action_util.h platforms/wait.h platforms/chibios/_wait.h \
  lib/chibios/os/rt/include/ch.h keyboards/preonic/rev3_drop/chconf.h \
  platforms/chibios/boards/common/configs/chconf.h \
  lib/chibios/os/rt/include/chchecks.h lib/chibios/os/license/chlicense.h \
@@ -71,7 +60,8 @@
  lib/chibios/os/oslib/include/chdelegates.h \
  lib/chibios/os/oslib/include/chjobs.h \
  lib/chibios/os/oslib/include/chfactory.h \
- lib/chibios/os/rt/include/chdynamic.h \
+ lib/chibios/os/rt/include/chdynamic.h lib/chibios/os/hal/include/hal.h \
+ lib/chibios/os/hal/osal/rt-nil/osal.h \
  keyboards/preonic/rev3_drop/halconf.h \
  platforms/chibios/boards/common/configs/halconf.h \
  keyboards/preonic/rev3_drop/mcuconf.h \
@@ -130,15 +120,7 @@
  lib/chibios/os/hal/include/hal_st.h \
  lib/chibios/os/hal/ports/STM32/LLD/TIMv1/hal_st_lld.h \
  lib/chibios/os/hal/include/hal_mmc_spi.h \
- lib/chibios/os/hal/include/hal_serial_usb.h \
- tmk_core/protocol/host_driver.h tmk_core/protocol/midi/midi.h \
- tmk_core/protocol/midi/midi_device.h \
- tmk_core/protocol/midi/midi_function_types.h \
- tmk_core/protocol/midi/bytequeue/bytequeue.h quantum/led.h \
- quantum/keyboard.h quantum/mousekey.h quantum/programmable_button.h \
- quantum/command.h quantum/action_layer.h quantum/action.h \
- quantum/action_code.h quantum/action_tapping.h quantum/action_util.h \
- platforms/wait.h platforms/chibios/_wait.h platforms/chibios/_wait.c \
+ lib/chibios/os/hal/include/hal_serial_usb.h platforms/chibios/_wait.c \
  quantum/keycode_config.h quantum/eeconfig.h quantum/logging/nodebug.h \
  quantum/logging/debug.h quantum/logging/print.h quantum/util.h \
  quantum/bitwise.h quantum/logging/sendchar.h lib/printf/printf.h
@@ -175,45 +157,41 @@ quantum/keycode.h:
 
 quantum/keycode_legacy.h:
 
-tmk_core/protocol/usb_descriptor.h:
+tmk_core/protocol/host_driver.h:
 
-tmk_core/protocol/chibios/lufa_utils/LUFA/Drivers/USB/USB.h:
+tmk_core/protocol/midi/midi.h:
+
+tmk_core/protocol/midi/midi_device.h:
+
+tmk_core/protocol/midi/midi_function_types.h:
+
+tmk_core/protocol/midi/bytequeue/bytequeue.h:
+
+quantum/led.h:
+
+quantum/keyboard.h:
+
+quantum/mousekey.h:
+
+quantum/programmable_button.h:
+
+quantum/command.h:
+
+quantum/action_layer.h:
+
+quantum/action.h:
 
 platforms/progmem.h:
 
-lib/lufa/LUFA/Drivers/USB/Class/Common/HIDClassCommon.h:
+quantum/action_code.h:
 
-lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/StdDescriptors.h:
+quantum/action_tapping.h:
 
-lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/../../../Common/Common.h:
+quantum/action_util.h:
 
-lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/USBMode.h:
+platforms/wait.h:
 
-lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/Events.h:
-
-lib/lufa/LUFA/Drivers/USB/Class/Common/HIDParser.h:
-
-lib/lufa/LUFA/Drivers/USB/Class/Common/HIDReportData.h:
-
-lib/lufa/LUFA/Drivers/USB/Class/Common/CDCClassCommon.h:
-
-lib/lufa/LUFA/Drivers/USB/Class/Common/AudioClassCommon.h:
-
-lib/lufa/LUFA/Drivers/USB/Class/Common/MIDIClassCommon.h:
-
-lib/lufa/LUFA/Drivers/USB/Class/Common/AudioClassCommon.h:
-
-lib/lufa/LUFA/Drivers/USB/Core/USBController.h:
-
-lib/lufa/LUFA/Drivers/USB/Core/../../../Common/Common.h:
-
-lib/lufa/LUFA/Drivers/USB/Core/USBMode.h:
-
-lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBController_AVR8.h:
-
-lib/chibios/os/hal/include/hal.h:
-
-lib/chibios/os/hal/osal/rt-nil/osal.h:
+platforms/chibios/_wait.h:
 
 lib/chibios/os/rt/include/ch.h:
 
@@ -322,6 +300,10 @@ lib/chibios/os/oslib/include/chjobs.h:
 lib/chibios/os/oslib/include/chfactory.h:
 
 lib/chibios/os/rt/include/chdynamic.h:
+
+lib/chibios/os/hal/include/hal.h:
+
+lib/chibios/os/hal/osal/rt-nil/osal.h:
 
 keyboards/preonic/rev3_drop/halconf.h:
 
@@ -440,40 +422,6 @@ lib/chibios/os/hal/ports/STM32/LLD/TIMv1/hal_st_lld.h:
 lib/chibios/os/hal/include/hal_mmc_spi.h:
 
 lib/chibios/os/hal/include/hal_serial_usb.h:
-
-tmk_core/protocol/host_driver.h:
-
-tmk_core/protocol/midi/midi.h:
-
-tmk_core/protocol/midi/midi_device.h:
-
-tmk_core/protocol/midi/midi_function_types.h:
-
-tmk_core/protocol/midi/bytequeue/bytequeue.h:
-
-quantum/led.h:
-
-quantum/keyboard.h:
-
-quantum/mousekey.h:
-
-quantum/programmable_button.h:
-
-quantum/command.h:
-
-quantum/action_layer.h:
-
-quantum/action.h:
-
-quantum/action_code.h:
-
-quantum/action_tapping.h:
-
-quantum/action_util.h:
-
-platforms/wait.h:
-
-platforms/chibios/_wait.h:
 
 platforms/chibios/_wait.c:
 

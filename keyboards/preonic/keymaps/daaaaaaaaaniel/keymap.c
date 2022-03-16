@@ -33,13 +33,28 @@ enum preonic_keycodes {
   OPTLEFT,
   OPTUP,
   OPTDOWN,
-  MIDI
+  MIDI,
+  KC_MISSION_CONTROL, // AC Desktop Show All Windows
+  KC_SPOTLIGHT,
+  KC_DICTATION,
+  KC_DO_NOT_DISTURB,
+  KC_LOCK_SCREEN,
+  KC_LAUNCHPAD // AC Desktop Show All Applications
 };
+
+#define KC_TASK LGUI(KC_TAB)
+#define KC_FLXP LGUI(KC_E)
+#define KC_MCTL KC_MISSION_CONTROL
+#define KC_SPLT KC_SPOTLIGHT
+#define KC_DICT KC_DICTATION
+#define KC_DOND KC_DO_NOT_DISTURB
+#define KC_LOCK KC_LOCK_SCREEN
+#define KC_LPAD KC_LAUNCHPAD
 
 // Sounds
 #ifdef AUDIO_ENABLE
-  float song_preonic_sound[][2] = SONG(PREONIC_SOUND);
-  float song_qwerty_sound[][2]  = SONG(QWERTY_SOUND);
+  float song_preonic_sound[][2] = SONG(PREONIC_SOUND); // song for switching into MIDI layer 
+  float song_plover_gb[][2]  = SONG(PLOVER_GOODBYE_SOUND);  // song for switching out of MIDI layer (back to QWERTY)
 #endif
 
 // Combos
@@ -67,7 +82,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |Enter |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      | Ctrl | Opt  | Cmd  |     Lower   |    Raise    | Bksp |   [  |   ]  |   \  |
+ * |  fn  | Ctrl | Opt  | Cmd  |     Lower   |    Raise    | Bksp |   [  |   ]  |   \  |
  * `-----------------------------------------------------------------------------------'
  */
 [_QWERTY] = LAYOUT_preonic_2x2u(
@@ -75,49 +90,49 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    RCMD_T(KC_BSPC),
   KC_GRV,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, ROPT_T(KC_QUOT),
   SFT_T(KC_ESC), KC_Z, KC_X, KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RSFT_T(KC_ENT),
-  _______, KC_LCTL, KC_LOPT, LCMD_T(KC_DEL), LT(_LOWER, KC_SPC), LT(_RAISE, KC_SPC), RCMD_T(KC_BSPC), ROPT_T(KC_LBRC), RCTL_T(KC_RBRC), KC_BSLS
+  /*KC_APFN,*/KC_CAPS, KC_LCTL, KC_LOPT, LCMD_T(KC_DEL), LT(_LOWER, KC_SPC), LT(_RAISE, KC_SPC), RCMD_T(KC_BSPC), ROPT_T(KC_LBRC), RCTL_T(KC_RBRC), KC_BSLS
 ),
 
 /* Raise
  * ,-----------------------------------------------------------------------------------.
- * |      |      |      |      |      |      |      |      |      |      |      | Ctrl |
+ * |LockSc|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute | Ctrl |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |  Up  |   {  |   }  | Cmd  |
+ * |   ~  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  | Cmd  |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |      |      |      |      |      |OLeft | Left | Down |Right |ORight| Opt  |
+ * |      |      |      |      |      |      |OLeft | Left |  Up  |Right |ORight| Opt  |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      | Shift|
+ * |      |      |      |      |      |      |      |      | Down |      |      | Shift|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |             |             | Del  |      |      |      |
+ * |      |      |      |      |      [      |             | Del  |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_RAISE] = LAYOUT_preonic_2x2u(
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_RCTL,
-  _______, _______, _______, _______, _______, _______, _______, _______, KC_UP,   KC_LCBR, KC_RCBR, KC_RCMD,
-  _______, _______, _______, _______, _______, _______, OPTLEFT, KC_LEFT, KC_DOWN, KC_RGHT, OPTRGHT, KC_ROPT,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_RSFT,
-  _______, _______, _______, _______,      _______,         _______,      KC_DEL,  KC_LBRC, KC_RBRC, _______
+  KC_LOCK, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_RCTL,
+  KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_RCMD,
+  _______, _______, _______, _______, _______, _______, OPTLEFT, KC_LEFT, KC_UP,   KC_RGHT, OPTRGHT, KC_ROPT,
+  _______, _______, _______, _______, _______, _______, _______, _______, KC_DOWN, _______, _______, KC_RSFT,
+  _______, _______, _______, _______,      KC_LBRC,         _______,      KC_DEL,  KC_LBRC, KC_RBRC, _______
 ),
 
 /* Lower
  * ,-----------------------------------------------------------------------------------.
  * |      |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 | Ctrl |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |   7  |   8  |   9  |   -  |   /  |   -  |  |   |   {  |   }  | Cmd  |
+ * |      |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  | Cmd  |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * | Del  |   .  |   4  |   5  |   6  |   +  |   *  |   _  |   +  |   [  |   ]  | Opt  |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |   0  |   1  |   2  |   3  |Enter |   =  |ISO # |ISO / | Pg Up| Pg Dn| Shift|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | MIDI |      |      |      |             |             | Next | Vol- | Vol+ | Play |
+ * | MIDI |      |      |      |             |      ]      | Next | Vol- | Vol+ | Play |
  * `-----------------------------------------------------------------------------------'
  */
 [_LOWER] = LAYOUT_preonic_2x2u(
   _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_RCTL,
-  _______, _______, KC_P7,   KC_P8,   KC_P9,   KC_PMNS, KC_PSLS, KC_MINS, KC_PIPE, KC_LCBR, KC_RCBR, KC_RCMD,
+  _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_RCMD,
   KC_DEL,  KC_PDOT, KC_P4,   KC_P5,   KC_P6,   KC_PPLS, KC_PAST, KC_UNDS, KC_PLUS, KC_LBRC, KC_RBRC, KC_ROPT,
   _______, KC_P0,   KC_P1,   KC_P2,   KC_P3,   KC_PENT, KC_PEQL, KC_NUHS, KC_NUBS, KC_PGUP, KC_PGDN, KC_RSFT,
-  MIDI,    _______, _______, _______,      _______,         _______,      KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY
+  MIDI,    _______, _______, _______,      _______,         KC_RBRC,      KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY
 ),
 
 /* MIDI
@@ -173,7 +188,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             layer_off(_MIDI);
             layer_move(_QWERTY);
             stop_all_notes();
-            PLAY_SONG(song_qwerty_sound);
+            PLAY_SONG(song_plover_gb);
           }
           return false;
           break;
@@ -205,7 +220,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 //           }
 //           return false;
 //           break;
-
+/*-----------------------*/
+/*-------Opt Right-------*/
+// For faster arrow key-like text navigation
         case OPTRGHT:
           if (record->event.pressed) {
             // when keycode OPTRGHT is pressed
@@ -217,6 +234,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             unregister_code(KC_LOPT);  // release Opt key
           }
           break;
+/*-----------------------*/
+/*-------Opt Left-------*/
+// For faster arrow key-like text navigation
         case OPTLEFT:
           if (record->event.pressed) {
             // when keycode OPTLEFT is pressed
@@ -227,6 +247,55 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             unregister_code(KC_LEFT);  // release Left Arrow key
             unregister_code(KC_LOPT);  // release Opt key
           }
+          break;
+// macOS key codes from /u/Archite - https://gist.github.com/archite/6021f8204f147ff8b756f73a12bc778a
+        case KC_MISSION_CONTROL:
+          if (record->event.pressed) {
+            host_consumer_send(0x29F);
+          } else {
+            host_consumer_send(0);
+          }
+          return false;
+          break;
+        case KC_SPOTLIGHT:
+          if (record->event.pressed) {
+            host_consumer_send(0x221);
+          } else {
+            host_consumer_send(0);
+          }
+          return false;
+          break;
+        case KC_DICTATION:
+          if (record->event.pressed) {
+            host_consumer_send(0xCF);
+          } else {
+            host_consumer_send(0);
+          }
+          return false;
+          break;
+        case KC_DO_NOT_DISTURB:
+          if (record->event.pressed) {
+            host_system_send(0x9B);
+          } else {
+            host_system_send(0);
+          }
+          return false;
+          break;
+        case KC_LOCK_SCREEN:
+          if (record->event.pressed) {
+            host_consumer_send(0x19E);
+          } else {
+            host_consumer_send(0);
+          }
+          return false;
+          break;
+        case KC_LAUNCHPAD:
+          if (record->event.pressed) {
+            host_consumer_send(0x2A0);
+          } else {
+            host_system_send(0);
+          }
+          return false;
           break;
       }
     return true;
