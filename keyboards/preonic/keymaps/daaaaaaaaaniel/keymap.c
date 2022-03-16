@@ -112,7 +112,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_RCMD,
   _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, OPTLEFT, KC_LEFT, KC_UP,   KC_RGHT, OPTRGHT, KC_ROPT,
   _______, _______, _______, _______, _______, _______, _______, _______, KC_DOWN, _______, _______, KC_RSFT,
-  _______, _______, _______, _______,      KC_LBRC,         _______,      KC_DEL,  KC_LBRC, KC_RBRC, _______
+  _______, _______, _______, _______, LT(_LOWER, KC_LBRC),    _______,    KC_DEL,  KC_LBRC, KC_RBRC, _______
 ),
 
 /* Lower
@@ -133,7 +133,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ALL_APP, KC_1,    KC_2,    KC_3,    _______, KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_RCMD,
   KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, _______, KC_PPLS, KC_PAST, KC_UNDS, KC_PLUS, KC_LBRC, KC_RBRC, KC_ROPT,
   KC_PGDN, _______, _______, _______, _______, KC_PENT, KC_PEQL, KC_NUHS, KC_NUBS, KC_PGUP, KC_PGDN, KC_RSFT,
-  MIDI,    _______, _______, _______,      _______,         KC_RBRC,      KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY
+  MIDI,    _______, _______, _______,     _______,   LT(_RAISE, KC_RBRC), KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY
 ),
 
 /* Extra Layer (Lower + Raise)
@@ -225,7 +225,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 //         case LOWER:
 //           if (record->event.pressed) {
 //             layer_on(_LOWER);
-//             update_tri_layer(_LOWER, _RAISE, _EXTRA);
+//             layer_state_set_user(_LOWER, _RAISE, _EXTRA);
 //           } else {
 //             layer_off(_LOWER);
 //             update_tri_layer(_LOWER, _RAISE, _EXTRA);
