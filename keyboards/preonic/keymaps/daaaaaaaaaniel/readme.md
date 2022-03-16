@@ -18,7 +18,7 @@
 
 **NOTE:** Use either Karabiner (macOS) and/or System Preferences (macOS/iPadOS) to map Caps Lock to Fn (Globe key).
 
-
+```
 /* Qwerty (Default Layer)
  * ,-----------------------------------------------------------------------------------.
  * |   `  |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  -   |
@@ -81,3 +81,4 @@
  * `-----------------------------------------------------------------------------------'
  *  Tap the Qwerty key to exit the MIDI layer.
  */
+```
