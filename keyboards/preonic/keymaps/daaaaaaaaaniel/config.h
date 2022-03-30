@@ -52,6 +52,9 @@
 // prevent acccidentally triggered modifer keys when interrupting a mod tap key.
 #define IGNORE_MOD_TAP_INTERRUPT
 
+// for rapidly typing sequences like MT(SHIFT) -> i -> release i -> release MT(SHIFT), which should ideally output a capital I. This option fixes it so that it won't trigger the mod key's tap functionality in this scenario.
+#define PERMISSIVE_HOLD
+
 /* //disables macOS FN key to allow compatibility with Vial etc. If using Karabiner, remap Caps Locks to Apple FN, or adjust the Modifier Keys in Systems Preferences so that Caps Locks triggers FN.
 // enables macOS FN key
 #undef PRODUCT_ID

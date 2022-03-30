@@ -21,6 +21,7 @@ enum preonic_layers {
   _QWERTY,
   _LOWER,
   _RAISE,
+  _TAB,
 //  _ADJUST, // Previously, this layer was activated by HITTING and HOLDING both space bars together
   _EXTRA,
   _MIDI
@@ -33,6 +34,8 @@ enum preonic_keycodes {
   MIDI,
   WRD_FWD, // Option-Right Arrow. Alternatively, use Opt-Cmd-F (or a custom keybind in DefaultKeyBinding.dict).
   WRD_BCK, // Option-Left Arrow. Alternatively, use Opt-Cmd-B (or a custom keybind in DefaultKeyBinding.dict).
+  NEXTTAB, // Command-Shift-]
+  PREVTAB, // Command-Shift-[
   SHOW_ALL_APP_WINDOWS, // Control-Down Arrow
   KC_MISSION_CONTROL, // AC Desktop Show All Windows
   KC_SPOTLIGHT,
@@ -90,7 +93,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_QWERTY] = LAYOUT_preonic_2x2u(
   KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    RCTL_T(KC_MINS),
-  KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    RCMD_T(KC_BSPC),
+  LT(_TAB, KC_TAB),  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    RCMD_T(KC_BSPC),
   KC_GRV,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, ROPT_T(KC_QUOT),
   SFT_T(KC_ESC), KC_Z, KC_X, KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RSFT_T(KC_ENT),
   /*KC_APFN,*/KC_CAPS, LCTL_T(KC_LBRC), LOPT_T(KC_HOME), LCMD_T(KC_DEL), LT(_LOWER, KC_SPC), LT(_RAISE, KC_SPC), RCMD_T(KC_BSPC), ROPT_T(KC_END), RCTL_T(KC_RBRC), KC_BSLS
@@ -136,6 +139,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, _______, KC_PPLS, KC_PAST, KC_UNDS, KC_PLUS, KC_LBRC, KC_RBRC, KC_ROPT,
   KC_PGDN, _______, _______, _______, _______, KC_PENT, KC_PEQL, KC_NUHS, KC_NUBS, KC_PGUP, KC_PGDN, KC_RSFT,
   MIDI,    _______, _______, _______,     _______,   LT(_RAISE, KC_PGDN), _______, _______, _______, _______
+),
+
+/* Tab
+ * ,-----------------------------------------------------------------------------------.
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+-------------+------+------+------+------+------|
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      |             |             |      |      |      |      |
+ * `-----------------------------------------------------------------------------------'
+ */
+[_TAB] = LAYOUT_preonic_2x2u(
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______,     PREVTAB,          NEXTTAB,      _______, _______, _______, _______
 ),
 
 /* Extra Layer (Lower + Raise)
@@ -275,6 +299,38 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             // when keycode WRD_BCK is released
             unregister_code(KC_LEFT);  // release Left Arrow key
             unregister_code(KC_LOPT);  // release Opt key
+          }
+          break;
+/*-----------------------*/
+/*-------Next Tab-------*/
+// Command-Shift-]
+        case NEXTTAB:
+          if (record->event.pressed) {
+            // when keycode NEXTTAB is pressed
+            register_code(KC_RCMD);  // press the Command key
+            register_code(KC_RSFT);  // press the Shift key
+            register_code(KC_RBRC);  // press the ] key
+          } else {
+            // when keycode NEXTTAB is released
+            unregister_code(KC_RCMD);  // release the Command key
+            unregister_code(KC_RSFT);  // release the Shift key
+            unregister_code(KC_RBRC);  // release the ] key
+          }
+          break;
+/*-----------------------*/
+/*-------Previous Tab-------*/
+// Command-Shift-[
+        case PREVTAB:
+          if (record->event.pressed) {
+            // when keycode NEXTTAB is pressed
+            register_code(KC_RCMD);  // press the Command key
+            register_code(KC_RSFT);  // press the Shift key
+            register_code(KC_LBRC);  // press the [ key
+          } else {
+            // when keycode NEXTTAB is released
+            unregister_code(KC_RCMD);  // release the Command key
+            unregister_code(KC_RSFT);  // release the Shift key
+            unregister_code(KC_LBRC);  // release the [ key
           }
           break;
 /*--------------Control Down--------------*/
