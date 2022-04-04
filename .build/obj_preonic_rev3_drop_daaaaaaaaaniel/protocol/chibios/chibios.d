@@ -113,18 +113,10 @@
  lib/chibios/os/hal/include/hal_mmc_spi.h \
  lib/chibios/os/hal/include/hal_serial_usb.h \
  tmk_core/protocol/chibios/usb_main.h tmk_core/protocol/report.h \
- quantum/keycode.h quantum/keycode_legacy.h tmk_core/protocol/host.h \
- tmk_core/protocol/host_driver.h tmk_core/protocol/midi/midi.h \
- tmk_core/protocol/midi/midi_device.h \
- tmk_core/protocol/midi/midi_function_types.h \
- tmk_core/protocol/midi/bytequeue/bytequeue.h quantum/led.h \
- quantum/keyboard.h quantum/action.h platforms/progmem.h \
- quantum/action_code.h quantum/action_util.h \
- tmk_core/protocol/usb_device_state.h quantum/mousekey.h \
- quantum/logging/sendchar.h quantum/logging/debug.h \
- quantum/logging/print.h quantum/util.h quantum/bitwise.h \
- lib/printf/printf.h tmk_core/protocol/midi/qmk_midi.h \
+ quantum/keycode.h quantum/keycode_legacy.h \
+ tmk_core/protocol/usb_descriptor.h \
  tmk_core/protocol/chibios/lufa_utils/LUFA/Drivers/USB/USB.h \
+ platforms/progmem.h \
  lib/lufa/LUFA/Drivers/USB/Class/Common/HIDClassCommon.h \
  lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/StdDescriptors.h \
  lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/../../../Common/Common.h \
@@ -140,6 +132,15 @@
  lib/lufa/LUFA/Drivers/USB/Core/../../../Common/Common.h \
  lib/lufa/LUFA/Drivers/USB/Core/USBMode.h \
  lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBController_AVR8.h \
+ tmk_core/protocol/host.h tmk_core/protocol/host_driver.h \
+ tmk_core/protocol/midi/midi.h tmk_core/protocol/midi/midi_device.h \
+ tmk_core/protocol/midi/midi_function_types.h \
+ tmk_core/protocol/midi/bytequeue/bytequeue.h quantum/led.h \
+ quantum/keyboard.h quantum/action.h quantum/action_code.h \
+ quantum/action_util.h tmk_core/protocol/usb_device_state.h \
+ quantum/mousekey.h quantum/logging/sendchar.h quantum/logging/debug.h \
+ quantum/logging/print.h quantum/util.h quantum/bitwise.h \
+ lib/printf/printf.h tmk_core/protocol/midi/qmk_midi.h \
  platforms/suspend.h platforms/wait.h platforms/chibios/_wait.h \
  platforms/chibios/_wait.c
 
@@ -405,49 +406,11 @@ quantum/keycode.h:
 
 quantum/keycode_legacy.h:
 
-tmk_core/protocol/host.h:
-
-tmk_core/protocol/host_driver.h:
-
-tmk_core/protocol/midi/midi.h:
-
-tmk_core/protocol/midi/midi_device.h:
-
-tmk_core/protocol/midi/midi_function_types.h:
-
-tmk_core/protocol/midi/bytequeue/bytequeue.h:
-
-quantum/led.h:
-
-quantum/keyboard.h:
-
-quantum/action.h:
-
-platforms/progmem.h:
-
-quantum/action_code.h:
-
-quantum/action_util.h:
-
-tmk_core/protocol/usb_device_state.h:
-
-quantum/mousekey.h:
-
-quantum/logging/sendchar.h:
-
-quantum/logging/debug.h:
-
-quantum/logging/print.h:
-
-quantum/util.h:
-
-quantum/bitwise.h:
-
-lib/printf/printf.h:
-
-tmk_core/protocol/midi/qmk_midi.h:
+tmk_core/protocol/usb_descriptor.h:
 
 tmk_core/protocol/chibios/lufa_utils/LUFA/Drivers/USB/USB.h:
+
+platforms/progmem.h:
 
 lib/lufa/LUFA/Drivers/USB/Class/Common/HIDClassCommon.h:
 
@@ -478,6 +441,46 @@ lib/lufa/LUFA/Drivers/USB/Core/../../../Common/Common.h:
 lib/lufa/LUFA/Drivers/USB/Core/USBMode.h:
 
 lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBController_AVR8.h:
+
+tmk_core/protocol/host.h:
+
+tmk_core/protocol/host_driver.h:
+
+tmk_core/protocol/midi/midi.h:
+
+tmk_core/protocol/midi/midi_device.h:
+
+tmk_core/protocol/midi/midi_function_types.h:
+
+tmk_core/protocol/midi/bytequeue/bytequeue.h:
+
+quantum/led.h:
+
+quantum/keyboard.h:
+
+quantum/action.h:
+
+quantum/action_code.h:
+
+quantum/action_util.h:
+
+tmk_core/protocol/usb_device_state.h:
+
+quantum/mousekey.h:
+
+quantum/logging/sendchar.h:
+
+quantum/logging/debug.h:
+
+quantum/logging/print.h:
+
+quantum/util.h:
+
+quantum/bitwise.h:
+
+lib/printf/printf.h:
+
+tmk_core/protocol/midi/qmk_midi.h:
 
 platforms/suspend.h:
 

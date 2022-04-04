@@ -22,6 +22,7 @@ enum preonic_layers {
   _LOWER,
   _RAISE,
   _TAB,
+//   _SW, // This would be a layer like _TAB, but for the cmd+tab switcher
 //  _ADJUST, // Previously, this layer was activated by HITTING and HOLDING both space bars together
   _EXTRA,
   _MIDI
@@ -54,6 +55,17 @@ enum preonic_keycodes {
 #define KC_LOCK KC_LOCK_SCREEN
 #define KC_LPAD KC_LAUNCHPAD
 #define ALL_APP SHOW_ALL_APP_WINDOWS
+//
+// #define AA_SW LT(_SW, KC_TAB)
+#define AA_TAB LT(_TAB, KC_TAB)
+#define AA_LCTL LCTL_T(KC_LBRC)
+#define AA_LOPT LOPT_T(KC_HOME)
+#define AA_LCMD LCMD_T(KC_DEL) 
+#define AA_LSPC LT(_LOWER, KC_SPC) 
+#define AA_RSPC LT(_RAISE, KC_SPC) 
+#define AA_RCMD RCMD_T(KC_BSPC) 
+#define AA_ROPT ROPT_T(KC_END) 
+#define AA_RCTL RCTL_T(KC_RBRC)
 
 // Sounds
 #ifdef AUDIO_ENABLE
@@ -93,10 +105,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_QWERTY] = LAYOUT_preonic_2x2u(
   KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    RCTL_T(KC_MINS),
-  LT(_TAB, KC_TAB),  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    RCMD_T(KC_BSPC),
+  AA_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    RCMD_T(KC_BSPC),
   KC_GRV,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, ROPT_T(KC_QUOT),
-  SFT_T(KC_ESC), KC_Z, KC_X, KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RSFT_T(KC_ENT),
-  /*KC_APFN,*/KC_CAPS, LCTL_T(KC_LBRC), LOPT_T(KC_HOME), LCMD_T(KC_DEL), LT(_LOWER, KC_SPC), LT(_RAISE, KC_SPC), RCMD_T(KC_BSPC), ROPT_T(KC_END), RCTL_T(KC_RBRC), KC_BSLS
+  SFT_T(KC_ESC), KC_Z, KC_X, KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RSFT_T(KC_ENT), // /*KC_APFN,*/
+  KC_CAPS, AA_LCTL, AA_LOPT, AA_LCMD,     AA_LSPC,          AA_RSPC,      AA_RCMD, AA_ROPT, AA_RCTL, KC_BSLS
 ),
 
 /* Raise
@@ -161,6 +173,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______,     PREVTAB,          NEXTTAB,      _______, _______, _______, _______
 ),
+
+// /* SW (Switch)
+//  * ,-----------------------------------------------------------------------------------.
+//  * |      |      |      |      |      |      |      |      |      |      |      |      |
+//  * |------+------+------+------+------+------+------+------+------+------+------+------|
+//  * |      |      |      |      |      |      |      |      |      |      |      |      |
+//  * |------+------+------+------+------+-------------+------+------+------+------+------|
+//  * |      |      |      |      |      |      |      |      |      |      |      |      |
+//  * |------+------+------+------+------+------|------+------+------+------+------+------|
+//  * |      |      |      |      |      |      |      |      |      |      |      |      |
+//  * |------+------+------+------+------+------+------+------+------+------+------+------|
+//  * |      |      |      |      |   Switch    |   Switch    |      |      |      |      |
+//  * `-----------------------------------------------------------------------------------'
+//  */
+// [_SW] = LAYOUT_preonic_2x2u(
+//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+//   _______, _______, _______, _______,     G(KC_TAB),          S(G(KC_TAB)),      _______, _______, _______, _______
+// ),
 
 /* Extra Layer (Lower + Raise)
  * ,-----------------------------------------------------------------------------------.

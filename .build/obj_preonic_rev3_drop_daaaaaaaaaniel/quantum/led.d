@@ -8,13 +8,24 @@
  platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h \
  quantum/rgblight/rgblight_post_config.h quantum/led.h \
  tmk_core/protocol/host.h tmk_core/protocol/report.h quantum/keycode.h \
- quantum/keycode_legacy.h tmk_core/protocol/host_driver.h \
- tmk_core/protocol/midi/midi.h tmk_core/protocol/midi/midi_device.h \
- tmk_core/protocol/midi/midi_function_types.h \
- tmk_core/protocol/midi/bytequeue/bytequeue.h quantum/logging/debug.h \
- quantum/logging/print.h quantum/util.h quantum/bitwise.h \
- quantum/logging/sendchar.h platforms/progmem.h lib/printf/printf.h \
- platforms/gpio.h platforms/chibios/gpio.h \
+ quantum/keycode_legacy.h tmk_core/protocol/usb_descriptor.h \
+ tmk_core/protocol/chibios/lufa_utils/LUFA/Drivers/USB/USB.h \
+ platforms/progmem.h \
+ lib/lufa/LUFA/Drivers/USB/Class/Common/HIDClassCommon.h \
+ lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/StdDescriptors.h \
+ lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/../../../Common/Common.h \
+ lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/USBMode.h \
+ lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/Events.h \
+ lib/lufa/LUFA/Drivers/USB/Class/Common/HIDParser.h \
+ lib/lufa/LUFA/Drivers/USB/Class/Common/HIDReportData.h \
+ lib/lufa/LUFA/Drivers/USB/Class/Common/CDCClassCommon.h \
+ lib/lufa/LUFA/Drivers/USB/Class/Common/AudioClassCommon.h \
+ lib/lufa/LUFA/Drivers/USB/Class/Common/MIDIClassCommon.h \
+ lib/lufa/LUFA/Drivers/USB/Class/Common/AudioClassCommon.h \
+ lib/lufa/LUFA/Drivers/USB/Core/USBController.h \
+ lib/lufa/LUFA/Drivers/USB/Core/../../../Common/Common.h \
+ lib/lufa/LUFA/Drivers/USB/Core/USBMode.h \
+ lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBController_AVR8.h \
  lib/chibios/os/hal/include/hal.h lib/chibios/os/hal/osal/rt-nil/osal.h \
  lib/chibios/os/rt/include/ch.h keyboards/preonic/rev3_drop/chconf.h \
  platforms/chibios/boards/common/configs/chconf.h \
@@ -118,7 +129,14 @@
  lib/chibios/os/hal/include/hal_st.h \
  lib/chibios/os/hal/ports/STM32/LLD/TIMv1/hal_st_lld.h \
  lib/chibios/os/hal/include/hal_mmc_spi.h \
- lib/chibios/os/hal/include/hal_serial_usb.h
+ lib/chibios/os/hal/include/hal_serial_usb.h \
+ tmk_core/protocol/host_driver.h tmk_core/protocol/midi/midi.h \
+ tmk_core/protocol/midi/midi_device.h \
+ tmk_core/protocol/midi/midi_function_types.h \
+ tmk_core/protocol/midi/bytequeue/bytequeue.h quantum/logging/debug.h \
+ quantum/logging/print.h quantum/util.h quantum/bitwise.h \
+ quantum/logging/sendchar.h lib/printf/printf.h platforms/gpio.h \
+ platforms/chibios/gpio.h
 
 keyboards/preonic/config.h:
 
@@ -154,33 +172,41 @@ quantum/keycode.h:
 
 quantum/keycode_legacy.h:
 
-tmk_core/protocol/host_driver.h:
+tmk_core/protocol/usb_descriptor.h:
 
-tmk_core/protocol/midi/midi.h:
-
-tmk_core/protocol/midi/midi_device.h:
-
-tmk_core/protocol/midi/midi_function_types.h:
-
-tmk_core/protocol/midi/bytequeue/bytequeue.h:
-
-quantum/logging/debug.h:
-
-quantum/logging/print.h:
-
-quantum/util.h:
-
-quantum/bitwise.h:
-
-quantum/logging/sendchar.h:
+tmk_core/protocol/chibios/lufa_utils/LUFA/Drivers/USB/USB.h:
 
 platforms/progmem.h:
 
-lib/printf/printf.h:
+lib/lufa/LUFA/Drivers/USB/Class/Common/HIDClassCommon.h:
 
-platforms/gpio.h:
+lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/StdDescriptors.h:
 
-platforms/chibios/gpio.h:
+lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/../../../Common/Common.h:
+
+lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/USBMode.h:
+
+lib/lufa/LUFA/Drivers/USB/Class/Common/../../Core/Events.h:
+
+lib/lufa/LUFA/Drivers/USB/Class/Common/HIDParser.h:
+
+lib/lufa/LUFA/Drivers/USB/Class/Common/HIDReportData.h:
+
+lib/lufa/LUFA/Drivers/USB/Class/Common/CDCClassCommon.h:
+
+lib/lufa/LUFA/Drivers/USB/Class/Common/AudioClassCommon.h:
+
+lib/lufa/LUFA/Drivers/USB/Class/Common/MIDIClassCommon.h:
+
+lib/lufa/LUFA/Drivers/USB/Class/Common/AudioClassCommon.h:
+
+lib/lufa/LUFA/Drivers/USB/Core/USBController.h:
+
+lib/lufa/LUFA/Drivers/USB/Core/../../../Common/Common.h:
+
+lib/lufa/LUFA/Drivers/USB/Core/USBMode.h:
+
+lib/lufa/LUFA/Drivers/USB/Core/AVR8/USBController_AVR8.h:
 
 lib/chibios/os/hal/include/hal.h:
 
@@ -411,3 +437,29 @@ lib/chibios/os/hal/ports/STM32/LLD/TIMv1/hal_st_lld.h:
 lib/chibios/os/hal/include/hal_mmc_spi.h:
 
 lib/chibios/os/hal/include/hal_serial_usb.h:
+
+tmk_core/protocol/host_driver.h:
+
+tmk_core/protocol/midi/midi.h:
+
+tmk_core/protocol/midi/midi_device.h:
+
+tmk_core/protocol/midi/midi_function_types.h:
+
+tmk_core/protocol/midi/bytequeue/bytequeue.h:
+
+quantum/logging/debug.h:
+
+quantum/logging/print.h:
+
+quantum/util.h:
+
+quantum/bitwise.h:
+
+quantum/logging/sendchar.h:
+
+lib/printf/printf.h:
+
+platforms/gpio.h:
+
+platforms/chibios/gpio.h:

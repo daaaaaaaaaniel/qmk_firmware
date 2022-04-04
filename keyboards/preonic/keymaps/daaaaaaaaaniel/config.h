@@ -16,11 +16,11 @@
  
 #pragma once
 
-// /* USB Device descriptor parameter */
-// #define DEVICE_VER 0x0003
-// #define PRODUCT_ID 0xA649
-// #undef MANUFACTURER
-// #define MANUFACTURER Drop
+/* USB Device descriptor parameter */
+#define DEVICE_VER 0x0003
+#define PRODUCT_ID 0xA649
+#undef MANUFACTURER
+#define MANUFACTURER Drop
 
 #undef MATRIX_ROWS
 #undef MATRIX_COLS
@@ -34,8 +34,8 @@
 #define MATRIX_COL_PINS { B11, B10, B2, B1, A7, B0 }
 #define UNUSED_PINS
 
-// #define ENCODERS_PAD_A { B12 }
-// #define ENCODERS_PAD_B { B13 }
+#define ENCODERS_PAD_A { B12 }
+#define ENCODERS_PAD_B { B13 }
 
 #define DIP_SWITCH_PINS { B14, A15, A0, B9 }
 
@@ -52,14 +52,14 @@
 #define RGB_DI_PIN A1
 #define RGBLED_NUM 9
 #define RGBLIGHT_ANIMATIONS
-// // RGB Matrix support
-// #define DRIVER_LED_TOTAL RGBLED_NUM
-// 
-// #define WS2812_PWM_DRIVER PWMD2
-// #define WS2812_PWM_CHANNEL 2
-// #define WS2812_PWM_PAL_MODE 1
-// #define WS2812_DMA_STREAM STM32_DMA1_STREAM2
-// #define WS2812_DMA_CHANNEL 2
+// RGB Matrix support
+#define DRIVER_LED_TOTAL RGBLED_NUM
+
+#define WS2812_PWM_DRIVER PWMD2
+#define WS2812_PWM_CHANNEL 2
+#define WS2812_PWM_PAL_MODE 1
+#define WS2812_DMA_STREAM STM32_DMA1_STREAM2
+#define WS2812_DMA_CHANNEL 2
 
 
 ////// All preceding code cloned from qmk_firmware/keyboards/preonic/rev3_drop/config.h //////
