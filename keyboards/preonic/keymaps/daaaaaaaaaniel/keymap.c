@@ -58,14 +58,14 @@ enum preonic_keycodes {
 //
 // #define AA_SW LT(_SW, KC_TAB)
 #define AA_TAB LT(_TAB, KC_TAB)
-#define AA_LCTL LCTL_T(KC_LBRC)
+#define AA_LCTL LCTL_T(KC_BSLS)
 #define AA_LOPT LOPT_T(KC_HOME)
 #define AA_LCMD LCMD_T(KC_DEL) 
 #define AA_LSPC LT(_LOWER, KC_SPC) 
 #define AA_RSPC LT(_RAISE, KC_SPC) 
 #define AA_RCMD RCMD_T(KC_BSPC) 
 #define AA_ROPT ROPT_T(KC_END) 
-#define AA_RCTL RCTL_T(KC_RBRC)
+#define AA_RCTL RCTL_T(KC_LBRC)
 
 // Sounds
 #ifdef AUDIO_ENABLE
@@ -94,21 +94,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |   `  |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  -   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Tab  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  | Bksp |
+ * | Tab  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |  =   |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * |   `  |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |  "   |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |Enter |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  fn  | Ctrl | Opt  | Cmd  |     Lower   |    Raise    | Bksp |  End |   ]  |   \  |
+ * |  fn  | Ctrl | Opt  | Cmd  |     Lower   |    Raise    | Bksp |  End |   [  |   ]  |
  * `-----------------------------------------------------------------------------------'
  */
 [_QWERTY] = LAYOUT_preonic_2x2u(
   KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    RCTL_T(KC_MINS),
-  AA_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    RCMD_T(KC_BSPC),
+  AA_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_EQL,
   KC_GRV,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, ROPT_T(KC_QUOT),
   SFT_T(KC_ESC), KC_Z, KC_X, KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RSFT_T(KC_ENT), // /*KC_APFN,*/
-  KC_CAPS, AA_LCTL, AA_LOPT, AA_LCMD,     AA_LSPC,          AA_RSPC,      AA_RCMD, AA_ROPT, AA_RCTL, KC_BSLS
+  KC_CAPS, AA_LCTL, AA_LOPT, AA_LCMD,     AA_LSPC,          AA_RSPC,      AA_RCMD, AA_ROPT, AA_RCTL, KC_RBRC
 ),
 
 /* Raise
@@ -121,7 +121,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |      |      |   -  |   =  | Shift|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |   Page Up   |             | Del  |      |      |      |
+ * |      |      |      |      |   Page Up   |             |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_RAISE] = LAYOUT_preonic_2x2u(
@@ -129,27 +129,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, KC_UP,   _______, _______, _______, _______, _______, KC_UP,   KC_LBRC, KC_RBRC, KC_RCMD,
   _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, WRD_BCK, KC_LEFT, KC_DOWN, KC_RGHT, WRD_FWD, KC_ROPT,
   _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MINS, KC_EQL,  KC_RSFT,
-  _______, _______, _______, _______, LT(_LOWER, KC_PGUP),    _______,    KC_DEL,  _______, _______, _______
+  _______, _______, _______, _______, LT(_LOWER, KC_PGUP),    _______,    _______, _______, _______, _______
 ),
 
 /* Lower
  * ,-----------------------------------------------------------------------------------.
+ * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
+ * |------+------+------+------+------+-------------+------+------+------+------+------|
  * |   ~  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  | Ctrl |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |AppSwi|   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  | Cmd  |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
- * | Pg Up| Left |  Up  |Right |      |   +  |   *  |   _  |   +  |   [  |   ]  | Opt  |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * | Pg Dn|      |      |      |      |Enter |   =  |ISO # |ISO / | Pg Up| Pg Dn| Shift|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      | Left | Down |Right |      |   +  |   *  |   _  |   +  |   [  |   ]  | Opt  |
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
  * | MIDI |      |      |      |             |  Page Down  |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_LOWER] = LAYOUT_preonic_2x2u(
+  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
   KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_RCTL,
-  ALL_APP, KC_1,    KC_2,    KC_3,    _______, KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_RCMD,
-  KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, _______, KC_PPLS, KC_PAST, KC_UNDS, KC_PLUS, KC_LBRC, KC_RBRC, KC_ROPT,
-  KC_PGDN, _______, _______, _______, _______, KC_PENT, KC_PEQL, KC_NUHS, KC_NUBS, KC_PGUP, KC_PGDN, KC_RSFT,
+  ALL_APP, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_RCMD,
+  _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, KC_PPLS, KC_PAST, KC_UNDS, KC_PLUS, KC_LBRC, KC_RBRC, KC_ROPT,
   MIDI,    _______, _______, _______,     _______,   LT(_RAISE, KC_PGDN), _______, _______, _______, _______
 ),
 
@@ -199,21 +199,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |  Up  |      |      |      |      |      |      |      |      |      |
+ * |      |      |  Up  |      |      |      |      |      |  MUp |      |      |      |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      | Left | Down |Right |      |      | MLeft| MDown|  MUp |MRight|      |      |
+ * |      | Left | Down |Right | Click|RClick|      | MLeft| MDown|MRight|      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      | Click|RClick| Next | Vol- | Vol+ | Play |
+ * |      |      |      |      |      |      |RClick| Click| Next | Vol- | Vol+ | Play |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | RGB  | RGB  | RGB  | RGB  |             |             |      |      |      |      |
+ * | RGB  |      |      |      |             |             |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_EXTRA] = LAYOUT_preonic_2x2u(
   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
-  _______, _______, KC_UP,   _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, _______, _______,
+  _______, _______, KC_UP,   _______, _______, _______, _______, _______, KC_MS_U, _______, _______, _______,
+  _______, KC_LEFT, KC_DOWN, KC_RGHT, KC_BTN1, KC_BTN2, _______, KC_MS_L, KC_MS_D, KC_MS_R, _______, _______,
   _______, _______, _______, _______, _______, _______, KC_BTN2, KC_BTN1, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY,
-  RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI,     _______,          _______,      _______, _______, _______, _______
+  RGB_TOG, _______, _______, _______,     _______,          _______,      _______, _______, _______, _______
 ),
 
 // Previously, this layer was activated by HITTING and HOLDING both space bars together (Combo that executes a layer tap)
