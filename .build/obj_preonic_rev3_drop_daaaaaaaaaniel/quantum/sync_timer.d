@@ -7,8 +7,8 @@
  .build/obj_preonic_rev3_drop/src/layouts.h \
  keyboards/preonic/keymaps/daaaaaaaaaniel/config.h \
  platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h \
- quantum/rgblight/rgblight_post_config.h quantum/sync_timer.h \
- platforms/timer.h platforms/chibios/_timer.h quantum/keyboard.h
+ quantum/sync_timer.h platforms/timer.h platforms/chibios/_timer.h \
+ quantum/keyboard.h
 
 keyboards/preonic/config.h:
 
@@ -31,8 +31,6 @@ keyboards/preonic/rev3_drop/config.h:
 keyboards/preonic/keymaps/daaaaaaaaaniel/config.h:
 
 platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h:
-
-quantum/rgblight/rgblight_post_config.h:
 
 quantum/sync_timer.h:
 

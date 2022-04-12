@@ -35,6 +35,8 @@ enum preonic_keycodes {
   MIDI,
   WRD_FWD, // Option-Right Arrow. Alternatively, use Opt-Cmd-F (or a custom keybind in DefaultKeyBinding.dict).
   WRD_BCK, // Option-Left Arrow. Alternatively, use Opt-Cmd-B (or a custom keybind in DefaultKeyBinding.dict).
+  WRD_DEL, // Option-Delete
+  WRD_BKS, // Option-Backspace
   NEXTTAB, // Command-Shift-]
   PREVTAB, // Command-Shift-[
   SHOW_ALL_APP_WINDOWS, // Control-Down Arrow
@@ -59,12 +61,12 @@ enum preonic_keycodes {
 // #define AA_SW LT(_SW, KC_TAB)
 #define AA_TAB LT(_TAB, KC_TAB)
 #define AA_LCTL LCTL_T(KC_BSLS)
-#define AA_LOPT LOPT_T(KC_HOME)
-//#define AA_LCMD LCMD_T(KC_DEL) 
-#define AA_LSPC LT(_LOWER, KC_SPC) 
+// #define AA_LOPT LOPT_T(KC_HOME)
+// #define AA_LCMD LCMD_T(KC_DEL) 
+#define AA_LSPC LT(_LOWER, KC_SPC) // NOTE: if symbols or numbers are too sluggish, try disabling this keycode in favor of the regular _LOWER key.
 #define AA_RSPC LT(_RAISE, KC_SPC) 
-#define AA_RCMD RCMD_T(KC_BSPC) 
-#define AA_ROPT ROPT_T(KC_END) 
+#define AA_RCMD RCMD_T(KC_BSPC) // command (hold); backspace (tap)
+#define AA_ROPT ROPT_T(KC_DEL) // option (hold); delete (tap)
 #define AA_RCTL RCTL_T(KC_LBRC)
 
 // Sounds
@@ -100,15 +102,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |Enter |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  fn  | Ctrl | Opt  | Cmd  |     Lower   |    Raise    | Bksp |  End |   [  |   ]  |
+ * |  fn  | Ctrl | Opt  | Cmd  |     Lower   |    Raise    | Bksp |  Del |   [  |   ]  |
  * `-----------------------------------------------------------------------------------'
  */
 [_QWERTY] = LAYOUT_preonic_2x2u(
   KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
   AA_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_EQL,
   KC_GRV,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
-  KC_LSFT, KC_Z, KC_X, KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RSFT_T(KC_ENT), // /*KC_APFN,*/
-  KC_CAPS, AA_LCTL, AA_LOPT, KC_LCMD,     AA_LSPC,          AA_RSPC,      AA_RCMD, AA_ROPT, AA_RCTL, KC_RBRC
+  KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RSFT_T(KC_ENT), // /*KC_APFN,*/
+  KC_CAPS, AA_LCTL, KC_LOPT, KC_LCMD,     AA_LSPC,          AA_RSPC,      AA_RCMD, AA_ROPT, AA_RCTL, KC_RBRC
 ),
 
 /* Raise
@@ -142,7 +144,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      | Left | Down |Right |      |   +  |   *  |   _  |   +  |   [  |   ]  | Shift|
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * | MIDI |      |      |      |             |  Page Down  |  Del |      |      |      |
+ * | MIDI |      |      |      |             |  Page Down  |WrdBks|WrdDel|      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_LOWER] = LAYOUT_preonic_2x2u(
@@ -150,7 +152,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ALL_APP, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
   KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_PLUS,
   _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, KC_PPLS, KC_PAST, KC_UNDS, KC_PLUS, KC_LBRC, KC_RBRC, KC_RSFT,
-  MIDI,    _______, _______, _______,     _______,   LT(_RAISE, KC_PGDN), KC_DEL, _______, _______, _______
+  MIDI,    _______, _______, _______,     _______,   LT(_RAISE, KC_PGDN), WRD_BKS, WRD_DEL, _______, _______
 ),
 
 /* Tab
@@ -331,6 +333,34 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           } else {
             // when keycode WRD_BCK is released
             unregister_code(KC_LEFT);  // release Left Arrow key
+            unregister_code(KC_LOPT);  // release Opt key
+          }
+          break;
+/*-----------------------*/
+/*-------Opt Delete-------*/
+// For deleting a whole word
+        case WRD_DEL:
+          if (record->event.pressed) {
+            // when keycode WRD_DEL is pressed
+            register_code(KC_LOPT);  // press the Opt key
+            register_code(KC_DEL);  // press the Delete key
+          } else {
+            // when keycode WRD_DEL is released
+            unregister_code(KC_DEL);  // release Delete key
+            unregister_code(KC_LOPT);  // release Opt key
+          }
+          break;
+/*-----------------------*/
+/*-------Opt Backspace-------*/
+// For backwards-deleting a whole word
+        case WRD_BKS:
+          if (record->event.pressed) {
+            // when keycode WRD_DEL is pressed
+            register_code(KC_LOPT);  // press the Opt key
+            register_code(KC_BSPC);  // press the Backspace key
+          } else {
+            // when keycode WRD_DEL is released
+            unregister_code(KC_BSPC);  // release Backspace key
             unregister_code(KC_LOPT);  // release Opt key
           }
           break;

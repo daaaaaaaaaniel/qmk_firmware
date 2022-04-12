@@ -34,10 +34,10 @@
 #define MATRIX_COL_PINS { B11, B10, B2, B1, A7, B0 }
 #define UNUSED_PINS
 
-#define ENCODERS_PAD_A { B12 }
-#define ENCODERS_PAD_B { B13 }
-
-#define DIP_SWITCH_PINS { B14, A15, A0, B9 }
+// #define ENCODERS_PAD_A { B12 }
+// #define ENCODERS_PAD_B { B13 }
+// 
+// #define DIP_SWITCH_PINS { B14, A15, A0, B9 }
 
 #define MUSIC_MAP
 #undef AUDIO_VOICES
@@ -46,20 +46,20 @@
 #define AUDIO_PIN_ALT A4
 #define AUDIO_PIN_ALT_AS_NEGATIVE
 
-/*
- * WS2812 Underglow Matrix options
- */
-#define RGB_DI_PIN A1
-#define RGBLED_NUM 9
-#define RGBLIGHT_ANIMATIONS
-// RGB Matrix support
-#define DRIVER_LED_TOTAL RGBLED_NUM
-
-#define WS2812_PWM_DRIVER PWMD2
-#define WS2812_PWM_CHANNEL 2
-#define WS2812_PWM_PAL_MODE 1
-#define WS2812_DMA_STREAM STM32_DMA1_STREAM2
-#define WS2812_DMA_CHANNEL 2
+// /*
+//  * WS2812 Underglow Matrix options
+//  */
+// #define RGB_DI_PIN A1
+// #define RGBLED_NUM 9
+// #define RGBLIGHT_ANIMATIONS
+// // RGB Matrix support
+// #define DRIVER_LED_TOTAL RGBLED_NUM
+// 
+// #define WS2812_PWM_DRIVER PWMD2
+// #define WS2812_PWM_CHANNEL 2
+// #define WS2812_PWM_PAL_MODE 1
+// #define WS2812_DMA_STREAM STM32_DMA1_STREAM2
+// #define WS2812_DMA_CHANNEL 2
 
 
 ////// All preceding code cloned from qmk_firmware/keyboards/preonic/rev3_drop/config.h //////

@@ -7,9 +7,8 @@
  .build/obj_preonic_rev3_drop/src/layouts.h \
  keyboards/preonic/keymaps/daaaaaaaaaniel/config.h \
  platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h \
- quantum/rgblight/rgblight_post_config.h quantum/keycode_config.h \
- quantum/eeconfig.h quantum/keycode.h quantum/keycode_legacy.h \
- quantum/action_code.h
+ quantum/keycode_config.h quantum/eeconfig.h quantum/keycode.h \
+ quantum/keycode_legacy.h quantum/action_code.h
 
 keyboards/preonic/config.h:
 
@@ -32,8 +31,6 @@ keyboards/preonic/rev3_drop/config.h:
 keyboards/preonic/keymaps/daaaaaaaaaniel/config.h:
 
 platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h:
-
-quantum/rgblight/rgblight_post_config.h:
 
 quantum/keycode_config.h:
 

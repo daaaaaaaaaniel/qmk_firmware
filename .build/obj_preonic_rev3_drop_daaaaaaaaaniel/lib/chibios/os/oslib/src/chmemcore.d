@@ -7,8 +7,7 @@
  .build/obj_preonic_rev3_drop/src/layouts.h \
  keyboards/preonic/keymaps/daaaaaaaaaniel/config.h \
  platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h \
- quantum/rgblight/rgblight_post_config.h lib/chibios/os/rt/include/ch.h \
- keyboards/preonic/rev3_drop/chconf.h \
+ lib/chibios/os/rt/include/ch.h keyboards/preonic/rev3_drop/chconf.h \
  platforms/chibios/boards/common/configs/chconf.h \
  lib/chibios/os/rt/include/chchecks.h lib/chibios/os/license/chlicense.h \
  lib/chibios/os/license/chcustomer.h \
@@ -74,8 +73,6 @@ keyboards/preonic/rev3_drop/config.h:
 keyboards/preonic/keymaps/daaaaaaaaaniel/config.h:
 
 platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h:
-
-quantum/rgblight/rgblight_post_config.h:
 
 lib/chibios/os/rt/include/ch.h:
 

@@ -7,8 +7,7 @@
  .build/obj_preonic_rev3_drop/src/layouts.h \
  keyboards/preonic/keymaps/daaaaaaaaaniel/config.h \
  platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h \
- quantum/rgblight/rgblight_post_config.h tmk_core/protocol/midi/midi.h \
- tmk_core/protocol/midi/midi_device.h \
+ tmk_core/protocol/midi/midi.h tmk_core/protocol/midi/midi_device.h \
  tmk_core/protocol/midi/midi_function_types.h \
  tmk_core/protocol/midi/bytequeue/bytequeue.h
 
@@ -33,8 +32,6 @@ keyboards/preonic/rev3_drop/config.h:
 keyboards/preonic/keymaps/daaaaaaaaaniel/config.h:
 
 platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h:
-
-quantum/rgblight/rgblight_post_config.h:
 
 tmk_core/protocol/midi/midi.h:
 

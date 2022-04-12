@@ -7,7 +7,6 @@
  .build/obj_preonic_rev3_drop/src/layouts.h \
  keyboards/preonic/keymaps/daaaaaaaaaniel/config.h \
  platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h \
- quantum/rgblight/rgblight_post_config.h \
  platforms/chibios/platform_deps.h lib/chibios/os/hal/include/hal.h \
  lib/chibios/os/hal/osal/rt-nil/osal.h lib/chibios/os/rt/include/ch.h \
  keyboards/preonic/rev3_drop/chconf.h \
@@ -136,8 +135,6 @@ keyboards/preonic/rev3_drop/config.h:
 keyboards/preonic/keymaps/daaaaaaaaaniel/config.h:
 
 platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h:
-
-quantum/rgblight/rgblight_post_config.h:
 
 platforms/chibios/platform_deps.h:
 

@@ -7,8 +7,7 @@
  .build/obj_preonic_rev3_drop/src/layouts.h \
  keyboards/preonic/keymaps/daaaaaaaaaniel/config.h \
  platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h \
- quantum/rgblight/rgblight_post_config.h quantum/keycode.h \
- quantum/keycode_legacy.h tmk_core/protocol/host.h \
+ quantum/keycode.h quantum/keycode_legacy.h tmk_core/protocol/host.h \
  tmk_core/protocol/report.h tmk_core/protocol/usb_descriptor.h \
  tmk_core/protocol/chibios/lufa_utils/LUFA/Drivers/USB/USB.h \
  platforms/progmem.h \
@@ -160,8 +159,6 @@ keyboards/preonic/rev3_drop/config.h:
 keyboards/preonic/keymaps/daaaaaaaaaniel/config.h:
 
 platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h:
-
-quantum/rgblight/rgblight_post_config.h:
 
 quantum/keycode.h:
 

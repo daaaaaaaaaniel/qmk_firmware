@@ -7,13 +7,12 @@
  .build/obj_preonic_rev3_drop/src/layouts.h \
  keyboards/preonic/keymaps/daaaaaaaaaniel/config.h \
  platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h \
- quantum/rgblight/rgblight_post_config.h quantum/util.h quantum/bitwise.h \
- quantum/logging/debug.h quantum/logging/print.h \
- quantum/logging/sendchar.h platforms/progmem.h lib/printf/printf.h \
- platforms/chibios/eeprom_stm32.h platforms/chibios/flash_stm32.h \
- platforms/chibios/eeprom_stm32_defs.h lib/chibios/os/hal/include/hal.h \
- lib/chibios/os/hal/osal/rt-nil/osal.h lib/chibios/os/rt/include/ch.h \
- keyboards/preonic/rev3_drop/chconf.h \
+ quantum/util.h quantum/bitwise.h quantum/logging/debug.h \
+ quantum/logging/print.h quantum/logging/sendchar.h platforms/progmem.h \
+ lib/printf/printf.h platforms/chibios/eeprom_stm32.h \
+ platforms/chibios/flash_stm32.h platforms/chibios/eeprom_stm32_defs.h \
+ lib/chibios/os/hal/include/hal.h lib/chibios/os/hal/osal/rt-nil/osal.h \
+ lib/chibios/os/rt/include/ch.h keyboards/preonic/rev3_drop/chconf.h \
  platforms/chibios/boards/common/configs/chconf.h \
  lib/chibios/os/rt/include/chchecks.h lib/chibios/os/license/chlicense.h \
  lib/chibios/os/license/chcustomer.h \
@@ -138,8 +137,6 @@ keyboards/preonic/rev3_drop/config.h:
 keyboards/preonic/keymaps/daaaaaaaaaniel/config.h:
 
 platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h:
-
-quantum/rgblight/rgblight_post_config.h:
 
 quantum/util.h:
 

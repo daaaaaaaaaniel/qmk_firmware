@@ -7,7 +7,6 @@
  .build/obj_preonic_rev3_drop/src/layouts.h \
  keyboards/preonic/keymaps/daaaaaaaaaniel/config.h \
  platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h \
- quantum/rgblight/rgblight_post_config.h \
  tmk_core/protocol/chibios/lufa_utils/LUFA/Drivers/USB/USB.h \
  platforms/progmem.h \
  lib/lufa/LUFA/Drivers/USB/Class/Common/HIDClassCommon.h \
@@ -146,8 +145,6 @@
  quantum/eeconfig.h quantum/quantum_keycodes.h \
  quantum/sequencer/sequencer.h platforms/timer.h \
  platforms/chibios/_timer.h quantum/quantum_keycodes_legacy.h \
- quantum/rgblight/rgblight.h quantum/rgblight/rgblight_modes.h \
- drivers/ws2812.h quantum/color.h quantum/rgblight/rgblight_list.h \
  quantum/action_layer.h platforms/bootloader.h \
  quantum/bootmagic/bootmagic.h quantum/bootmagic/bootmagic_lite.h \
  quantum/sync_timer.h platforms/gpio.h platforms/chibios/gpio.h \
@@ -162,8 +159,7 @@
  quantum/process_keycode/process_terminal_nop.h \
  quantum/process_keycode/process_space_cadet.h \
  quantum/process_keycode/process_magic.h \
- quantum/process_keycode/process_grave_esc.h \
- quantum/process_keycode/process_rgb.h quantum/dip_switch.h \
+ quantum/process_keycode/process_grave_esc.h quantum/dip_switch.h \
  quantum/encoder.h
 
 keyboards/preonic/config.h:
@@ -187,8 +183,6 @@ keyboards/preonic/rev3_drop/config.h:
 keyboards/preonic/keymaps/daaaaaaaaaniel/config.h:
 
 platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h:
-
-quantum/rgblight/rgblight_post_config.h:
 
 tmk_core/protocol/chibios/lufa_utils/LUFA/Drivers/USB/USB.h:
 
@@ -530,16 +524,6 @@ platforms/chibios/_timer.h:
 
 quantum/quantum_keycodes_legacy.h:
 
-quantum/rgblight/rgblight.h:
-
-quantum/rgblight/rgblight_modes.h:
-
-drivers/ws2812.h:
-
-quantum/color.h:
-
-quantum/rgblight/rgblight_list.h:
-
 quantum/action_layer.h:
 
 platforms/bootloader.h:
@@ -589,8 +573,6 @@ quantum/process_keycode/process_space_cadet.h:
 quantum/process_keycode/process_magic.h:
 
 quantum/process_keycode/process_grave_esc.h:
-
-quantum/process_keycode/process_rgb.h:
 
 quantum/dip_switch.h:
 

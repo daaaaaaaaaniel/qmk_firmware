@@ -7,8 +7,7 @@
  .build/obj_preonic_rev3_drop/src/layouts.h \
  keyboards/preonic/keymaps/daaaaaaaaaniel/config.h \
  platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h \
- quantum/rgblight/rgblight_post_config.h quantum/keymap.h \
- quantum/action.h platforms/progmem.h quantum/keyboard.h \
+ quantum/keymap.h quantum/action.h platforms/progmem.h quantum/keyboard.h \
  quantum/keycode.h quantum/keycode_legacy.h quantum/action_code.h \
  lib/chibios/os/rt/include/ch.h keyboards/preonic/rev3_drop/chconf.h \
  platforms/chibios/boards/common/configs/chconf.h \
@@ -143,13 +142,11 @@
  quantum/action_layer.h quantum/quantum.h \
  platforms/chibios/platform_deps.h platforms/chibios/chibios_config.h \
  platforms/wait.h platforms/chibios/_wait.h platforms/chibios/_wait.c \
- quantum/matrix.h quantum/rgblight/rgblight.h \
- quantum/rgblight/rgblight_modes.h drivers/ws2812.h quantum/color.h \
- quantum/rgblight/rgblight_list.h platforms/bootloader.h \
- quantum/bootmagic/bootmagic.h quantum/bootmagic/bootmagic_lite.h \
- quantum/sync_timer.h platforms/gpio.h platforms/chibios/gpio.h \
- platforms/atomic_util.h platforms/chibios/atomic_util.h \
- quantum/action_util.h quantum/action_tapping.h quantum/send_string.h \
+ quantum/matrix.h platforms/bootloader.h quantum/bootmagic/bootmagic.h \
+ quantum/bootmagic/bootmagic_lite.h quantum/sync_timer.h platforms/gpio.h \
+ platforms/chibios/gpio.h platforms/atomic_util.h \
+ platforms/chibios/atomic_util.h quantum/action_util.h \
+ quantum/action_tapping.h quantum/send_string.h \
  quantum/send_string_keycodes.h platforms/suspend.h \
  quantum/process_keycode/process_midi.h quantum/audio/audio.h \
  quantum/audio/voices.h quantum/audio/luts.h \
@@ -160,8 +157,7 @@
  quantum/process_keycode/process_terminal_nop.h \
  quantum/process_keycode/process_space_cadet.h \
  quantum/process_keycode/process_magic.h \
- quantum/process_keycode/process_grave_esc.h \
- quantum/process_keycode/process_rgb.h quantum/dip_switch.h \
+ quantum/process_keycode/process_grave_esc.h quantum/dip_switch.h \
  quantum/encoder.h
 
 keyboards/preonic/config.h:
@@ -185,8 +181,6 @@ keyboards/preonic/rev3_drop/config.h:
 keyboards/preonic/keymaps/daaaaaaaaaniel/config.h:
 
 platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h:
-
-quantum/rgblight/rgblight_post_config.h:
 
 quantum/keymap.h:
 
@@ -524,16 +518,6 @@ platforms/chibios/_wait.c:
 
 quantum/matrix.h:
 
-quantum/rgblight/rgblight.h:
-
-quantum/rgblight/rgblight_modes.h:
-
-drivers/ws2812.h:
-
-quantum/color.h:
-
-quantum/rgblight/rgblight_list.h:
-
 platforms/bootloader.h:
 
 quantum/bootmagic/bootmagic.h:
@@ -583,8 +567,6 @@ quantum/process_keycode/process_space_cadet.h:
 quantum/process_keycode/process_magic.h:
 
 quantum/process_keycode/process_grave_esc.h:
-
-quantum/process_keycode/process_rgb.h:
 
 quantum/dip_switch.h:
 
