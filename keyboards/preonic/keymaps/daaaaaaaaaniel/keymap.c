@@ -35,10 +35,14 @@ enum preonic_keycodes {
   MIDI,
   WRD_FWD, // Option-Right Arrow. Alternatively, use Opt-Cmd-F (or a custom keybind in DefaultKeyBinding.dict).
   WRD_BCK, // Option-Left Arrow. Alternatively, use Opt-Cmd-B (or a custom keybind in DefaultKeyBinding.dict).
+  SEL_FWD, // Shift →
+  SEL_BCK, // Shift ←
+  SELWFWD, // Shift-Option →
+  SELWBCK, // Shift-Option ←
   WRD_DEL, // Option-Delete
   WRD_BKS, // Option-Backspace
-  NEXTTAB, // Command-Shift-]
-  PREVTAB, // Command-Shift-[
+  NEXTTAB, // Command-Shift-] (or perhaps Control-Tab)
+  PREVTAB, // Command-Shift-[ (or perhaps Control-Shift-Tab)
   SHOW_ALL_APP_WINDOWS, // Control-Down Arrow
   KC_MISSION_CONTROL, // AC Desktop Show All Windows
   KC_SPOTLIGHT,
@@ -117,20 +121,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |LockSc|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute | Ctrl |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |  Up  |      |      |      |      |      |  Up  |   [  |   ]  | Cmd  |
+ * |      |      |  Up  |      |      |      |WoSel←| Sel ←|  Up  | Sel →|WoSel→| Cmd  |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * |      | Left | Down |Right |      |      |WrdBck| Left | Down |Right |WrdFwd| Opt  |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |   -  |   =  | Shift|
+ * |      |      |      |      |      |      |      |      |      |   [  |   ]  | Shift|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |   Page Up   |             |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_RAISE] = LAYOUT_preonic_2x2u(
   KC_LOCK, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_RCTL,
-  _______, _______, KC_UP,   _______, _______, _______, _______, _______, KC_UP,   KC_LBRC, KC_RBRC, KC_RCMD,
+  _______, _______, KC_UP,   _______, _______, _______, SELWBCK, SEL_BCK, KC_UP,   SEL_FWD, SELWFWD, KC_RCMD,
   _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, WRD_BCK, KC_LEFT, KC_DOWN, KC_RGHT, WRD_FWD, KC_ROPT,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MINS, KC_EQL,  KC_RSFT,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_LBRC, KC_RBRC, KC_RSFT,
   _______, _______, _______, _______, LT(_LOWER, KC_PGUP),    _______,    _______, _______, _______, _______
 ),
 
@@ -207,7 +211,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      |      |      |      |      |RClick| Click| Next | Vol- | Vol+ | Play |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | RGB  |      |      |      |             |             |      |      |      |      |
+ * |      |      |      |      |             |             |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_EXTRA] = LAYOUT_preonic_2x2u(
@@ -215,7 +219,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, KC_UP,   _______, _______, _______, _______, _______, KC_MS_U, _______, _______, _______,
   _______, KC_LEFT, KC_DOWN, KC_RGHT, KC_BTN1, KC_BTN2, _______, KC_MS_L, KC_MS_D, KC_MS_R, _______, _______,
   _______, _______, _______, _______, _______, _______, KC_BTN2, KC_BTN1, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY,
-  RGB_TOG, _______, _______, _______,     _______,          _______,      _______, _______, _______, _______
+  _______, _______, _______, _______,     _______,          _______,      _______, _______, _______, _______
 ),
 
 // Previously, this layer was activated by HITTING and HOLDING both space bars together (Combo that executes a layer tap)
@@ -334,6 +338,66 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             // when keycode WRD_BCK is released
             unregister_code(KC_LEFT);  // release Left Arrow key
             unregister_code(KC_LOPT);  // release Opt key
+          }
+          break;
+/*-----------------------*/
+/*-------Shift Right-------*/
+// For faster arrow key-like text navigation
+        case SEL_FWD:
+          if (record->event.pressed) {
+            // when keycode SEL_FWD is pressed
+            register_code(KC_LSFT);  // press the Shift key
+            register_code(KC_RIGHT);  // press the Right Arrow key
+          } else {
+            // when keycode SEL_FWD is released
+            unregister_code(KC_RIGHT);  // release Right Arrow key
+            unregister_code(KC_LSFT);  // release Shift key
+          }
+          break;
+/*-----------------------*/
+/*-------Shift Left-------*/
+// For faster arrow key-like text navigation
+        case SEL_BCK:
+          if (record->event.pressed) {
+            // when keycode SEL_BCK is pressed
+            register_code(KC_LSFT);  // press the Shift key
+            register_code(KC_LEFT);  // press the Left Arrow key
+          } else {
+            // when keycode SEL_BCK is released
+            unregister_code(KC_LEFT);  // release Left Arrow key
+            unregister_code(KC_LSFT);  // release Shift key
+          }
+          break;
+/*-----------------------*/
+/*---Shift Option Right--*/
+// For faster arrow key-like text navigation
+        case SELWFWD:
+          if (record->event.pressed) {
+            // when keycode SELWFWD is pressed
+            register_code(KC_LSFT);  // press the Shift key
+            register_code(KC_LOPT);  // press the Opt key
+            register_code(KC_RIGHT);  // press the Right Arrow key
+          } else {
+            // when keycode SELWFWD is released
+            unregister_code(KC_RIGHT);  // release Right Arrow key
+            unregister_code(KC_LOPT);  // release Opt key
+            unregister_code(KC_LSFT);  // release Shift key
+          }
+          break;
+/*-----------------------*/
+/*---Shift Option Left---*/
+// For faster arrow key-like text navigation
+        case SELWBCK:
+          if (record->event.pressed) {
+            // when keycode SELWBCK is pressed
+            register_code(KC_LSFT);  // press the Shift key
+            register_code(KC_LOPT);  // press the Opt key
+            register_code(KC_LEFT);  // press the Left Arrow key
+          } else {
+            // when keycode SELWBCK is released
+            unregister_code(KC_LEFT);  // release Left Arrow key
+            unregister_code(KC_LOPT);  // release Opt key
+            unregister_code(KC_LSFT);  // release Shift key
           }
           break;
 /*-----------------------*/
