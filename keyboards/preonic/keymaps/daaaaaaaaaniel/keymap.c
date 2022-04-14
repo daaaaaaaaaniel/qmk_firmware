@@ -33,17 +33,6 @@ enum preonic_keycodes {
   LOWER,
   RAISE,
   MIDI,
-  WRD_FWD, // Option-Right Arrow. Alternatively, use Opt-Cmd-F (or a custom keybind in DefaultKeyBinding.dict).
-  WRD_BCK, // Option-Left Arrow. Alternatively, use Opt-Cmd-B (or a custom keybind in DefaultKeyBinding.dict).
-  SEL_FWD, // Shift →
-  SEL_BCK, // Shift ←
-  SELWFWD, // Shift-Option →
-  SELWBCK, // Shift-Option ←
-  WRD_DEL, // Option-Delete
-  WRD_BKS, // Option-Backspace
-  NEXTTAB, // Command-Shift-] (or perhaps Control-Tab)
-  PREVTAB, // Command-Shift-[ (or perhaps Control-Shift-Tab)
-  SHOW_ALL_APP_WINDOWS, // Control-Down Arrow
   KC_MISSION_CONTROL, // AC Desktop Show All Windows
   KC_SPOTLIGHT,
   KC_DICTATION,
@@ -60,8 +49,29 @@ enum preonic_keycodes {
 #define KC_DOND KC_DO_NOT_DISTURB
 #define KC_LOCK KC_LOCK_SCREEN
 #define KC_LPAD KC_LAUNCHPAD
+
+#define SHOW_ALL_APP_WINDOWS LCTL(KC_DOWN) // Control-Down Arrow
+// #define NEXT_WORD_DELETE LOPT(KC_DEL) // Option-Delete
+// #define PREVIOUS_WORD_BACKSPACE LOPT(KC_BSPC) // Option-Backspace
+#define NEXT_WORD LOPT(KC_RGHT) // Option-Right Arrow. Alternatively, use Opt-Cmd-F (or a custom keybind in DefaultKeyBinding.dict).
+#define PREVIOUS_WORD LOPT(KC_LEFT) // Option-Left Arrow. Alternatively, use Opt-Cmd-B (or a custom keybind in DefaultKeyBinding.dict).
+#define SELECT_NEXT_CHARACTER LSFT(KC_RGHT) // Shift-Right Arrow
+#define SELECT_PREVIOUS_CHARACTER LSFT(KC_LEFT) // Shift-Left Arrow
+#define SELECT_NEXT_WORD LSA(KC_RGHT) // Shift-Option-Right Arrow
+#define SELECT_PREVIOUS_WORD LSA(KC_LEFT) // Shift-Option-Left Arrow
+
 #define ALL_APP SHOW_ALL_APP_WINDOWS
-//
+// #define WD_DEL NEXT_WORD_DELETE
+// #define WD_BSPC PREVIOUS_WORD_BACKSPACE
+#define WD_NEXT NEXT_WORD
+#define WD_PREV PREVIOUS_WORD
+#define SEL_NXT SELECT_NEXT_CHARACTER
+#define SEL_PRV SELECT_PREVIOUS_CHARACTER
+#define SELWNXT SELECT_NEXT_WORD
+#define SELWPRV SELECT_PREVIOUS_WORD
+#define NEXTTAB RSG(KC_RBRC) // Command-Shift-] (or perhaps Control-Tab)
+#define PREVTAB RSG(KC_LBRC) // Command-Shift-[ (or perhaps Control-Shift-Tab)
+
 // #define AA_SW LT(_SW, KC_TAB)
 #define AA_TAB LT(_TAB, KC_TAB)
 #define AA_LCTL LCTL_T(KC_BSLS)
@@ -72,6 +82,10 @@ enum preonic_keycodes {
 #define AA_RCMD RCMD_T(KC_BSPC) // command (hold); backspace (tap)
 #define AA_ROPT ROPT_T(KC_DEL) // option (hold); delete (tap)
 #define AA_RCTL RCTL_T(KC_LBRC)
+#define KX_CUT LCMD(KC_X) // command-x
+#define KX_COPY LCMD(KC_C) // command-c
+#define KX_PSTE LCMD(KC_V) // command-v
+
 
 // Sounds
 #ifdef AUDIO_ENABLE
@@ -125,38 +139,38 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * |      | Left | Down |Right |      |      |WrdBck| Left | Down |Right |WrdFwd| Opt  |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |   [  |   ]  | Shift|
+ * |      |      | Cut  | Copy | Paste|      |      |      |      |   [  |   ]  | Shift|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |   Page Up   |             |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_RAISE] = LAYOUT_preonic_2x2u(
   KC_LOCK, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_RCTL,
-  _______, _______, KC_UP,   _______, _______, _______, SELWBCK, SEL_BCK, KC_UP,   SEL_FWD, SELWFWD, KC_RCMD,
-  _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, WRD_BCK, KC_LEFT, KC_DOWN, KC_RGHT, WRD_FWD, KC_ROPT,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_LBRC, KC_RBRC, KC_RSFT,
-  _______, _______, _______, _______, LT(_LOWER, KC_PGUP),    _______,    _______, _______, _______, _______
+  _______, _______, KC_UP,   _______, _______, _______, SELWPRV, SEL_PRV, KC_UP,   SEL_NXT, SELWNXT, KC_RCMD,
+  _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, WD_PREV, KC_LEFT, KC_DOWN, KC_RGHT, WD_NEXT, KC_ROPT,
+  _______, _______, KX_CUT,  KX_COPY, KX_PSTE, _______, _______, _______, _______, KC_LBRC, KC_RBRC, KC_RSFT,
+  _______, KC_LOPT, _______, _______, LT(_LOWER, KC_PGUP),    _______,    KC_RCMD, KC_ROPT, KC_RCTL, _______
 ),
 
 /* Lower
  * ,-----------------------------------------------------------------------------------.
  * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |   ~  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  |  +   |
+ * |   ~  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  |  =   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |AppSwi|   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  _   |
+ * |AppSwi|   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  +   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |   \  | Shift|
+ * |      |      |      |      |      |      |      |      |      |   |  |   \  | Shift|
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * | MIDI |      |      |      |             |  Page Down  |WrdBks|WrdDel|      |      |
+ * | MIDI |      |      |      |             |  Page Down  |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_LOWER] = LAYOUT_preonic_2x2u(
   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
-  KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_PLUS,
-  ALL_APP, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_UNDS,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_BSLS, KC_RSFT,
-  MIDI,    _______, _______, _______,     _______,   LT(_RAISE, KC_PGDN), WRD_BKS, WRD_DEL, _______, _______
+  KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_EQL,
+  ALL_APP, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_PLUS,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_PIPE, KC_BSLS, KC_RSFT,
+  MIDI,    KC_LOPT, _______, _______,     _______,   LT(_RAISE, KC_PGDN), _______, _______, _______, _______
 ),
 
 /* Tab
@@ -312,167 +326,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 //           }
 //           return false;
 //           break;
-/*-----------------------*/
-/*-------Opt Right-------*/
-// For faster arrow key-like text navigation
-        case WRD_FWD:
-          if (record->event.pressed) {
-            // when keycode WRD_FWD is pressed
-            register_code(KC_LOPT);  // press the Opt key
-            register_code(KC_RIGHT);  // press the Right Arrow key
-          } else {
-            // when keycode WRD_FWD is released
-            unregister_code(KC_RIGHT);  // release Right Arrow key
-            unregister_code(KC_LOPT);  // release Opt key
-          }
-          break;
-/*-----------------------*/
-/*-------Opt Left-------*/
-// For faster arrow key-like text navigation
-        case WRD_BCK:
-          if (record->event.pressed) {
-            // when keycode WRD_BCK is pressed
-            register_code(KC_LOPT);  // press the Opt key
-            register_code(KC_LEFT);  // press the Left Arrow key
-          } else {
-            // when keycode WRD_BCK is released
-            unregister_code(KC_LEFT);  // release Left Arrow key
-            unregister_code(KC_LOPT);  // release Opt key
-          }
-          break;
-/*-----------------------*/
-/*-------Shift Right-------*/
-// For faster arrow key-like text navigation
-        case SEL_FWD:
-          if (record->event.pressed) {
-            // when keycode SEL_FWD is pressed
-            register_code(KC_LSFT);  // press the Shift key
-            register_code(KC_RIGHT);  // press the Right Arrow key
-          } else {
-            // when keycode SEL_FWD is released
-            unregister_code(KC_RIGHT);  // release Right Arrow key
-            unregister_code(KC_LSFT);  // release Shift key
-          }
-          break;
-/*-----------------------*/
-/*-------Shift Left-------*/
-// For faster arrow key-like text navigation
-        case SEL_BCK:
-          if (record->event.pressed) {
-            // when keycode SEL_BCK is pressed
-            register_code(KC_LSFT);  // press the Shift key
-            register_code(KC_LEFT);  // press the Left Arrow key
-          } else {
-            // when keycode SEL_BCK is released
-            unregister_code(KC_LEFT);  // release Left Arrow key
-            unregister_code(KC_LSFT);  // release Shift key
-          }
-          break;
-/*-----------------------*/
-/*---Shift Option Right--*/
-// For faster arrow key-like text navigation
-        case SELWFWD:
-          if (record->event.pressed) {
-            // when keycode SELWFWD is pressed
-            register_code(KC_LSFT);  // press the Shift key
-            register_code(KC_LOPT);  // press the Opt key
-            register_code(KC_RIGHT);  // press the Right Arrow key
-          } else {
-            // when keycode SELWFWD is released
-            unregister_code(KC_RIGHT);  // release Right Arrow key
-            unregister_code(KC_LOPT);  // release Opt key
-            unregister_code(KC_LSFT);  // release Shift key
-          }
-          break;
-/*-----------------------*/
-/*---Shift Option Left---*/
-// For faster arrow key-like text navigation
-        case SELWBCK:
-          if (record->event.pressed) {
-            // when keycode SELWBCK is pressed
-            register_code(KC_LSFT);  // press the Shift key
-            register_code(KC_LOPT);  // press the Opt key
-            register_code(KC_LEFT);  // press the Left Arrow key
-          } else {
-            // when keycode SELWBCK is released
-            unregister_code(KC_LEFT);  // release Left Arrow key
-            unregister_code(KC_LOPT);  // release Opt key
-            unregister_code(KC_LSFT);  // release Shift key
-          }
-          break;
-/*-----------------------*/
-/*-------Opt Delete-------*/
-// For deleting a whole word
-        case WRD_DEL:
-          if (record->event.pressed) {
-            // when keycode WRD_DEL is pressed
-            register_code(KC_LOPT);  // press the Opt key
-            register_code(KC_DEL);  // press the Delete key
-          } else {
-            // when keycode WRD_DEL is released
-            unregister_code(KC_DEL);  // release Delete key
-            unregister_code(KC_LOPT);  // release Opt key
-          }
-          break;
-/*-----------------------*/
-/*-------Opt Backspace-------*/
-// For backwards-deleting a whole word
-        case WRD_BKS:
-          if (record->event.pressed) {
-            // when keycode WRD_DEL is pressed
-            register_code(KC_LOPT);  // press the Opt key
-            register_code(KC_BSPC);  // press the Backspace key
-          } else {
-            // when keycode WRD_DEL is released
-            unregister_code(KC_BSPC);  // release Backspace key
-            unregister_code(KC_LOPT);  // release Opt key
-          }
-          break;
-/*-----------------------*/
-/*-------Next Tab-------*/
-// Command-Shift-]
-        case NEXTTAB:
-          if (record->event.pressed) {
-            // when keycode NEXTTAB is pressed
-            register_code(KC_RCMD);  // press the Command key
-            register_code(KC_RSFT);  // press the Shift key
-            register_code(KC_RBRC);  // press the ] key
-          } else {
-            // when keycode NEXTTAB is released
-            unregister_code(KC_RCMD);  // release the Command key
-            unregister_code(KC_RSFT);  // release the Shift key
-            unregister_code(KC_RBRC);  // release the ] key
-          }
-          break;
-/*-----------------------*/
-/*-------Previous Tab-------*/
-// Command-Shift-[
-        case PREVTAB:
-          if (record->event.pressed) {
-            // when keycode NEXTTAB is pressed
-            register_code(KC_RCMD);  // press the Command key
-            register_code(KC_RSFT);  // press the Shift key
-            register_code(KC_LBRC);  // press the [ key
-          } else {
-            // when keycode NEXTTAB is released
-            unregister_code(KC_RCMD);  // release the Command key
-            unregister_code(KC_RSFT);  // release the Shift key
-            unregister_code(KC_LBRC);  // release the [ key
-          }
-          break;
-/*--------------Control Down--------------*/
-/*---Show all windows of the front app.---*/
-        case SHOW_ALL_APP_WINDOWS:
-          if (record->event.pressed) {
-            // when keycode SHOW_ALL_APP_WINDOWS is pressed
-            register_code(KC_LCTL);  // press the Opt key
-            register_code(KC_DOWN);  // press the Down Arrow key
-          } else {
-            // when keycode SHOW_ALL_APP_WINDOWS is released
-            unregister_code(KC_DOWN);  // release Down Arrow key
-            unregister_code(KC_LCTL);  // release Opt key
-          }
-          break;
+// /*-----------------------*/
+// /*-------Opt Right-------*/
+// // For faster arrow key-like text navigation
+//         case WD_NEXT:
+//           if (record->event.pressed) {
+//             // when keycode WD_NEXT is pressed
+//             register_code(KC_LOPT);  // press the Opt key
+//             register_code(KC_RIGHT);  // press the Right Arrow key
+//           } else {
+//             // when keycode WD_NEXT is released
+//             unregister_code(KC_RIGHT);  // release Right Arrow key
+//             unregister_code(KC_LOPT);  // release Opt key
+//           }
+//           break;
+//
 // macOS key codes from /u/Archite - https://gist.github.com/archite/6021f8204f147ff8b756f73a12bc778a
         case KC_MISSION_CONTROL:
           if (record->event.pressed) {
