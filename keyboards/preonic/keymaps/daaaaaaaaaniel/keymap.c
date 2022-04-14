@@ -85,6 +85,7 @@ enum preonic_keycodes {
 #define KX_CUT LCMD(KC_X) // command-x
 #define KX_COPY LCMD(KC_C) // command-c
 #define KX_PSTE LCMD(KC_V) // command-v
+#define SX_ESC SFT_T(KC_ESC) // shift-escape
 
 
 // Sounds
@@ -135,9 +136,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |LockSc|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute | Ctrl |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |  MUp | Click|      |SwapCh|WoSel←| Sel ←|  Up  | Sel →|WoSel→| Cmd  |
+ * |      |      |  MUp | Click|RClick|SwapCh|WoSel←| Sel ←|  Up  | Sel →|WoSel→| PgUp |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      | MLeft| MDown|MRight|RClick|      |WrdBck| Left | Down |Right |WrdFwd| Opt  |
+ * |      | MLeft| MDown|MRight| Click|      |WrdBck| Left | Down |Right |WrdFwd| PgDwn|
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |  Esc |      | Cut  | Copy | Paste|      |      |      |      |      |      | Shift|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -146,10 +147,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_RAISE] = LAYOUT_preonic_2x2u(
   KC_LOCK, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_RCTL,
-  _______, KC_EXLM, KC_MS_U, KC_BTN1, KC_DLR, LCTL(KC_T), SELWPRV, SEL_PRV, KC_UP,   SEL_NXT, SELWNXT, KC_RCMD,
-  _______, KC_MS_L, KC_MS_D, KC_MS_R, KC_BTN2, _______, WD_PREV, KC_LEFT, KC_DOWN, KC_RGHT, WD_NEXT, KC_ROPT,
-  KC_ESC,  _______, KX_CUT,  KX_COPY, KX_PSTE, _______, KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC, KC_BSLS, KC_RSFT,
-  _______, KC_LOPT, _______, _______, LT(_LOWER, KC_PGUP),    _______,    KC_RCMD, KC_ROPT, KC_RCTL, _______
+  _______, KC_EXLM, KC_MS_U, KC_BTN1, KC_BTN2, LCTL(KC_T), SELWPRV, SEL_PRV, KC_UP, SEL_NXT, SELWNXT, KC_PGUP,
+  _______, KC_MS_L, KC_MS_D, KC_MS_R, KC_BTN1, KC_NO,   WD_PREV, KC_LEFT, KC_DOWN, KC_RGHT, WD_NEXT, KC_PGDN,
+  SX_ESC,  KC_NO, KX_CUT,    KX_COPY, KX_PSTE, KC_NO,   KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC, KC_BSLS, KC_RSFT,
+  _______, KC_LOPT, _______, _______, LT(_LOWER, KC_PGUP),    _______,    KC_RCMD, KC_ROPT, KC_RCTL, KC_NO
 ),
 
 /* Lower (Symbols)
@@ -160,7 +161,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |AppSwi|   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  +   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  Esc |      |      |      |      |      |   {  |   }  |   [  |   ]     \  |   |  |
+ * |  Esc |      |      |      |      |      |   {  |   }  |   [  |   ]  |   \  |  |   |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * | MIDI |      |      |      |             |  Page Down  |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
@@ -169,7 +170,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
   KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_EQL,
   ALL_APP, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_PLUS,
-  KC_ESC,  _______, _______, _______, _______, _______, KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC, KC_BSLS, KC_PIPE,
+  SX_ESC,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC, KC_BSLS, KC_PIPE,
   MIDI,    KC_LOPT, _______, _______,     _______,   LT(_RAISE, KC_PGDN), _______, _______, _______, _______
 ),
 
