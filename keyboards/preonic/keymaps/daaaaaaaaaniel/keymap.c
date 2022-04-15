@@ -119,9 +119,9 @@ enum combos {
 const uint16_t PROGMEM adj_combo[] = {LT(_LOWER, KC_SPC), LT(_RAISE, KC_SPC), COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
-  [SPC_ENTER] = COMBO(adj_combo, KC_ENT) 
+//  [SPC_ENTER] = COMBO(adj_combo, KC_ENT) 
 //  [SPC_ENTER] = COMBO(adj_combo, LT(_ADJUST, KC_ENT)), // Previously this combo activated the Adjust layer when held, or Enter when tapped.
-//  [SPC_ENTER] = COMBO(adj_combo, LT(_EXTRA, KC_ENT)), // HITTING and HOLDING both space bars together activates _EXTRA layer (Combo that executes a layer tap), although concievably it could activate any layer, thus making holding the COMBO different from pressing the keys at different times and holding them. 
+ [SPC_ENTER] = COMBO(adj_combo, LT(_EXTRA, KC_ENT)), // HITTING and HOLDING both space bars together activates _EXTRA layer (Combo that executes a layer tap), although concievably it could activate any layer, thus making holding the COMBO different from pressing the keys at different times and holding them. 
 //  [ADJ_LAYER] = COMBO(adj_combo, MO(_ADJUST)),
 };
 
@@ -289,9 +289,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-layer_state_t layer_state_set_user(layer_state_t state) {
-  return update_tri_layer_state(state, _LOWER, _RAISE, _EXTRA);
-}
+// // i think this is what made it possible to distingish between the combo and the staggered pressing of both space keys?
+// layer_state_t layer_state_set_user(layer_state_t state) {
+//   return update_tri_layer_state(state, _LOWER, _RAISE, _EXTRA);
+// }
 
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
