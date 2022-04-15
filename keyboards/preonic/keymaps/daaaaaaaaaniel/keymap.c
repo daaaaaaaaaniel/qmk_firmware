@@ -43,7 +43,8 @@ enum preonic_keycodes {
   KC_LOCK_SCREEN,
   KC_LAUNCHPAD, // AC Desktop Show All Applications
   AR_TOGGLE_LOWER,
-  AL_TOGGLE_RAISE
+  AL_TOGGLE_RAISE,
+  TEXT_DESELECT,
 };
 
 #define KC_TASK LGUI(KC_TAB)
@@ -64,6 +65,8 @@ enum preonic_keycodes {
 #define SELECT_PREVIOUS_CHARACTER LSFT(KC_LEFT) // Shift-Left Arrow
 #define SELECT_NEXT_WORD LSA(KC_RGHT) // Shift-Option-Right Arrow
 #define SELECT_PREVIOUS_WORD LSA(KC_LEFT) // Shift-Option-Left Arrow
+#define LINE_START G(KC_LEFT) // Command-Left Arrow
+#define LINE_END G(KC_RGHT) // Command-Right Arrow
 
 #define ALL_APP SHOW_ALL_APP_WINDOWS
 // #define WD_DEL NEXT_WORD_DELETE
@@ -76,6 +79,9 @@ enum preonic_keycodes {
 #define SELWPRV SELECT_PREVIOUS_WORD
 #define NEXTTAB RSG(KC_RBRC) // Command-Shift-] (or perhaps Control-Tab)
 #define PREVTAB RSG(KC_LBRC) // Command-Shift-[ (or perhaps Control-Shift-Tab)
+#define LN_END  LINE_END
+#define LN_STRT LINE_START
+#define TX_DSEL TEXT_DESELECT
 
 // #define AA_SW LT(_SW, KC_TAB)
 #define AA_TAB LT(_TAB, KC_TAB)
@@ -94,6 +100,7 @@ enum preonic_keycodes {
 #define KX_COPY LCMD(KC_C) // command-c
 #define KX_PSTE LCMD(KC_V) // command-v
 #define SX_ESC SFT_T(KC_ESC) // shift (hold); escape (tap)
+#define KX_SWAP LCTL(KC_T) // swap characters adjacent to insersion point
 
 
 
@@ -147,18 +154,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |  MUp | Click|RClick|SwapCh|WoSel←| Sel ←|  Up  | Sel →|WoSel→| PgUp |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      | MLeft| MDown|MRight| Click|      |WrdBck| Left | Down |Right |WrdFwd| PgDwn|
+ * |      | MLeft| MDown|MRight| Click|      |WrdBck| Left | Shift|Right |WrdFwd| PgDwn|
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      | Cut  | Copy | Paste|      |LinSrt|      |      |      |LinEnd| Shift|
+ * |      |      | Cut  | Copy | Paste|      |LinSrt| Desel| Down |      |LinEnd| Shift|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |   Page Up   |             |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_RAISE] = LAYOUT_preonic_2x2u(
   KC_LOCK, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_RCTL,
-  _______, KC_EXLM, KC_MS_U, KC_BTN1, KC_BTN2, LCTL(KC_T), SELWPRV, SEL_PRV, KC_UP, SEL_NXT, SELWNXT, KC_PGUP,
-  _______, KC_MS_L, KC_MS_D, KC_MS_R, KC_BTN1, KC_NO,   WD_PREV, KC_LEFT, KC_DOWN, KC_RGHT, WD_NEXT, KC_PGDN,
-  _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO, G(KC_LEFT), KC_NO,  KC_NO,   KC_NO,   G(KC_RGHT), KC_RSFT,
+  _______, KC_EXLM, KC_MS_U, KC_BTN1, KC_BTN2, KX_SWAP, SELWPRV, SEL_PRV, KC_UP,   SEL_NXT, SELWNXT, KC_PGUP,
+  _______, KC_MS_L, KC_MS_D, KC_MS_R, KC_BTN1, KC_NO,   WD_PREV, KC_LEFT, KC_LSFT, KC_RGHT, WD_NEXT, KC_PGDN,
+  _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   LN_STRT, TX_DSEL, KC_DOWN, KC_NO,   LN_END,  KC_RSFT,
   _______, _______, _______, _______, AR_LOWR,    _______,  KC_RCMD, KC_ROPT, KC_RCTL, KC_NO
 ),
 
@@ -373,6 +380,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             host_consumer_send(0x2A0);
           } else {
             host_system_send(0);
+          }
+          return false;
+          break;
+        case TEXT_DESELECT:
+          if (record->event.pressed) {
+//             register_code(KC_LOPT);
+//             register_code(KC_LEFT);
+//             unregister_code(KC_LEFT);
+//             register_code(KC_RGHT);
+//             unregister_code(KC_RGHT);
+//             unregister_code(KC_LOPT);
+//             tap_code16(KC_LEFT);            
+//             tap_code16(LOPT(KC_RGHT));
+            tap_code16(KC_RGHT);  
+            tap_code16(LOPT(KC_LEFT));          
+            tap_code16(LOPT(KC_RGHT));
           }
           return false;
           break;
