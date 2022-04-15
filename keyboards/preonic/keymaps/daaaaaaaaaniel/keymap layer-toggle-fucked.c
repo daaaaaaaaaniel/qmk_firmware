@@ -17,16 +17,14 @@
 #include QMK_KEYBOARD_H
 #include "muse.h"
 
-// put this near the begining of keymap.c
-bool is_lower_key_held = false;
-bool is_raise_key_held = false;
-bool is_layer_toggled_on = false;
-
 enum preonic_layers {
   _QWERTY,
   _LOWER,
   _RAISE,
+  _HOLDLAYER,
   _TAB,
+//   _SW, // This would be a layer like _TAB, but for the cmd+tab switcher
+//  _ADJUST, // Previously, this layer was activated by HITTING and HOLDING both space bars together
   _EXTRA,
   _MIDI
 };
@@ -42,8 +40,13 @@ enum preonic_keycodes {
   KC_DO_NOT_DISTURB,
   KC_LOCK_SCREEN,
   KC_LAUNCHPAD, // AC Desktop Show All Applications
-  AR_TOGGLE_LOWER,
-  AL_TOGGLE_RAISE
+  LAYER_RELEASE,
+  HOLD_RAISE,
+  HOLD_LOWER,
+  AQ_LOWER_SPACE,
+  AQ_RAISE_SPACE,
+  SS_LOWR,
+  SS_RAIS
 };
 
 #define KC_TASK LGUI(KC_TAB)
@@ -82,10 +85,12 @@ enum preonic_keycodes {
 // #define AA_LCTL LCTL_T(KC_BSLS)
 // #define AA_LOPT LOPT_T(KC_HOME)
 // #define AA_LCMD LCMD_T(KC_DEL) 
-#define AA_LSPC LT(_LOWER,KC_SPACE)
-#define AA_RSPC LT(_RAISE,KC_SPACE)
-#define AR_LOWR AR_TOGGLE_LOWER
-#define AL_RAIS AL_TOGGLE_RAISE
+#define AQ_LSPC LT(0,KC_F18) // LT(_LOWER, KC_SPC) // NOTE: if symbols or numbers are too sluggish, try disabling this keycode in favor of the regular _LOWER key.
+#define AQ_RSPC LT(0,KC_F19) // LT(_RAISE, KC_SPC) 
+// #define AX_LOWR TO(_LOWER)
+// #define AX_RAIS TO(_RAISE) 
+#define AX_LOWR LT(_LOWER,KC_SPACE)
+#define AX_RAIS LT(_RAISE,KC_SPACE) 
 
 #define AA_RCMD RCMD_T(KC_BSPC) // command (hold); backspace (tap)
 #define AA_ROPT ROPT_T(KC_DEL) // option (hold); delete (tap)
@@ -94,7 +99,6 @@ enum preonic_keycodes {
 #define KX_COPY LCMD(KC_C) // command-c
 #define KX_PSTE LCMD(KC_V) // command-v
 #define SX_ESC SFT_T(KC_ESC) // shift (hold); escape (tap)
-
 
 
 // Sounds
@@ -138,7 +142,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
   AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
   SX_ESC,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RSFT_T(KC_ENT), // /*KC_APFN,*/
-  KC_CAPS, KC_LCTL, KC_LOPT, KC_LCMD,     AA_LSPC,          AA_RSPC,      AA_RCMD, AA_ROPT, AA_RCTL, KC_RBRC
+  KC_CAPS, KC_LCTL, KC_LOPT, KC_LCMD,     AQ_LSPC,          AQ_RSPC,      AA_RCMD, AA_ROPT, AA_RCTL, KC_RBRC
 ),
 
 /* Raise (Navigation)
@@ -159,7 +163,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, KC_EXLM, KC_MS_U, KC_BTN1, KC_BTN2, LCTL(KC_T), SELWPRV, SEL_PRV, KC_UP, SEL_NXT, SELWNXT, KC_PGUP,
   _______, KC_MS_L, KC_MS_D, KC_MS_R, KC_BTN1, KC_NO,   WD_PREV, KC_LEFT, KC_DOWN, KC_RGHT, WD_NEXT, KC_PGDN,
   _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO, G(KC_LEFT), KC_NO,  KC_NO,   KC_NO,   G(KC_RGHT), KC_RSFT,
-  _______, _______, _______, _______, AR_LOWR,    _______,  KC_RCMD, KC_ROPT, KC_RCTL, KC_NO
+  _______, _______, _______, _______, AX_LOWR,    TO(_QWERTY),  KC_RCMD, KC_ROPT, KC_RCTL, KC_NO
 ),
 
 /* Lower (Symbols)
@@ -180,7 +184,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_EQL,
   ALL_APP, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_PLUS,
   _______, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC, KC_BSLS, KC_PIPE,
-  MIDI,    _______, _______, _______,  _______,   AL_RAIS, _______, _______, _______, _______
+  MIDI,    _______, _______, _______,  TO(_QWERTY),   AX_RAIS, _______, _______, _______, _______
+),
+
+// // Hold Layer
+[_HOLDLAYER] = LAYOUT_preonic_2x2u(
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______,      SS_LOWR,          SS_RAIS,      _______, _______, _______, _______
 ),
 
 /* Tab
@@ -327,7 +340,197 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 //           }
 //           return false;
 //           break;
-// macOS key codes from /u/Archite - https://gist.github.com/archite/6021f8204f147ff8b756f73a12bc778a
+// /*-----------------------*/
+// /*-------Opt Right-------*/
+// // For faster arrow key-like text navigation
+//         case WD_NEXT:
+//           if (record->event.pressed) {
+//             // when keycode WD_NEXT is pressed
+//             register_code(KC_LOPT);  // press the Opt key
+//             register_code(KC_RIGHT);  // press the Right Arrow key
+//           } else {
+//             // when keycode WD_NEXT is released
+//             unregister_code(KC_RIGHT);  // release Right Arrow key
+//             unregister_code(KC_LOPT);  // release Opt key
+//           }
+//           break;
+// /*-----------------------*/
+// /*-------Release _RAISE and _LOWER -------*/
+//         case LAYER_RELEASE:
+//           if (record->event.pressed) {
+//             // do nothing when keycode LAYER_RELEASE is pressed
+//           } else {
+//             // when keycode LAYER_RELEASE is released
+//             layer_off(_RAISE);
+//             layer_off(_LOWER);	
+//           }
+//           break;
+// /*------- Hold _LOWER-------*/
+//         case LT(0,HOLD_LOWER):
+//             if (record->tap.count && record->event.pressed) { // Intercept tap function
+//                 layer_invert(_LOWER);
+// //                 layer_off(_RAISE);
+//                 layer_off(_HOLDLAYER);
+//                 PLAY_SONG(song_preonic_sound);
+//             } else if (record->event.pressed) { // Intercept hold function
+//                 layer_clear();
+//                 layer_on(_LOWER);
+// //                 tap_code16(MO(_LOWER));
+//             } else {
+// //                 when key is released (tap and hold)
+// //                 layer_invert(_LOWER);
+//                 layer_off(_RAISE);
+// //                 tap_code16(KC_MINS);
+//             }
+//             return false;
+//             break;
+// /*------- Hold _RAISE-------*/
+//         //case HOLD_RAISE:
+//         case LT(0,HOLD_RAISE):
+//             if (record->tap.count && record->event.pressed) { // Intercept tap function
+// //                 tap_code16(TG(_RAISE));
+//                 layer_invert(_RAISE);
+// //                 layer_off(_LOWER);
+// //                 layer_off(_HOLDLAYER);
+//                 PLAY_SONG(song_plover_gb);
+//             } else if (record->event.pressed) { // Intercept hold function
+//                 layer_clear();
+//                 layer_on(_RAISE);
+//             } else {
+//                 // when key is released (tap and hold)
+// //                 layer_invert(_RAISE);
+//                 layer_off(_LOWER);
+//             }
+//             return false;
+//             break;
+// ////////////////////////////// 
+//         case LT(_LOWER,KC_SPACE):
+//             if (!record->tap.count && record->event.pressed) {
+//                 tap_code16(MO(_LOWER)); // Intercept hold function to send Ctrl-V
+//                 tap_code16(MO(_HOLDLAYER));
+//                 return false;
+//             }
+//             return true;             // Return true for normal processing of tap keycode
+//             break;
+//          case LT(_RAISE,KC_SPACE):
+//             if (!record->tap.count && record->event.pressed) {
+//                 tap_code16(MO(_RAISE)); // Intercept hold function to send Ctrl-V
+//                 tap_code16(MO(_HOLDLAYER));
+//                 return false;
+//             }
+//             return true;             // Return true for normal processing of tap keycode
+//             break;
+//////////////////////////////////////////
+
+/*--------Space and _LOWER and SS Layer--------*/
+// This key is only present on the _QWERTY layer
+// It momentarily turns on _LOWER and _HOLDLAYER
+// It does NOT toggle the layers on
+        case LT(0,KC_F18): // AQ_LOWER_SPACE:
+/* 
+…temp backup… 
+           if (record->event.pressed) { 
+           // when key is pressed…
+                layer_on(_HOLDLAYER);
+                layer_on(_LOWER);
+*/
+            if (record->tap.count && record->event.pressed) { // Intercept tap function
+                tap_code16(KC_SPACE);
+//                 return false;
+            } else if (record->event.pressed) { // Intercept hold function
+                tap_code16(MO(_HOLDLAYER));
+                tap_code16(MO(_LOWER));
+                SEND_STRING("//AQ_LSPC held__");
+            }
+            return true;             // Return true for normal processing of tap keycode
+            break;
+/*--------Space and _RAISE and SS Layer--------*/
+// This key is only present on the _QWERTY layer
+// It momentarily turns on _RAISE and _HOLDLAYER
+// it does NOT toggle the layers on
+         case LT(0,KC_F19): // AQ_RAISE_SPACE:
+/*    
+…temp backup…           
+           if (record->event.pressed) { 
+           // when key is pressed…
+                layer_on(_HOLDLAYER);
+                layer_on(_RAISE);
+*/
+            if (record->tap.count && record->event.pressed) { // Intercept tap function
+                tap_code16(KC_SPACE);
+            } else if (record->event.pressed) { // Intercept hold function
+                tap_code16(MO(_HOLDLAYER));
+                tap_code16(MO(_RAISE));
+                SEND_STRING("//AQ_RSPC held__");
+            }
+            return true;             // Return true for normal processing of tap keycode
+            break;
+/*--------_LOWER toggle (from _HOLDLAYER)--------*/
+// This layer is only ON when the layer key is held
+// Its purpose is to TOGGLE on the _LOWER layer
+         case SS_LOWR:
+           if (record->event.pressed) {
+           // when key is pressed…
+                tap_code16(TG(_LOWER));
+                layer_on(_HOLDLAYER);
+                SEND_STRING("//SS_LOWR pressed__");
+            } else {
+            // when key is released 
+                layer_off(_HOLDLAYER);
+                SEND_STRING("//SS_LOWR released__");
+            }
+            return true; // Return true for normal processing of tap keycode
+            break;
+/*--------_RAISE toggle (from _HOLDLAYER)--------*/
+// This layer is only ON when the layer key is held
+// Its purpose is to TOGGLE on the _RAISE layer
+         case SS_RAIS:
+           if (record->event.pressed) { 
+           // when key is pressed…
+                tap_code16(TG(_RAISE));
+                layer_on(_HOLDLAYER);
+                SEND_STRING("//SS_RAIS pressed__");
+            } else {
+            // when key is released 
+                layer_off(_HOLDLAYER);
+                SEND_STRING("//SS_RAIS released__");
+            }
+            return true; // Return true for normal processing of tap keycode
+            break;
+/*--------_LOWER toggle off (from _LOWER and from _RAISE?)--------*/  
+// This layer is HIDDEN when the layer keys are HELD - it's only reachable from the HANDS FREE state
+// Its purpose is to turn OFF the _LOWER layer (and _RAISE layer?)
+         case LT(_LOWER,KC_SPACE):
+           if (record->event.pressed) { 
+           // when key is pressed…
+                layer_invert(_RAISE);
+                layer_invert(_LOWER);
+                SEND_STRING("//AX_LOWR pressed__");
+            } else {
+            // when key is released 
+                tap_code16(TO(_QWERTY));
+                SEND_STRING("//AX_LOWR released__");
+            }
+            return true; // Return true for normal processing of tap keycode
+            break;
+/*--------_RAISE toggle off (from _RAISE and from _LOWER?)--------*/
+// This layer is HIDDEN when the layer keys are HELD - it's only reachable from the HANDS FREE state
+// Its purpose is to turn OFF the _RAISE layer (and _LOWER layer?)
+         case LT(_RAISE,KC_SPACE):
+           if (record->event.pressed) { 
+           // when key is pressed…
+                layer_invert(_RAISE);
+                layer_invert(_LOWER);
+                SEND_STRING("//AX_RAIS pressed__");
+            } else {
+            // when key is released 
+                tap_code16(TO(_QWERTY));
+                SEND_STRING("//AX_RAIS released__");
+            }
+            return true; // Return true for normal processing of tap keycode
+            break;
+
+ // macOS key codes from /u/Archite - https://gist.github.com/archite/6021f8204f147ff8b756f73a12bc778a
         case KC_MISSION_CONTROL:
           if (record->event.pressed) {
             host_consumer_send(0x29F);
@@ -376,83 +579,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           }
           return false;
           break;
-        case AR_TOGGLE_LOWER: // pressing _LOWER while on the _RAISE layer
-          if (record->event.pressed) {
-            if (is_raise_key_held == 0) {
-              layer_off(_RAISE);
-//               SEND_STRING("___________RAISE-off__");tap_code16(KC_ENT);
-            }
-            is_lower_key_held = true;
-            layer_on(_LOWER);
-//             SEND_STRING("__________AR_LOWR pressed__");tap_code16(KC_ENT);
-          } else { // key up
-              // if both keys were held together, toggle ON the _LOWER layer 
-              if (is_raise_key_held == 0 && is_layer_toggled_on == true) { // release from pressing from hands-free mode
-                is_layer_toggled_on = false;
-                layer_off(_RAISE);
-                layer_off(_LOWER);
-//                 SEND_STRING("__________LOWER_KEYUP-release-hands-free-mode__");tap_code16(KC_ENT);
-              }
-              if (is_raise_key_held == 1) {
-                is_layer_toggled_on = true;
-                layer_off(_RAISE);
-//                 SEND_STRING("__________KEYUP_hands-free-on_LOWER__");tap_code16(KC_ENT);
-              }
-            // in every case
-            is_lower_key_held = false;
-//             SEND_STRING("__________KEYUP_LOWER__");tap_code16(KC_ENT);
-          }
-          break;
-        case AL_TOGGLE_RAISE: // pressing _RAISE while on the _LOWER layer
-          if (record->event.pressed) {
-            if (is_lower_key_held == 0) {
-              layer_off(_LOWER);
-//               SEND_STRING("__________hands-free-raise-on__");tap_code16(KC_ENT);
-            }
-            is_raise_key_held = true;
-            layer_on(_RAISE);
-//             SEND_STRING("__________AL_RAIS pressed__");tap_code16(KC_ENT);
-          } else { // key up
-              if (is_lower_key_held == 0 && is_layer_toggled_on == true) { // release from pressing while in hands-free mode
-                is_layer_toggled_on = false;
-                layer_off(_LOWER);
-                layer_off(_RAISE);
-//                 SEND_STRING("__________RAISE_KEYUP-release-hands-free-mode__");tap_code16(KC_ENT);
-              }
-              if (is_lower_key_held == 1) { // both keys held, don't turn off the _RAISE layer
-                is_layer_toggled_on = true;
-                layer_off(_LOWER);
-//                 SEND_STRING("__________KEYUP-hands-free-on_RAISE__");tap_code16(KC_ENT);
-              }
-            // key up
-            is_raise_key_held = false;
-//             SEND_STRING("__________KEYUP_RAISE__");tap_code16(KC_ENT);
-          }
-          break;
-        case LT(_RAISE,KC_SPACE): // Space/Raise (layer tap)
-        // this is kind of broken because it adds a space if its tapped, wheen really it should just disable the layer toggle. fix it by changing the line before "break;" to "return false;", and then change the press condition to include "&& record->event.pressed" to intercept taps, and add an "else if (record->event.pressed)" to incercept holds. 
-            if (record->event.pressed) {
-                is_raise_key_held = true;
-//                 SEND_STRING("__________AA_SPACE_RAISE pressed__");tap_code16(KC_ENT);
-            } else { // Intercept hold function
-                is_raise_key_held = false;
-                layer_off(_RAISE);
-//                 SEND_STRING("__________AA_SPACE_RAISE_release_hold__");tap_code16(KC_ENT);
-            }
-            return true;             // Return true for normal processing of tap keycode
-            break;
-        case LT(_LOWER,KC_SPACE): // Space/Lower (layer tap)
-        // this is kind of broken because it adds a space if its tapped, wheen really it should just disable the layer toggle. fix it by changing the line before "break;" to "return false;", and then change the press condition to include "&& record->event.pressed" to intercept taps, and add an "else if (record->event.pressed)" to incercept holds. 
-            if (record->event.pressed) {
-                is_lower_key_held = true;
-//                 SEND_STRING("__________AA_SPACE_LOWER pressed__");tap_code16(KC_ENT);
-            } else { 
-                is_lower_key_held = false;
-                layer_off(_LOWER);
-//                 SEND_STRING("__________AA_SPACE_LOWER_release_hold__");tap_code16(KC_ENT);
-            }
-            return true;             // Return true for normal processing of tap keycode
-            break;
       }
     return true;
 };
@@ -460,7 +586,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case SFT_T(KC_ESC):
-            // Immediately select the hold action (Shift) when another key (ESC key?) is pressed.
+            // Immediately select the hold action (Shift) when another key is pressed.
             return true;
         default:
             // Do not select the hold action when another key is pressed. (Don't send Shift on every single keypress on the keyboard.)
@@ -546,18 +672,6 @@ void matrix_scan_user(void) {
 
 /* 
  * bool music_mask_user(uint16_t keycode) {
- *   switch (keycode) {
- *     case RAISE:
- *     case LOWER:
- *       return false;
- *     default:
- *       return true;
- *   }
- * }
- */
- 
- /* 
- * bool aa_lower_layer_toggle(uint16_t keycode) {
  *   switch (keycode) {
  *     case RAISE:
  *     case LOWER:

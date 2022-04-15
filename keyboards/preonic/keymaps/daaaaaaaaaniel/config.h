@@ -106,6 +106,9 @@
 // for rapidly typing sequences like MT(SHIFT) -> i -> release i -> release MT(SHIFT), which should ideally output a capital I. This option fixes it so that it won't trigger the mod key's tap functionality in this scenario.
 #define PERMISSIVE_HOLD
 
+// makes sure that the Shift(hold)/Escape(tap) triggers Shift the majority of cases.
+#define HOLD_ON_OTHER_KEY_PRESS_PER_KEY
+
 
 /* //disables macOS FN key to allow compatibility with Vial etc. If using Karabiner, remap Caps Locks to Apple FN, or adjust the Modifier Keys in Systems Preferences so that Caps Locks triggers FN.
 // enables macOS FN key
