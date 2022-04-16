@@ -3,17 +3,18 @@
  
 ### Features
 
-* Four main layers
-    * **QWERTY**<sup>[Default](#qwerty--default-layer-)</sup>
-    * **Symbols**<sup>[Lower](#lower--symbols-)</sup>
-    * **Navigation**<sup>[Raise](#raise--navigation-)</sup>
-    * **Media/Function keys**<sup>[Extra](#extra--media-functions-)</sup>
+* Five main layers
+    * **QWERTY** <sup>[Default](#qwerty--default-layer-)</sup>
+    * **Symbols** <sup>[Lower](#lower--symbols-)</sup>
+    * **Navigation** <sup>[Raise](#raise--navigation-)</sup>
+    * **Media/Function keys** <sup>[Extra](#extra--media-functions-)</sup>
+    * **MIDI** <sup>[MIDI][]</sup>
 
 * Dual space bars!
 	* Send `Enter` by hitting both space bars at the same time.
 	* Hold one or the other space bar to change layers.
 
-* Ergonomically send `Backspace` and `Delete` using right thumb keys.
+* Ergonomically access `Backspace` and `Delete` using right thumb keys.
 
 * Navigate and select text faster with special whole-word arrow keys (located next to the regular arrow keys).
 
@@ -24,7 +25,7 @@
 - [x] Add mouse key support
 - [x] Navigate through browser tabs without chording
 
-**NOTE:** Use either Karabiner (macOS) and/or System Preferences (macOS/iPadOS) to map `Caps Lock` to `Fn (Globe key)` (Recommended).
+**NOTE:** Use either Karabiner (macOS) and/or System Preferences (macOS/iPadOS) to map `Caps Lock` to `Fn (Globe key)` *(Recommended)*.
 
 
 QWERTY (Default Layer)
@@ -104,7 +105,7 @@ Extra (Media/Functions)
 * Tap and hold both spacebars together to momentarily turn on the Extra layer. 
 
 ```
-/* Extra Layer (Media Functions) - holding Lower + Raise
+/* Extra Layer (Media Functions) - holding Left Space + Right Space
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -124,15 +125,17 @@ MIDI
 * Tap the Qwerty key to exit the MIDI layer.
 
 ```
-,-----------------------------------------------------------------------------------.
-|  C0  |  D♭0 |  D0  |  E♭0 |  E0  |  F0  |  G♭0 |  G0  |  A♭0 |  A0  |  B♭0 |  B0  |
-|------+------+------+------+------+------+------+------+------+------+------+------|
-|  C1  |  D♭1 |  D1  |  E♭1 |  E1  |  F1  |  G♭1 |  G1  |  A♭1 |  A1  |  B♭1 |  B1  |
-|------+------+------+------+------+-------------+------+------+------+------+------|
-|  C2  |  D♭2 |  D2  |  E♭2 |  E2  |  F2  |  G♭2 |  G2  |  A♭2 |  A2  |  B♭2 |  B2  |
-|------+------+------+------+------+------+------+------+------+------+------+------|
-|  C3  |  D♭3 |  D3  |  E♭3 |  E3  |  F3  |  G♭3 |  G3  |  A♭3 |  A3  |  B♭3 |  B3  |
-|------+------+------+------+------+------+------+------+------+------+------+------|
-|Qwerty|      | Vel-1| Vel+1| Pitch Bend+ | Pitch Bend- |Oct-1 |Oct+1 |Note-1|Note+1|
-`-----------------------------------------------------------------------------------'
+/* MIDI
+ * ,-----------------------------------------------------------------------------------.
+ * |  C0  |  D♭0 |  D0  |  E♭0 |  E0  |  F0  |  G♭0 |  G0  |  A♭0 |  A0  |  B♭0 |  B0  |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |  C1  |  D♭1 |  D1  |  E♭1 |  E1  |  F1  |  G♭1 |  G1  |  A♭1 |  A1  |  B♭1 |  B1  |
+ * |------+------+------+------+------+-------------+------+------+------+------+------|
+ * |  C2  |  D♭2 |  D2  |  E♭2 |  E2  |  F2  |  G♭2 |  G2  |  A♭2 |  A2  |  B♭2 |  B2  |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |  C3  |  D♭3 |  D3  |  E♭3 |  E3  |  F3  |  G♭3 |  G3  |  A♭3 |  A3  |  B♭3 |  B3  |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |Qwerty|      | Vel-1| Vel+1| Pitch Bend+ | Pitch Bend- |Oct-1 |Oct+1 |Note-1|Note+1|
+ * `-----------------------------------------------------------------------------------'
+ */
 ```
