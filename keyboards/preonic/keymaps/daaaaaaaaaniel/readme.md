@@ -22,11 +22,13 @@ An Apple-centric keyboard
 
 QWERTY (Default Layer)
 ----------------------
-> Raise and Lower keys each act as Space when tapped. Tapping them together sends Enter.
-> Left Shift acts as Escape when tapped.
-> Enter acts as Right Shift when held.
-> Right-hand modifiers: Bksp acts as Right Command when held; Del acts as Right Option when held; [ acts as Right Control when held.
-> When holding the Tab key, tapping each of the space bars switches to the previous or next tab in the active window.[^1]
+* Raise and Lower keys each act as Space when tapped. Tapping them together sends Enter.
+* Left Shift acts as Escape when tapped.
+* Enter acts as Right Shift when held.
+* Right-hand modifiers: Bksp acts as Right Command when held; Del acts as Right Option when held; [ acts as Right Control when held.
+* When holding the Tab key, tapping each of the space bars switches to the previous or next tab in the active window.[^1]
+
+[^1]: Tab navigation uses its own layer with all transparent keys aside from the two space bars, which move to the next/previous tab.
 
 ```
 /* Qwerty (Default Layer)
@@ -46,8 +48,8 @@ QWERTY (Default Layer)
 
 Lower (Symbols)
 ---------------
-> Toggle on the Raise layer by pressing the Raise (Lock) key.
-> Tap the MIDI key to toggle on the MIDI layer.
+* Toggle on the Raise layer by pressing the Raise (Lock) key.
+* Tap the MIDI key to toggle on the MIDI layer.
 
 ```
 /* Lower (Symbols) - holding Left Space
@@ -67,12 +69,12 @@ Lower (Symbols)
  
 Raise (Navigation) 
 ------------------
-> WASD controls the mouse.
-> WrdFwd and WrdBck move the insertion point forward and back by one whole word (effectively a combo of Option+Left/Right arrow keys).
-> LinSrt and LinEnd move the insertion point to the beginning and end of the line (effectively a combo of Command+Left/Right arrow keys).
-> Sel →,Sel ←, WoSel→ and WoSel← expand/contract the text selection by one character or one full word in either direction (effectively a combo of (Option+)Shift+Left/Right arrow keys).
-> SwapCh swaps the position of the characters to the left and right of the insertion point.
-> Toggle on the Lower layer by pressing the Lower (Lock) key.
+* WASD controls the mouse.
+* WrdFwd and WrdBck move the insertion point forward and back by one whole word (effectively a combo of Option+Left/Right arrow keys).
+* LinSrt and LinEnd move the insertion point to the beginning and end of the line (effectively a combo of Command+Left/Right arrow keys).
+* Sel →,Sel ←, WoSel→ and WoSel← expand/contract the text selection by one character or one full word in either direction (effectively a combo of (Option+)Shift+Left/Right arrow keys).
+* SwapCh swaps the position of the characters to the left and right of the insertion point.
+* Toggle on the Lower layer by pressing the Lower (Lock) key.
 
 ```
 /* Raise (Navigation) - holding Right Space
@@ -92,7 +94,7 @@ Raise (Navigation)
 
 Extra (Media/Functions)
 -----------------------
-> Tap and hold both spacebars together to momentarily turn on the Extra layer. 
+* Tap and hold both spacebars together to momentarily turn on the Extra layer. 
 
 ```
 /* Extra Layer (Functions) - holding Lower + Raise
@@ -112,7 +114,7 @@ Extra (Media/Functions)
  
 MIDI
 ----
-> Tap the Qwerty key to exit the MIDI layer.
+* Tap the Qwerty key to exit the MIDI layer.
 
 ```
 ,-----------------------------------------------------------------------------------.
@@ -127,6 +129,3 @@ MIDI
 |Qwerty|      | Vel-1| Vel+1| Pitch Bend+ | Pitch Bend- |Oct-1 |Oct+1 |Note-1|Note+1|
 `-----------------------------------------------------------------------------------'
 ```
-
-
-[^1]: Tab navigation uses its own layer with all transparent keys aside from the two space bars, which move to the next/previous tab.
