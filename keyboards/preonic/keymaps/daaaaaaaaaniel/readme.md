@@ -5,25 +5,28 @@ An Apple-centric keyboard
 
 * Two space bars!
 	* Send ENTER by hitting both at the same time.
-	* HOLD one or the other to change layers.
+	* Hold one or the other space bar to change layers.
 
-* Press Backspace and Delete with your right thumb.
+* Ergonomically send BACKSPACE and DELETE using right thumb keys.
 
-* Navigate text faster with special whole-word arrow keys (located next to the regular arrow keys).
+* Navigate and select text faster with special whole-word arrow keys (located next to the regular arrow keys).
 
 - [x] Improved iPad compatibility
 - [x] Toggle 4-octave MIDI keyboard layer
 - [x] Support for macOS consumer keys
 - [x] Add mouse key support
+- [x] Navigate through browser tabs without chording
 
 **NOTE:** (Recommended) Use either Karabiner (macOS) and/or System Preferences (macOS/iPadOS) to map Caps Lock to Fn (Globe key).
 
 
 QWERTY (Default Layer)
 ----------------------
-> Right-hand modifiers: Bksp acts as Right Command when tapped; Del acts as Right Option when held; [ acts as Right Control when held.
+> Raise and Lower keys each act as Space when tapped. Tapping them together sends Enter.
+> Left Shift acts as Escape when tapped.
 > Enter acts as Right Shift when held.
-> Shift acts as Escape when tapped.
+> Right-hand modifiers: Bksp acts as Right Command when held; Del acts as Right Option when held; [ acts as Right Control when held.
+> When holding the Tab key, tapping each of the space bars switches to the previous or next tab in the active window.[^1]
 
 ```
 /* Qwerty (Default Layer)
@@ -124,3 +127,6 @@ MIDI
 |Qwerty|      | Vel-1| Vel+1| Pitch Bend+ | Pitch Bend- |Oct-1 |Oct+1 |Note-1|Note+1|
 `-----------------------------------------------------------------------------------'
 ```
+
+
+[^1]: Tab navigation uses its own layer with all transparent keys aside from the two space bars, which move to the next/previous tab.
