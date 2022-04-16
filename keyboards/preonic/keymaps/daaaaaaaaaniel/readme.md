@@ -5,9 +5,9 @@
 
 * Four main layers
     * **QWERTY**
-    * **Symbols** ^(Lower)^
-    * **Navigation** ^(Raise)^
-    * **Media/Function keys** ^(Extra)^
+    * **Symbols** <sup>(Lower)</sup>
+    * **Navigation** <sup>(Raise)</sup>
+    * **Media/Function keys** <sup>(Extra)</sup>
 
 * Dual space bars!
 	* Send `Enter` by hitting both space bars at the same time.
