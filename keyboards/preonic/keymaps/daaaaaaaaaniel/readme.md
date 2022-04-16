@@ -4,29 +4,30 @@ An Apple-centric keyboard
 ### Features
 
 * Two space bars!
-	* Send ENTER by hitting both at the same time.
+	* Send `Enter` by hitting both at the same time.
 	* Hold one or the other space bar to change layers.
 
-* Ergonomically send BACKSPACE and DELETE using right thumb keys.
+* Ergonomically send `Backspace` and `Delete` using right thumb keys.
 
 * Navigate and select text faster with special whole-word arrow keys (located next to the regular arrow keys).
 
+**Todo**
 - [x] Improved iPad compatibility
 - [x] Toggle 4-octave MIDI keyboard layer
 - [x] Support for macOS consumer keys
 - [x] Add mouse key support
 - [x] Navigate through browser tabs without chording
 
-**NOTE:** (Recommended) Use either Karabiner (macOS) and/or System Preferences (macOS/iPadOS) to map Caps Lock to Fn (Globe key).
+**NOTE:** (Recommended) Use either Karabiner (macOS) and/or System Preferences (macOS/iPadOS) to map `Caps Lock` to `Fn (Globe key)`.
 
 
 QWERTY (Default Layer)
 ----------------------
-* Raise and Lower keys each act as Space when tapped. Tapping them together sends Enter.
-* Left Shift acts as Escape when tapped.
-* Enter acts as Right Shift when held.
-* Right-hand modifiers: Bksp acts as Right Command when held; Del acts as Right Option when held; [ acts as Right Control when held.
-* When holding the Tab key, tapping each of the space bars switches to the previous or next tab in the active window.[^1]
+* Raise and Lower keys each act as `Space` when tapped. Tapping them together sends `Enter`.
+* `Left Shift` acts as `Escape` when tapped.
+* `Enter` acts as `Right Shift` when held.
+* Right-hand modifiers: Bksp acts as `Right Command` when held; Del acts as `Right Option` when held; `[` acts as `Right Control` when held.
+* When holding the `Tab` key, tapping each of the space bars switches to the previous or next tab in the active window.[^1]
 
 [^1]: Tab navigation uses its own layer with all transparent keys aside from the two space bars, which move to the next/previous tab.
 
@@ -49,7 +50,7 @@ QWERTY (Default Layer)
 Lower (Symbols)
 ---------------
 * Toggle on the Raise layer by pressing the Raise (Lock) key.
-* Tap the MIDI key to toggle on the MIDI layer.
+* Tap the `MIDI` key to toggle on the MIDI layer.
 
 ```
 /* Lower (Symbols) - holding Left Space
