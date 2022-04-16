@@ -1,13 +1,13 @@
 # Daniel's daily driver
-An Apple-centric keyboard for my MacBook Pro and iPad
+*An Apple-centric keyboard for my MacBook Pro and iPad*
  
 ### Features
 
 * Four main layers
-    * QWERTY
-    * Symbols *(Lower)*
-    * Navigation *(Raise)*
-    * Media/Function keys *(Extra)*
+    * **QWERTY**
+    * **Symbols** ^(Lower)^
+    * **Navigation** ^(Raise)^
+    * **Media/Function keys** ^(Extra)^
 
 * Dual space bars!
 	* Send `Enter` by hitting both space bars at the same time.
