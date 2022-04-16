@@ -4,10 +4,10 @@
 ### Features
 
 * Five main layers
-    * **QWERTY** <sup>[Default](#qwerty--default-layer-)</sup>
-    * **Symbols** <sup>[Lower](#lower--symbols-)</sup>
-    * **Navigation** <sup>[Raise](#raise--navigation-)</sup>
-    * **Media/Function keys** <sup>[Extra](#extra--media-functions-)</sup>
+    * **QWERTY** <sup>[Default](#qwerty-default-layer)</sup>
+    * **Symbols** <sup>[Lower](#lower-symbols)</sup>
+    * **Navigation** <sup>[Raise](#raise-navigation)</sup>
+    * **Media/Function keys** <sup>[Extra](#extra-media-functions)</sup>
     * **MIDI** <sup>[MIDI](#midi)</sup>
 
 * Dual space bars!
