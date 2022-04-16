@@ -1,10 +1,16 @@
 # Daniel's daily driver
-An Apple-centric keyboard
+An Apple-centric keyboard for my MacBook Pro and iPad
  
 ### Features
 
-* Two space bars!
-	* Send `Enter` by hitting both at the same time.
+* Four main layers
+    * QWERTY
+    * Symbols *(Lower)*
+    * Navigation *(Raise)*
+    * Media/Function keys *(Extra)*
+
+* Dual space bars!
+	* Send `Enter` by hitting both space bars at the same time.
 	* Hold one or the other space bar to change layers.
 
 * Ergonomically send `Backspace` and `Delete` using right thumb keys.
@@ -18,7 +24,7 @@ An Apple-centric keyboard
 - [x] Add mouse key support
 - [x] Navigate through browser tabs without chording
 
-**NOTE:** (Recommended) Use either Karabiner (macOS) and/or System Preferences (macOS/iPadOS) to map `Caps Lock` to `Fn (Globe key)`.
+**NOTE:** Use either Karabiner (macOS) and/or System Preferences (macOS/iPadOS) to map `Caps Lock` to `Fn (Globe key)` (Recommended).
 
 
 QWERTY (Default Layer)
@@ -98,7 +104,7 @@ Extra (Media/Functions)
 * Tap and hold both spacebars together to momentarily turn on the Extra layer. 
 
 ```
-/* Extra Layer (Functions) - holding Lower + Raise
+/* Extra Layer (Media Functions) - holding Lower + Raise
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
