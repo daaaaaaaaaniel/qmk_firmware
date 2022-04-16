@@ -1,80 +1,116 @@
-# Daniel's daily driver WIP
-
+# Daniel's daily driver
+An Apple-centric keyboard
+ 
 ### Features
 
 * Two space bars!
 	* Send ENTER by hitting both at the same time.
 	* HOLD one or the other to change layers.
 
-* Tap Left and Right Command keys to send Delete and Backspace, respectively.
+* Press Backspace and Delete with your right thumb.
 
 * Navigate text faster with special whole-word arrow keys (located next to the regular arrow keys).
 
 - [x] Improved iPad compatibility
-- [x] removed DVORAK and COLMAK layouts
 - [x] Toggle 4-octave MIDI keyboard layer
 - [x] Support for macOS consumer keys
-
+- [x] Add mouse key support
 
 **NOTE:** (Recommended) Use either Karabiner (macOS) and/or System Preferences (macOS/iPadOS) to map Caps Lock to Fn (Globe key).
 
 
 QWERTY (Default Layer)
 ----------------------
-> Cmd acts as Delete when tapped. Bksp acts as Left Command when held.
-> Enter acts as Right Shift when tapped.
+> Right-hand modifiers: Bksp acts as Right Command when tapped; Del acts as Right Option when held; [ acts as Right Control when held.
+> Enter acts as Right Shift when held.
 > Shift acts as Escape when tapped.
 
 ```
-,-----------------------------------------------------------------------------------.
-|   `  |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  -   |
-|------+------+------+------+------+------+------+------+------+------+------+------|
-| Tab  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  | Bksp |
-|------+------+------+------+------+-------------+------+------+------+------+------|
-|   `  |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |  "   |
-|------+------+------+------+------+------|------+------+------+------+------+------|
-| Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |Enter |
-|------+------+------+------+------+------+------+------+------+------+------+------|
-|  fn  | Ctrl | Opt  | Cmd  |     Lower   |    Raise    | Bksp |   [  |   ]  |   \  |
-`-----------------------------------------------------------------------------------'
- ```
-Raise
------
-> OLeft and ORight move forward and back by one whole word (effectively a combo of Option+Left/Right)
-```
-,-----------------------------------------------------------------------------------.
-|LockSc|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute | Ctrl |
-|------+------+------+------+------+------+------+------+------+------+------+------|
-|   ~  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  | Cmd  |
-|------+------+------+------+------+-------------+------+------+------+------+------|
-|      |      |      |      |      |      |OLeft | Left |  Up  |Right |ORight| Opt  |
-|------+------+------+------+------+------|------+------+------+------+------+------|
-|      |      |      |      |      |      |      |      | Down |      |      | Shift|
-|------+------+------+------+------+------+------+------+------+------+------+------|
-|      |      |      |      |      [      |             | Del  |      |      |      |
-`-----------------------------------------------------------------------------------'
+/* Qwerty (Default Layer)
+ * ,-----------------------------------------------------------------------------------.
+ * |  Esc |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  =   |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |   `  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |  -   |
+ * |------+------+------+------+------+-------------+------+------+------+------+------|
+ * | Tab  |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |  "   |
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |Enter |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |  fn  | Ctrl | Opt  | Cmd  |     Lower   |    Raise    | Bksp |  Del |   [  |   ]  |
+ * `-----------------------------------------------------------------------------------'
+ */
 ```
 
-Lower - WIP
------------
-> Tap the MIDI key to toggle the MIDI layer on.
+Lower (Symbols)
+---------------
+> Toggle on the Raise layer by pressing the Raise (Lock) key.
+> Tap the MIDI key to toggle on the MIDI layer.
+
 ```
-,-----------------------------------------------------------------------------------.
-|      |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 | Ctrl |
-|------+------+------+------+------+------+------+------+------+------+------+------|
-|      |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  | Cmd  |
-|------+------+------+------+------+-------------+------+------+------+------+------|
-| Del  |   .  |   4  |   5  |   6  |   +  |   *  |   _  |   +  |   [  |   ]  | Opt  |
-|------+------+------+------+------+------|------+------+------+------+------+------|
-|      |   0  |   1  |   2  |   3  |Enter |   =  |ISO # |ISO / | Pg Up| Pg Dn| Shift|
-|------+------+------+------+------+------+------+------+------+------+------+------|
-| MIDI |      |      |      |             |      ]      | Next | Vol- | Vol+ | Play |
-`-----------------------------------------------------------------------------------'
+/* Lower (Symbols) - holding Left Space
+ * ,-----------------------------------------------------------------------------------.
+ * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
+ * |------+------+------+------+------+-------------+------+------+------+------+------|
+ * |   ~  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  |  =   |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |AppSwi|   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  +   |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      |      |      |   {  |   }  |   [  |   ]  |   \  |  |   |
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * | MIDI |      |      |      |             | Raise (Lock)|      |      |      |      |
+ * `-----------------------------------------------------------------------------------'
+ */
+```
+ 
+Raise (Navigation) 
+------------------
+> WASD controls the mouse.
+> WrdFwd and WrdBck move the insertion point forward and back by one whole word (effectively a combo of Option+Left/Right arrow keys).
+> LinSrt and LinEnd move the insertion point to the beginning and end of the line (effectively a combo of Command+Left/Right arrow keys).
+> Sel →,Sel ←, WoSel→ and WoSel← expand/contract the text selection by one character or one full word in either direction (effectively a combo of (Option+)Shift+Left/Right arrow keys).
+> SwapCh swaps the position of the characters to the left and right of the insertion point.
+> Toggle on the Lower layer by pressing the Lower (Lock) key.
+
+```
+/* Raise (Navigation) - holding Right Space
+ * ,-----------------------------------------------------------------------------------.
+ * |LockSc|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute | Ctrl |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |  MUp | Click|RClick|SwapCh|WoSel←| Sel ←|  Up  | Sel →|WoSel→| PgUp |
+ * |------+------+------+------+------+-------------+------+------+------+------+------|
+ * |      | MLeft| MDown|MRight| Click|      |WrdBck| Left | Shift|Right |WrdFwd| PgDwn|
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * |      |      | Cut  | Copy | Paste|      |LinSrt| Desel| Down |      |LinEnd| Shift|
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      | Lower (Lock)|             |      |      |      |      |
+ * `-----------------------------------------------------------------------------------'
+ */
+```
+
+Extra (Media/Functions)
+-----------------------
+> Tap and hold both spacebars together to momentarily turn on the Extra layer. 
+
+```
+/* Extra Layer (Functions) - holding Lower + Raise
+ * ,-----------------------------------------------------------------------------------.
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
+ * |------+------+------+------+------+-------------+------+------+------+------+------|
+ * |AppSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute |      |
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * |      |      |      |      |      |      |      |      |      | Next | Vol- | Vol+ |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      |             |             |      |      |      |      |
+ * `-----------------------------------------------------------------------------------'
+ */
 ```
  
 MIDI
 ----
 > Tap the Qwerty key to exit the MIDI layer.
+
 ```
 ,-----------------------------------------------------------------------------------.
 |  C0  |  D♭0 |  D0  |  E♭0 |  E0  |  F0  |  G♭0 |  G0  |  A♭0 |  A0  |  B♭0 |  B0  |
