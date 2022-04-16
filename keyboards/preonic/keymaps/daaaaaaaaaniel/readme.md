@@ -8,7 +8,7 @@
     * **Symbols** <sup>[Lower](#lower--symbols-)</sup>
     * **Navigation** <sup>[Raise](#raise--navigation-)</sup>
     * **Media/Function keys** <sup>[Extra](#extra--media-functions-)</sup>
-    * **MIDI** <sup>[MIDI][]</sup>
+    * **MIDI** <sup>[MIDI](#midi)</sup>
 
 * Dual space bars!
 	* Send `Enter` by hitting both space bars at the same time.
