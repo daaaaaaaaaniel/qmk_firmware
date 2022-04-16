@@ -4,10 +4,10 @@
 ### Features
 
 * Four main layers
-    * **QWERTY**
-    * **Symbols** <sup>(Lower)</sup>
-    * **Navigation** <sup>(Raise)</sup>
-    * **Media/Function keys** <sup>(Extra)</sup>
+    * **QWERTY**<sup>[Default][#qwerty_(default_layer)]</sup>
+    * **Symbols**<sup>[Lower][#lower_(symbols)]</sup>
+    * **Navigation**<sup>[Raise][#raise_(navigation) ]</sup>
+    * **Media/Function keys**<sup>[Extra][#extra_(media/functions)]</sup>
 
 * Dual space bars!
 	* Send `Enter` by hitting both space bars at the same time.
