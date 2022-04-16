@@ -17,7 +17,7 @@
 #include QMK_KEYBOARD_H
 #include "muse.h"
 
-// put this near the begining of keymap.c
+// defining my custom variables. i use they for toggling on the Raise and Lower layers.
 bool is_lower_key_held = false;
 bool is_raise_key_held = false;
 bool is_layer_toggled_on = false;
@@ -36,27 +36,27 @@ enum preonic_keycodes {
   LOWER,
   RAISE,
   MIDI,
-  KC_MISSION_CONTROL, // AC Desktop Show All Windows
+  KC_MISSION_CONTROL, // _AC_SHOW_ALL_WINDOWS // AC Desktop Show All Windows
   KC_SPOTLIGHT,
   KC_DICTATION,
   KC_DO_NOT_DISTURB,
   KC_LOCK_SCREEN,
-  KC_LAUNCHPAD, // AC Desktop Show All Applications
+  KC_LAUNCHPAD, // _AC_SHOW_ALL_APPS // AC Desktop Show All Applications 
   AR_TOGGLE_LOWER,
   AL_TOGGLE_RAISE,
   TEXT_DESELECT,
 };
 
-#define KC_TASK LGUI(KC_TAB)
-#define KC_FLXP LGUI(KC_E)
-#define KC_MCTL KC_MISSION_CONTROL
-#define KC_SPLT KC_SPOTLIGHT
-#define KC_DICT KC_DICTATION
-#define KC_DOND KC_DO_NOT_DISTURB
-#define KC_LOCK KC_LOCK_SCREEN
-#define KC_LPAD KC_LAUNCHPAD
-
+#define AA_RCMD RCMD_T(KC_BSPC) // command (hold); backspace (tap)
+#define AA_ROPT ROPT_T(KC_DEL) // option (hold); delete (tap)
+#define AA_RCTL RCTL_T(KC_LBRC)
+#define KX_CUT LCMD(KC_X) // command-x
+#define KX_COPY LCMD(KC_C) // command-c
+#define KX_PSTE LCMD(KC_V) // command-v
+#define SX_ESC SFT_T(KC_ESC) // shift (hold); escape (tap)
 #define SHOW_ALL_APP_WINDOWS LCTL(KC_DOWN) // Control-Down Arrow
+#define NEXTTAB RSG(KC_RBRC) // Command-Shift-] (or perhaps Control-Tab)
+#define PREVTAB RSG(KC_LBRC) // Command-Shift-[ (or perhaps Control-Shift-Tab)
 // #define NEXT_WORD_DELETE LOPT(KC_DEL) // Option-Delete
 // #define PREVIOUS_WORD_BACKSPACE LOPT(KC_BSPC) // Option-Backspace
 #define NEXT_WORD LOPT(KC_RGHT) // Option-Right Arrow. Alternatively, use Opt-Cmd-F (or a custom keybind in DefaultKeyBinding.dict).
@@ -67,7 +67,15 @@ enum preonic_keycodes {
 #define SELECT_PREVIOUS_WORD LSA(KC_LEFT) // Shift-Option-Left Arrow
 #define LINE_START G(KC_LEFT) // Command-Left Arrow
 #define LINE_END G(KC_RGHT) // Command-Right Arrow
+#define KX_SWAP LCTL(KC_T) // swap characters adjacent to insersion point
 
+// short names / aliases
+#define KC_MCTL KC_MISSION_CONTROL
+#define KC_SPLT KC_SPOTLIGHT
+#define KC_DICT KC_DICTATION
+#define KC_DOND KC_DO_NOT_DISTURB
+#define KC_LOCK KC_LOCK_SCREEN
+#define KC_LPAD KC_LAUNCHPAD
 #define ALL_APP SHOW_ALL_APP_WINDOWS
 // #define WD_DEL NEXT_WORD_DELETE
 // #define WD_BSPC PREVIOUS_WORD_BACKSPACE
@@ -77,31 +85,16 @@ enum preonic_keycodes {
 #define SEL_PRV SELECT_PREVIOUS_CHARACTER
 #define SELWNXT SELECT_NEXT_WORD
 #define SELWPRV SELECT_PREVIOUS_WORD
-#define NEXTTAB RSG(KC_RBRC) // Command-Shift-] (or perhaps Control-Tab)
-#define PREVTAB RSG(KC_LBRC) // Command-Shift-[ (or perhaps Control-Shift-Tab)
 #define LN_END  LINE_END
 #define LN_STRT LINE_START
 #define TX_DSEL TEXT_DESELECT
 
-// #define AA_SW LT(_SW, KC_TAB)
+// keycodes for moving between layers
 #define AA_TAB LT(_TAB, KC_TAB)
-// #define AA_LCTL LCTL_T(KC_BSLS)
-// #define AA_LOPT LOPT_T(KC_HOME)
-// #define AA_LCMD LCMD_T(KC_DEL) 
 #define AA_LSPC LT(_LOWER,KC_SPACE)
 #define AA_RSPC LT(_RAISE,KC_SPACE)
 #define AR_LOWR AR_TOGGLE_LOWER
 #define AL_RAIS AL_TOGGLE_RAISE
-
-#define AA_RCMD RCMD_T(KC_BSPC) // command (hold); backspace (tap)
-#define AA_ROPT ROPT_T(KC_DEL) // option (hold); delete (tap)
-#define AA_RCTL RCTL_T(KC_LBRC)
-#define KX_CUT LCMD(KC_X) // command-x
-#define KX_COPY LCMD(KC_C) // command-c
-#define KX_PSTE LCMD(KC_V) // command-v
-#define SX_ESC SFT_T(KC_ESC) // shift (hold); escape (tap)
-#define KX_SWAP LCTL(KC_T) // swap characters adjacent to insersion point
-
 
 
 // Sounds
@@ -111,7 +104,7 @@ enum preonic_keycodes {
 #endif
 
 // Combos
-// When both SPACE keys are tapped together, execute ENTER. When both SPACE keys are HELD, activate _ADJUST layer.
+// When both SPACE keys are tapped together, execute ENTER. When both SPACE keys are HELD, activate _EXTRA layer.
 enum combos {
   SPC_ENTER,
 };
@@ -119,15 +112,12 @@ enum combos {
 const uint16_t PROGMEM adj_combo[] = {LT(_LOWER, KC_SPC), LT(_RAISE, KC_SPC), COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
-//  [SPC_ENTER] = COMBO(adj_combo, KC_ENT) 
-//  [SPC_ENTER] = COMBO(adj_combo, LT(_ADJUST, KC_ENT)), // Previously this combo activated the Adjust layer when held, or Enter when tapped.
  [SPC_ENTER] = COMBO(adj_combo, LT(_EXTRA, KC_ENT)), // HITTING and HOLDING both space bars together activates _EXTRA layer (Combo that executes a layer tap), although concievably it could activate any layer, thus making holding the COMBO different from pressing the keys at different times and holding them. 
-//  [ADJ_LAYER] = COMBO(adj_combo, MO(_ADJUST)),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-/* Qwerty
+/* Qwerty (Default Layer)
  * ,-----------------------------------------------------------------------------------.
  * |  Esc |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  =   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -148,7 +138,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_CAPS, KC_LCTL, KC_LOPT, KC_LCMD,     AA_LSPC,          AA_RSPC,      AA_RCMD, AA_ROPT, AA_RCTL, KC_RBRC
 ),
 
-/* Raise (Navigation)
+/* Raise (Navigation) - holding Right Space
  * ,-----------------------------------------------------------------------------------.
  * |LockSc|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute | Ctrl |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -158,7 +148,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      | Cut  | Copy | Paste|      |LinSrt| Desel| Down |      |LinEnd| Shift|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |   Page Up   |             |      |      |      |      |
+ * |      |      |      |      | Lower (Lock)|             |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_RAISE] = LAYOUT_preonic_2x2u(
@@ -169,7 +159,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, _______, AR_LOWR,    _______,  KC_RCMD, KC_ROPT, KC_RCTL, KC_NO
 ),
 
-/* Lower (Symbols)
+/* Lower (Symbols) - holding Left Space
  * ,-----------------------------------------------------------------------------------.
  * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
@@ -179,7 +169,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |      |      |   {  |   }  |   [  |   ]  |   \  |  |   |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * | MIDI |      |      |      |             |  Page Down  |      |      |      |      |
+ * | MIDI |      |      |      |             | Raise (Lock)|      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_LOWER] = LAYOUT_preonic_2x2u(
@@ -190,7 +180,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   MIDI,    _______, _______, _______,  _______,   AL_RAIS, _______, _______, _______, _______
 ),
 
-/* Tab
+/* Tab (Window Switcher) - holding Tab
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -211,28 +201,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, _______,     PREVTAB,          NEXTTAB,      _______, _______, _______, _______
 ),
 
-// /* SW (Switcher)
-//  * ,-----------------------------------------------------------------------------------.
-//  * |      |      |      |      |      |      |      |      |      |      |      |      |
-//  * |------+------+------+------+------+------+------+------+------+------+------+------|
-//  * |      |      |      |      |      |      |      |      |      |      |      |      |
-//  * |------+------+------+------+------+-------------+------+------+------+------+------|
-//  * |      |      |      |      |      |      |      |      |      |      |      |      |
-//  * |------+------+------+------+------+------|------+------+------+------+------+------|
-//  * |      |      |      |      |      |      |      |      |      |      |      |      |
-//  * |------+------+------+------+------+------+------+------+------+------+------+------|
-//  * |      |      |      |      |   Switch    |   Switch    |      |      |      |      |
-//  * `-----------------------------------------------------------------------------------'
-//  */
-// [_SW] = LAYOUT_preonic_2x2u(
-//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-//   _______, _______, _______, _______,     G(KC_TAB),          S(G(KC_TAB)),      _______, _______, _______, _______
-// ),
-
-/* Extra Layer (Lower + Raise)
+/* Extra Layer (Functions) - holding Lower + Raise
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -252,18 +221,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU,
   _______, _______, _______, _______,     _______,          _______,      _______, _______, _______, _______
 ),
-
-// Previously, this layer was activated by HITTING and HOLDING both space bars together (Combo that executes a layer tap)
-/* Adjust (Lower & Raise - Combo)
- * 
- */
-// [_ADJUST] = LAYOUT_preonic_2x2u(
-//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-//   _______, _______, _______, _______,     _______,          _______,      _______, _______, _______, _______
-// ),
 
 /* MIDI
  * ,-----------------------------------------------------------------------------------.
@@ -386,14 +343,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           break;
         case TEXT_DESELECT:
           if (record->event.pressed) {
-//             register_code(KC_LOPT);
-//             register_code(KC_LEFT);
-//             unregister_code(KC_LEFT);
-//             register_code(KC_RGHT);
-//             unregister_code(KC_RGHT);
-//             unregister_code(KC_LOPT);
-//             tap_code16(KC_LEFT);            
-//             tap_code16(LOPT(KC_RGHT));
             tap_code16(KC_RGHT);  
             tap_code16(LOPT(KC_LEFT));          
             tap_code16(LOPT(KC_RGHT));
@@ -546,7 +495,6 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
 //     return true;
 // }
 
-
 void matrix_scan_user(void) {
 #ifdef AUDIO_ENABLE
     if (muse_mode) {
@@ -580,14 +528,3 @@ void matrix_scan_user(void) {
  * }
  */
  
- /* 
- * bool aa_lower_layer_toggle(uint16_t keycode) {
- *   switch (keycode) {
- *     case RAISE:
- *     case LOWER:
- *       return false;
- *     default:
- *       return true;
- *   }
- * }
- */
