@@ -7,7 +7,7 @@
     * **QWERTY** <sup>[Default](#qwerty-default-layer)</sup>
     * **Symbols** <sup>[Lower](#lower-symbols)</sup>
     * **Navigation** <sup>[Raise](#raise-navigation)</sup>
-    * **Media/Function keys** <sup>[Extra](#extra-media-functions)</sup>
+    * **Media/Function keys** <sup>[Extra](#extra-mediafunctions)</sup>
     * **MIDI** <sup>[MIDI](#midi)</sup>
 
 * Dual space bars!
@@ -39,7 +39,7 @@ QWERTY (Default Layer)
 [^1]: Tab navigation uses its own layer with all transparent keys aside from the two space bars, which move to the next/previous tab.
 
 ```
-/* Qwerty (Default Layer)
+/* QWERTY (Default layer)
  * ,-----------------------------------------------------------------------------------.
  * |  Esc |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  =   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -56,11 +56,11 @@ QWERTY (Default Layer)
 
 Lower (Symbols)
 ---------------
-* Toggle on the Raise layer by pressing the Raise (Lock) key.
+* Toggle on the Navigation layer by pressing the Raise (Lock) key.
 * Tap the `MIDI` key to toggle on the MIDI layer.
 
 ```
-/* Lower (Symbols) - holding Left Space
+/* Lower (Symbol layer) - holding Left Space
  * ,-----------------------------------------------------------------------------------.
  * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
@@ -77,15 +77,15 @@ Lower (Symbols)
  
 Raise (Navigation) 
 ------------------
-* WASD controls the mouse.
+* `W``A``S``D` controls the mouse.
 * WrdFwd and WrdBck move the insertion point forward and back by one whole word (effectively a combo of Option+Left/Right arrow keys).
 * LinSrt and LinEnd move the insertion point to the beginning and end of the line (effectively a combo of Command+Left/Right arrow keys).
 * Sel →,Sel ←, WoSel→ and WoSel← expand/contract the text selection by one character or one full word in either direction (effectively a combo of (Option+)Shift+Left/Right arrow keys).
 * SwapCh swaps the position of the characters to the left and right of the insertion point.
-* Toggle on the Lower layer by pressing the Lower (Lock) key.
+* Toggle on the Symbol layer by pressing the Lower (Lock) key.
 
 ```
-/* Raise (Navigation) - holding Right Space
+/* Raise (Navigation layer) - holding Right Space
  * ,-----------------------------------------------------------------------------------.
  * |LockSc|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute | Ctrl |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -105,7 +105,7 @@ Extra (Media/Functions)
 * Tap and hold both spacebars together to momentarily turn on the Extra layer. 
 
 ```
-/* Extra Layer (Media Functions) - holding Left Space + Right Space
+/* Extra (Media Functions layer) - holding Left Space + Right Space
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|

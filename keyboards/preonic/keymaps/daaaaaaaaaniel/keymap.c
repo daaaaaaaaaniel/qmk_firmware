@@ -50,10 +50,17 @@ enum preonic_keycodes {
 #define AA_RCMD RCMD_T(KC_BSPC) // command (hold); backspace (tap)
 #define AA_ROPT ROPT_T(KC_DEL) // option (hold); delete (tap)
 #define AA_RCTL RCTL_T(KC_LBRC)
+#define AA_LCMD OSM(MOD_LGUI) // one-shot command
+#define AA_LOPT OSM(MOD_LALT) // one-shot option
+#define AA_LCTL OSM(MOD_LCTL) // one-shot control
+#define AA_LSFT OSM(MOD_LSFT)// one-shot left shift
+#define AA_RSFT OSM(MOD_RSFT)// one-shot right shift
+#define SX_ESC SFT_T(KC_ESC) // shift (hold); escape (tap)
+#define DD_CMD LCMD_T(KC_DEL) // command (hold); delete (tap)
+#define DD_BSPC ROPT_T(KC_BSPC) // option (hold); backspace (tap)
 #define KX_CUT LCMD(KC_X) // command-x
 #define KX_COPY LCMD(KC_C) // command-c
 #define KX_PSTE LCMD(KC_V) // command-v
-#define SX_ESC SFT_T(KC_ESC) // shift (hold); escape (tap)
 #define SHOW_ALL_APP_WINDOWS LCTL(KC_DOWN) // Control-Down Arrow
 #define NEXTTAB RSG(KC_RBRC) // Command-Shift-] (or perhaps Control-Tab)
 #define PREVTAB RSG(KC_LBRC) // Command-Shift-[ (or perhaps Control-Shift-Tab)
@@ -117,7 +124,7 @@ combo_t key_combos[COMBO_COUNT] = {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-/* Qwerty (Default Layer)
+/* QWERTY (Default layer)
  * ,-----------------------------------------------------------------------------------.
  * |  Esc |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  =   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -125,7 +132,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * | Tab  |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |  "   |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |Enter |
+ * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  | Shift|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |  fn  | Ctrl | Opt  | Cmd  |     Lower   |    Raise    | Bksp |  Del |   [  |   ]  |
  * `-----------------------------------------------------------------------------------'
@@ -134,11 +141,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
   AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
-  SX_ESC,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RSFT_T(KC_ENT), // /*KC_APFN,*/
-  KC_CAPS, KC_LCTL, KC_LOPT, KC_LCMD,     AA_LSPC,          AA_RSPC,      AA_RCMD, AA_ROPT, AA_RCTL, KC_RBRC
+  AA_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, AA_RSFT,
+  KC_CAPS, AA_LCTL, AA_LOPT, AA_LCMD,     AA_LSPC,          AA_RSPC,      AA_RCMD, AA_ROPT, AA_RCTL, KC_RBRC
 ),
 
-/* Raise (Navigation) - holding Right Space
+/* Raise (Navigation layer) - holding Right Space
  * ,-----------------------------------------------------------------------------------.
  * |LockSc|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute | Ctrl |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -146,20 +153,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * |      | MLeft| MDown|MRight| Click|      |WrdBck| Left | Shift|Right |WrdFwd| PgDwn|
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      | Cut  | Copy | Paste|      |LinSrt| Desel| Down |      |LinEnd| Shift|
+ * |  Esc |      | Cut  | Copy | Paste|      |LinSrt| Desel| Down |      |LinEnd| Shift|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      | Lower (Lock)|             |      |      |      |      |
+ * |      |      |      |  Del | Lower (Lock)|             |      |      |      | Enter|
  * `-----------------------------------------------------------------------------------'
  */
 [_RAISE] = LAYOUT_preonic_2x2u(
   KC_LOCK, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_RCTL,
   _______, KC_EXLM, KC_MS_U, KC_BTN1, KC_BTN2, KX_SWAP, SELWPRV, SEL_PRV, KC_UP,   SEL_NXT, SELWNXT, KC_PGUP,
   _______, KC_MS_L, KC_MS_D, KC_MS_R, KC_BTN1, KC_NO,   WD_PREV, KC_LEFT, KC_LSFT, KC_RGHT, WD_NEXT, KC_PGDN,
-  _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   LN_STRT, TX_DSEL, KC_DOWN, KC_NO,   LN_END,  KC_RSFT,
-  _______, _______, _______, _______, AR_LOWR,    _______,  KC_RCMD, KC_ROPT, KC_RCTL, KC_NO
+  SX_ESC,  KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   LN_STRT, TX_DSEL, KC_DOWN, KC_NO,   LN_END,  KC_RSFT,
+  _______, _______, _______, DD_CMD,      AR_LOWR,          _______,      _______, _______, KC_RCTL, KC_ENT
 ),
 
-/* Lower (Symbols) - holding Left Space
+/* Lower (Symbol layer) - holding Left Space
  * ,-----------------------------------------------------------------------------------.
  * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
@@ -167,20 +174,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |AppSwi|   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  +   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |   {  |   }  |   [  |   ]  |   \  |  |   |
+ * |  Esc |      |      |      |      |      |   {  |   }  |   [  |   ]  |   \  |  |   |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * | MIDI |      |      |      |             | Raise (Lock)|      |      |      |      |
+ * | MIDI |      |      |      |             | Raise (Lock)|  Del | Bksp |      | Enter|
  * `-----------------------------------------------------------------------------------'
  */
 [_LOWER] = LAYOUT_preonic_2x2u(
   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
   KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_EQL,
   ALL_APP, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_PLUS,
-  _______, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC, KC_BSLS, KC_PIPE,
-  MIDI,    _______, _______, _______,  _______,   AL_RAIS, _______, _______, _______, _______
+  SX_ESC,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC, KC_BSLS, KC_PIPE,
+  MIDI,    _______, _______, _______,      _______,  AL_RAIS,      RCMD_T(KC_DEL), DD_BSPC, _______, KC_ENT
 ),
 
-/* Tab (Window Switcher) - holding Tab
+/* Tab (Window Switcher layer) - holding Tab
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -201,7 +208,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, _______,     PREVTAB,          NEXTTAB,      _______, _______, _______, _______
 ),
 
-/* Extra Layer (Media Functions) - holding Lower + Raise
+/* Extra (Media Functions layer) - holding Left Space + Right Space
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|

@@ -121,13 +121,14 @@
 #define APPLE_FN_ENABLE
 */
 
-
 // How many combos?
 #define COMBO_COUNT 1
-
 
 // Mouse controls
 #define MOUSEKEY_INTERVAL 16
 #define MOUSEKEY_MAX_SPEED 8
 #define MOUSEKEY_MOVE_DELTA 3
 #define MOUSEKEY_TIME_TO_MAX 60
+
+#define ONESHOT_TAP_TOGGLE 3  /* Tapping this number of times holds the key until tapped once again. */
+#define ONESHOT_TIMEOUT 1500  /* Time (in ms) before the one shot key is released */
