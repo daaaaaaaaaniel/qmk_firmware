@@ -181,9 +181,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |LockSc|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute | Ctrl |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |  MUp | Click|RClick|SwapCh|WoSel←| Sel ←|  Up  | Sel →|WoSel→| PgUp |
+ * | PgUp |      |  MUp | Click|RClick|SwapCh|WoSel←| Sel ←|  Up  | Sel →|WoSel→|      |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      | MLeft| MDown|MRight| Click|      |WrdBck| Left | Shift|Right |WrdFwd| PgDwn|
+ * | PgDwn| MLeft| MDown|MRight| Click|LinSrt|WrdBck| Left | Shift|Right |WrdFwd|LinEnd|
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |  Esc |      | Cut  | Copy | Paste|      |LinSrt| Desel| Down |      |LinEnd| Shift|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -192,8 +192,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_RAISE] = LAYOUT_preonic_2x2u(
   KC_LOCK, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_RCTL,
-  _______, KC_EXLM, KC_MS_U, KC_BTN1, KC_BTN2, KX_SWAP, SELWPRV, SEL_PRV, KC_UP,   SEL_NXT, SELWNXT, KC_PGUP,
-  _______, KC_MS_L, KC_MS_D, KC_MS_R, KC_BTN1, KC_NO,   WD_PREV, KC_LEFT, KC_LSFT, KC_RGHT, WD_NEXT, KC_PGDN,
+  KC_PGUP, KC_EXLM, KC_MS_U, KC_BTN1, KC_BTN2, KX_SWAP, SELWPRV, SEL_PRV, KC_UP,   SEL_NXT, SELWNXT, KC_NO,
+  KC_PGDN, KC_MS_L, KC_MS_D, KC_MS_R, KC_BTN1, LN_STRT, WD_PREV, KC_LEFT, KC_LSFT, KC_RGHT, WD_NEXT, LN_END,
   SX_ESC,  KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   LN_STRT, TX_DSEL, KC_DOWN, KC_NO,   LN_END,  AA_RSFT,
   _______, _______, _______, DD_CMD,      AR_LOWR,          _______,      _______, _______, KC_RCTL, KC_ENT
 ),
