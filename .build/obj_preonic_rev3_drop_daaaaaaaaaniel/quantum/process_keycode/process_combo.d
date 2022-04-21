@@ -155,6 +155,7 @@
  platforms/chibios/drivers/audio_dac.h \
  quantum/process_keycode/process_audio.h \
  quantum/process_keycode/process_music.h \
+ quantum/process_keycode/process_tap_dance.h \
  quantum/process_keycode/process_terminal_nop.h \
  quantum/process_keycode/process_space_cadet.h \
  quantum/process_keycode/process_magic.h \
@@ -560,6 +561,8 @@ platforms/chibios/drivers/audio_dac.h:
 quantum/process_keycode/process_audio.h:
 
 quantum/process_keycode/process_music.h:
+
+quantum/process_keycode/process_tap_dance.h:
 
 quantum/process_keycode/process_terminal_nop.h:
 

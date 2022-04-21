@@ -22,6 +22,7 @@ bool is_lower_key_held = false;
 bool is_raise_key_held = false;
 bool is_layer_toggled_on = false;
 
+/* declare layers */
 enum preonic_layers {
   _QWERTY,
   _LOWER,
@@ -31,6 +32,7 @@ enum preonic_layers {
   _MIDI
 };
 
+/* declare special custom key codes */
 enum preonic_keycodes {
   QWERTY = SAFE_RANGE,
   LOWER,
@@ -46,6 +48,37 @@ enum preonic_keycodes {
   AL_TOGGLE_RAISE,
   TEXT_DESELECT,
 };
+
+// Tap Dance declarations
+enum td_keycodes {
+    TD_ENTER // Our example key: `LSFT` when held, `ENT` when tapped. Add additional keycodes for each tapdance.
+};
+
+// Define a type containing as many tapdance states as you need
+typedef enum {
+    TD_NONE,
+    TD_UNKNOWN,
+    TD_SINGLE_TAP,
+    TD_SINGLE_HOLD,
+    TD_DOUBLE_TAP,
+//     TD_DOUBLE_SINGLE_TAP,
+    TD_DOUBLE_HOLD
+} td_state_t;
+
+typedef struct {
+    bool is_press_action;
+    td_state_t state;
+} td_tap_t;
+
+// // Create a global instance of the tapdance state type
+// static td_state_t td_state;
+
+/* Declare your tapdance functions */
+// Function to determine the current tapdance state
+td_state_t cur_dance(qk_tap_dance_state_t *state);
+// `finished` and `reset` functions for each tapdance keycode
+void shiftent_finished(qk_tap_dance_state_t *state, void *user_data);
+void shiftent_reset(qk_tap_dance_state_t *state, void *user_data);
 
 #define AA_RCMD RCMD_T(KC_BSPC) // command (hold); backspace (tap)
 #define AA_ROPT ROPT_T(KC_DEL) // option (hold); delete (tap)
@@ -76,7 +109,7 @@ enum preonic_keycodes {
 #define LINE_END G(KC_RGHT) // Command-Right Arrow
 #define KX_SWAP LCTL(KC_T) // swap characters adjacent to insersion point
 
-// short names / aliases
+/* short names / aliases */
 #define KC_MCTL KC_MISSION_CONTROL
 #define KC_SPLT KC_SPOTLIGHT
 #define KC_DICT KC_DICTATION
@@ -95,8 +128,7 @@ enum preonic_keycodes {
 #define LN_END  LINE_END
 #define LN_STRT LINE_START
 #define TX_DSEL TEXT_DESELECT
-
-// keycodes for moving between layers
+/* keycodes for moving between layers */
 #define AA_TAB LT(_TAB, KC_TAB)
 #define AA_LSPC LT(_LOWER,KC_SPACE)
 #define AA_RSPC LT(_RAISE,KC_SPACE)
@@ -104,13 +136,13 @@ enum preonic_keycodes {
 #define AL_RAIS AL_TOGGLE_RAISE
 
 
-// Sounds
+/* Sounds */
 #ifdef AUDIO_ENABLE
   float song_preonic_sound[][2] = SONG(PREONIC_SOUND); // song for switching into MIDI layer 
   float song_plover_gb[][2]  = SONG(PLOVER_GOODBYE_SOUND);  // song for switching out of MIDI layer (back to QWERTY)
 #endif
 
-// Combos
+/* Combos */
 // When both SPACE keys are tapped together, execute ENTER. When both SPACE keys are HELD, activate _EXTRA layer.
 enum combos {
   SPC_ENTER,
@@ -141,7 +173,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
   AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
-  AA_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, AA_RSFT,
+  AA_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, TD(TD_ENTER), /* AA_RSFT, */
   KC_CAPS, AA_LCTL, AA_LOPT, AA_LCMD,     AA_LSPC,          AA_RSPC,      AA_RCMD, AA_ROPT, AA_RCTL, KC_RBRC
 ),
 
@@ -162,7 +194,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_LOCK, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_RCTL,
   _______, KC_EXLM, KC_MS_U, KC_BTN1, KC_BTN2, KX_SWAP, SELWPRV, SEL_PRV, KC_UP,   SEL_NXT, SELWNXT, KC_PGUP,
   _______, KC_MS_L, KC_MS_D, KC_MS_R, KC_BTN1, KC_NO,   WD_PREV, KC_LEFT, KC_LSFT, KC_RGHT, WD_NEXT, KC_PGDN,
-  SX_ESC,  KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   LN_STRT, TX_DSEL, KC_DOWN, KC_NO,   LN_END,  KC_RSFT,
+  SX_ESC,  KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   LN_STRT, TX_DSEL, KC_DOWN, KC_NO,   LN_END,  AA_RSFT,
   _______, _______, _______, DD_CMD,      AR_LOWR,          _______,      _______, _______, KC_RCTL, KC_ENT
 ),
 
@@ -535,3 +567,103 @@ void matrix_scan_user(void) {
  * }
  */
  
+/* Tap Dance */
+// Determine the tapdance state to return
+td_state_t cur_dance(qk_tap_dance_state_t *state) {
+    if (state->count == 1) {
+        if (state->interrupted || !state->pressed) return TD_SINGLE_TAP;
+        // Key has not been interrupted, but the key is still held. Means you want to send a 'HOLD'.
+        else return TD_SINGLE_HOLD;
+    } else if (state->count == 2) {
+        // TD_DOUBLE_SINGLE_TAP is to distinguish between typing "pepper", and actually wanting a double tap action when hitting 'pp'. Suggested use case for this return value is when you want to send two keystrokes of the key, and not the 'double tap' action/macro.
+//         if (state->interrupted) return TD_DOUBLE_SINGLE_TAP;
+//         else if (state->pressed) return TD_DOUBLE_HOLD;
+//         else return TD_DOUBLE_TAP;
+        if (state->pressed) return TD_DOUBLE_HOLD;
+        else return TD_DOUBLE_TAP;
+    } else return TD_UNKNOWN;
+//     if (state->count == 2) return TD_DOUBLE_TAP;
+//     else return TD_UNKNOWN; // Any number higher than the maximum state value you return above
+}
+
+// Create an instance of 'td_tap_t' for the 'shiftent' tap dance.
+static td_tap_t shiftent_tap_state = {
+    .is_press_action = true,
+    .state = 0 // .state = TD_NONE
+};
+
+// Handle the possible states for each tapdance keycode you define
+
+// simple example
+// void dance_cln_finished(qk_tap_dance_state_t *state, void *user_data) {
+//     if (state->count == 1) {
+//         register_code16(KC_COLN);
+//     } else {
+//         register_code(KC_SCLN);
+//     }
+// }
+// 
+// void dance_cln_reset(qk_tap_dance_state_t *state, void *user_data) {
+//     if (state->count == 1) {
+//         unregister_code16(KC_COLN);
+//     } else {
+//         unregister_code(KC_SCLN);
+//     }
+// }
+
+// complex
+void shiftent_finished(qk_tap_dance_state_t *state, void *user_data) {
+    shiftent_tap_state.state = cur_dance(state);
+    switch (shiftent_tap_state.state) {
+        case TD_SINGLE_TAP:
+            set_oneshot_mods(MOD_BIT(KC_RSFT)); // emulate one shot mod
+            break;
+        case TD_SINGLE_HOLD:
+//             register_mods(MOD_BIT(MOD_RSFT));
+            register_code(KC_RSFT);
+            break;
+        case TD_DOUBLE_TAP:
+            register_code16(KC_ENT);
+            break;
+//         case TD_DOUBLE_SINGLE_TAP:
+//             set_oneshot_mods(MOD_BIT(KC_RSFT));
+// //             register_code16(KC_ENT);
+//             break;
+        case TD_DOUBLE_HOLD:
+            tap_code16(KC_ENT);
+            register_code(KC_RSFT);
+            break;
+        default:
+            break;
+    }
+}
+void shiftent_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (shiftent_tap_state.state) {
+        case TD_SINGLE_TAP:
+//             unregister_code16(KC_LPRN);
+            break;
+        case TD_SINGLE_HOLD:
+            clear_oneshot_mods();
+            unregister_mods(MOD_BIT(KC_RSFT));
+            break;
+        case TD_DOUBLE_TAP:
+            unregister_code16(KC_ENT);
+            break;
+//         case TD_DOUBLE_SINGLE_TAP:
+// //             unregister_code16(KC_ENT);
+//             break;
+        case TD_DOUBLE_HOLD:
+            unregister_code16(KC_RSFT);
+            break;
+        default:
+            break;
+    }
+    shiftent_tap_state.state = 0; // shiftent_tap_state.state = TD_NONE;
+}
+
+
+// Define `ACTION_TAP_DANCE_FN_ADVANCED()` for each tapdance keycode, passing in `finished` and `reset` functions
+qk_tap_dance_action_t tap_dance_actions[] = {
+//     [TD_ENTER] = ACTION_TAP_DANCE_DOUBLE(KC_RSFT, KC_CAPS), // simple: Tap once for RShift, twice for Enter
+    [TD_ENTER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, shiftent_finished, shiftent_reset) // complex
+};

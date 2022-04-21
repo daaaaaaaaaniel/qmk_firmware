@@ -131,4 +131,4 @@
 #define MOUSEKEY_TIME_TO_MAX 60
 
 #define ONESHOT_TAP_TOGGLE 3  /* Tapping this number of times holds the key until tapped once again. */
-#define ONESHOT_TIMEOUT 1500  /* Time (in ms) before the one shot key is released */
+#define ONESHOT_TIMEOUT 750  /* Time (in ms) before the one shot key is released */

@@ -28,7 +28,7 @@ RGB_MATRIX_DRIVER = WS2812
 MIDI_ENABLE = yes
 COMBO_ENABLE = yes
 WAIT_FOR_USB = yes			# maybe this will fix startup sound?
-# TAP_DANCE_ENABLE = yes
+TAP_DANCE_ENABLE = yes
 
 SRC += muse.c
 SRC += matrix.c

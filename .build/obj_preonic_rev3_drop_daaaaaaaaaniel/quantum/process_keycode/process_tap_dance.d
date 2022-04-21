@@ -1,5 +1,5 @@
-.build/obj_preonic_rev3_drop_daaaaaaaaaniel/quantum/process_keycode/process_clicky.o: \
- quantum/process_keycode/process_clicky.c keyboards/preonic/config.h \
+.build/obj_preonic_rev3_drop_daaaaaaaaaniel/quantum/process_keycode/process_tap_dance.o: \
+ quantum/process_keycode/process_tap_dance.c keyboards/preonic/config.h \
  quantum/config_common.h platforms/pin_defs.h \
  platforms/chibios/pin_defs.h quantum/audio/song_list.h \
  quantum/audio/musical_notes.h keyboards/preonic/rev3_drop/config.h \
@@ -7,9 +7,9 @@
  .build/obj_preonic_rev3_drop/src/layouts.h \
  keyboards/preonic/keymaps/daaaaaaaaaniel/config.h \
  platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h \
- quantum/audio/audio.h quantum/audio/voices.h platforms/wait.h \
- platforms/chibios/_wait.h lib/chibios/os/rt/include/ch.h \
- keyboards/preonic/rev3_drop/chconf.h \
+ quantum/quantum.h platforms/chibios/platform_deps.h \
+ lib/chibios/os/hal/include/hal.h lib/chibios/os/hal/osal/rt-nil/osal.h \
+ lib/chibios/os/rt/include/ch.h keyboards/preonic/rev3_drop/chconf.h \
  platforms/chibios/boards/common/configs/chconf.h \
  lib/chibios/os/rt/include/chchecks.h lib/chibios/os/license/chlicense.h \
  lib/chibios/os/license/chcustomer.h \
@@ -52,8 +52,7 @@
  lib/chibios/os/oslib/include/chdelegates.h \
  lib/chibios/os/oslib/include/chjobs.h \
  lib/chibios/os/oslib/include/chfactory.h \
- lib/chibios/os/rt/include/chdynamic.h lib/chibios/os/hal/include/hal.h \
- lib/chibios/os/hal/osal/rt-nil/osal.h \
+ lib/chibios/os/rt/include/chdynamic.h \
  keyboards/preonic/rev3_drop/halconf.h \
  platforms/chibios/boards/common/configs/halconf.h \
  keyboards/preonic/rev3_drop/mcuconf.h \
@@ -112,10 +111,10 @@
  lib/chibios/os/hal/include/hal_st.h \
  lib/chibios/os/hal/ports/STM32/LLD/TIMv1/hal_st_lld.h \
  lib/chibios/os/hal/include/hal_mmc_spi.h \
- lib/chibios/os/hal/include/hal_serial_usb.h platforms/chibios/_wait.c \
- quantum/audio/luts.h quantum/quantum.h platforms/chibios/platform_deps.h \
- platforms/chibios/chibios_config.h quantum/matrix.h quantum/keymap.h \
- quantum/action.h platforms/progmem.h quantum/keyboard.h \
+ lib/chibios/os/hal/include/hal_serial_usb.h \
+ platforms/chibios/chibios_config.h platforms/wait.h \
+ platforms/chibios/_wait.h platforms/chibios/_wait.c quantum/matrix.h \
+ quantum/keymap.h quantum/action.h platforms/progmem.h quantum/keyboard.h \
  quantum/keycode.h quantum/keycode_legacy.h quantum/action_code.h \
  tmk_core/protocol/report.h tmk_core/protocol/usb_descriptor.h \
  tmk_core/protocol/chibios/lufa_utils/LUFA/Drivers/USB/USB.h \
@@ -149,7 +148,9 @@
  platforms/atomic_util.h platforms/chibios/atomic_util.h \
  quantum/action_util.h quantum/action_tapping.h quantum/send_string.h \
  quantum/send_string_keycodes.h platforms/suspend.h \
- quantum/process_keycode/process_midi.h \
+ quantum/process_keycode/process_midi.h quantum/audio/audio.h \
+ quantum/audio/voices.h quantum/audio/luts.h \
+ platforms/chibios/drivers/audio_dac.h \
  quantum/process_keycode/process_audio.h \
  quantum/process_keycode/process_music.h \
  quantum/process_keycode/process_tap_dance.h \
@@ -158,8 +159,7 @@
  quantum/process_keycode/process_space_cadet.h \
  quantum/process_keycode/process_magic.h \
  quantum/process_keycode/process_grave_esc.h quantum/dip_switch.h \
- quantum/encoder.h platforms/chibios/drivers/audio_dac.h \
- quantum/process_keycode/process_clicky.h
+ quantum/encoder.h
 
 keyboards/preonic/config.h:
 
@@ -183,13 +183,13 @@ keyboards/preonic/keymaps/daaaaaaaaaniel/config.h:
 
 platforms/chibios/boards/GENERIC_STM32_F303XC/configs/config.h:
 
-quantum/audio/audio.h:
+quantum/quantum.h:
 
-quantum/audio/voices.h:
+platforms/chibios/platform_deps.h:
 
-platforms/wait.h:
+lib/chibios/os/hal/include/hal.h:
 
-platforms/chibios/_wait.h:
+lib/chibios/os/hal/osal/rt-nil/osal.h:
 
 lib/chibios/os/rt/include/ch.h:
 
@@ -298,10 +298,6 @@ lib/chibios/os/oslib/include/chjobs.h:
 lib/chibios/os/oslib/include/chfactory.h:
 
 lib/chibios/os/rt/include/chdynamic.h:
-
-lib/chibios/os/hal/include/hal.h:
-
-lib/chibios/os/hal/osal/rt-nil/osal.h:
 
 keyboards/preonic/rev3_drop/halconf.h:
 
@@ -421,15 +417,13 @@ lib/chibios/os/hal/include/hal_mmc_spi.h:
 
 lib/chibios/os/hal/include/hal_serial_usb.h:
 
-platforms/chibios/_wait.c:
-
-quantum/audio/luts.h:
-
-quantum/quantum.h:
-
-platforms/chibios/platform_deps.h:
-
 platforms/chibios/chibios_config.h:
+
+platforms/wait.h:
+
+platforms/chibios/_wait.h:
+
+platforms/chibios/_wait.c:
 
 quantum/matrix.h:
 
@@ -553,6 +547,14 @@ platforms/suspend.h:
 
 quantum/process_keycode/process_midi.h:
 
+quantum/audio/audio.h:
+
+quantum/audio/voices.h:
+
+quantum/audio/luts.h:
+
+platforms/chibios/drivers/audio_dac.h:
+
 quantum/process_keycode/process_audio.h:
 
 quantum/process_keycode/process_music.h:
@@ -572,7 +574,3 @@ quantum/process_keycode/process_grave_esc.h:
 quantum/dip_switch.h:
 
 quantum/encoder.h:
-
-platforms/chibios/drivers/audio_dac.h:
-
-quantum/process_keycode/process_clicky.h:
