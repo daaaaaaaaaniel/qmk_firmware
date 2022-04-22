@@ -25,8 +25,8 @@
 
 #pragma once
 
-#define QMK_VERSION "0.16.0-394-g683687c-dirty"
-#define QMK_BUILDDATE "2022-04-21-18:46:33"
+#define QMK_VERSION "0.16.0-395-g3e2423-dirty"
+#define QMK_BUILDDATE "2022-04-22-02:22:40"
 #define CHIBIOS_VERSION "develop_2021_q3"
 #define CHIBIOS_CONTRIB_VERSION "develop_2021_q3-dirty"
 

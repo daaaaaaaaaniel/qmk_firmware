@@ -51,8 +51,7 @@ enum preonic_keycodes {
 
 // Tap Dance declarations
 enum td_keycodes {
-    TD_ENTER, // RShift when held, one-shot RShift + Enter when tapped. Add additional keycodes for each tapdance.
-    TD_LSFT
+    TD_ENTER // Our example key: `LSFT` when held, `ENT` when tapped. Add additional keycodes for each tapdance.
 };
 
 // Define a type containing as many tapdance states as you need
@@ -80,8 +79,6 @@ td_state_t cur_dance(qk_tap_dance_state_t *state);
 // `finished` and `reset` functions for each tapdance keycode
 void shiftent_finished(qk_tap_dance_state_t *state, void *user_data);
 void shiftent_reset(qk_tap_dance_state_t *state, void *user_data);
-void lshiftesc_finished(qk_tap_dance_state_t *state, void *user_data);
-void lshiftesc_reset(qk_tap_dance_state_t *state, void *user_data);
 
 #define AA_RCMD RCMD_T(KC_BSPC) // command (hold); backspace (tap)
 #define AA_ROPT ROPT_T(KC_DEL) // option (hold); delete (tap)
@@ -167,7 +164,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * | Tab  |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |  "   |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  | Enter|
+ * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  | Shift|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |  fn  | Ctrl | Opt  | Cmd  |     Lower   |    Raise    | Bksp |  Del |   [  |   ]  |
  * `-----------------------------------------------------------------------------------'
@@ -176,7 +173,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
   AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
-  /* AA_LSFT */TD(TD_LSFT), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, TD(TD_ENTER), /* AA_RSFT, */
+  AA_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, TD(TD_ENTER), /* AA_RSFT, */
   KC_CAPS, AA_LCTL, AA_LOPT, AA_LCMD,     AA_LSPC,          AA_RSPC,      AA_RCMD, AA_ROPT, AA_RCTL, KC_RBRC
 ),
 
@@ -396,7 +393,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (is_raise_key_held == 0) {
               layer_off(_RAISE);
 //               SEND_STRING("___________RAISE-off__");tap_code16(KC_ENT);
-//               SEND_STRING("___________RAISE-off__");tap_code16(KC_ENT);
             }
             is_lower_key_held = true;
             layer_on(_LOWER);
@@ -590,19 +586,17 @@ td_state_t cur_dance(qk_tap_dance_state_t *state) {
 //     else return TD_UNKNOWN; // Any number higher than the maximum state value you return above
 }
 
-
-// Handle the possible states for each tapdance keycode you define
-/* One-Shot RIFHT Shift / Enter */
 // Create an instance of 'td_tap_t' for the 'shiftent' tap dance.
 static td_tap_t shiftent_tap_state = {
     .is_press_action = true,
     .state = 0 // .state = TD_NONE
 };
+
+// Handle the possible states for each tapdance keycode you define
 void shiftent_finished(qk_tap_dance_state_t *state, void *user_data) {
     shiftent_tap_state.state = cur_dance(state);
     switch (shiftent_tap_state.state) {
         case TD_SINGLE_TAP:
-            register_code(KC_ENT);
             set_oneshot_mods(MOD_BIT(KC_RSFT)); // emulate one shot mod
             break;
         case TD_SINGLE_HOLD:
@@ -610,23 +604,22 @@ void shiftent_finished(qk_tap_dance_state_t *state, void *user_data) {
             register_code(KC_RSFT);
             break;
         case TD_DOUBLE_TAP:
-            register_code(KC_ENT);
+            register_code16(KC_ENT);
             break;
 //         case TD_DOUBLE_SINGLE_TAP:
 //             set_oneshot_mods(MOD_BIT(KC_RSFT));
-// //             register_code(KC_ENT);
+// //             register_code16(KC_ENT);
 //             break;
         case TD_DOUBLE_HOLD:
-            tap_code(KC_ENT);
-            tap_code(KC_ENT);
-            register_code(KC_RSFT);
+            tap_code16(KC_ENT);
+            register_code16(KC_RSFT);
             break;
         default:
             if (state->count > 2) {
                 for (uint8_t i=0; i < state->count; ++i) {
-                    tap_code(KC_ENT);
+                    tap_code16(KC_ENT);
                     if (state->pressed) {
-                        register_code(KC_RSFT);
+                        register_code16(KC_RSFT);
                     }
                 }
 //                 register_code16(KC_ENT);
@@ -637,26 +630,23 @@ void shiftent_finished(qk_tap_dance_state_t *state, void *user_data) {
 void shiftent_reset(qk_tap_dance_state_t *state, void *user_data) {
     switch (shiftent_tap_state.state) {
         case TD_SINGLE_TAP:
-            unregister_code(KC_ENT);
+//             unregister_code16(KC_LPRN);
             break;
         case TD_SINGLE_HOLD:
-//             clear_oneshot_mods();
-            unregister_code(KC_RSFT);
-//             unregister_mods(MOD_BIT(KC_RSFT));
+            clear_oneshot_mods();
+            unregister_mods(MOD_BIT(KC_RSFT));
             break;
         case TD_DOUBLE_TAP:
-            unregister_code(KC_ENT);
+            unregister_code16(KC_ENT);
             break;
 //         case TD_DOUBLE_SINGLE_TAP:
-// //             unregister_code(KC_ENT);
-// //             unregister_code(KC_ENT);
+// //             unregister_code16(KC_ENT);
 //             break;
         case TD_DOUBLE_HOLD:
             unregister_code16(KC_RSFT);
             break;
         default:
-//             unregister_code(KC_ENT);
-//             unregister_code(KC_ENT);
+//             unregister_code16(KC_ENT);
             if (!state->pressed) {
                 unregister_code16(KC_RSFT);
             }
@@ -665,56 +655,9 @@ void shiftent_reset(qk_tap_dance_state_t *state, void *user_data) {
     shiftent_tap_state.state = 0; // shiftent_tap_state.state = TD_NONE;
 }
 
-/* One-Shot LEFT Shift / Double-tap Escape */
-static td_tap_t lshiftesc_tap_state = {
-    .is_press_action = true,
-    .state = 0
-};
-void lshiftesc_finished(qk_tap_dance_state_t *state, void *user_data) {
-    lshiftesc_tap_state.state = cur_dance(state);
-    switch (lshiftesc_tap_state.state) {
-        case TD_SINGLE_TAP:
-            set_oneshot_mods(MOD_BIT(KC_LSFT)); // emulate one shot mod
-            break;
-        case TD_SINGLE_HOLD:
-            register_code(KC_LSFT);
-            break;
-        case TD_DOUBLE_TAP:
-            register_code(KC_ESC);
-            break;
-        case TD_DOUBLE_HOLD:
-            tap_code(KC_ESC);
-            register_code(KC_LSFT);
-            break;
-        default:
-            break;    
-    }
-}
-void lshiftesc_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (lshiftesc_tap_state.state) {
-        case TD_SINGLE_TAP:
-            break;
-        case TD_SINGLE_HOLD:
-//             clear_oneshot_mods();
-            unregister_code(KC_LSFT);
-//             unregister_mods(MOD_BIT(KC_LSFT));
-            break;
-        case TD_DOUBLE_TAP:
-            unregister_code(KC_ESC);
-            break;
-        case TD_DOUBLE_HOLD:
-            unregister_code(KC_LSFT);
-            break;
-        default:
-            break;
-    }
-    lshiftesc_tap_state.state = 0;
-}
-
 
 // Define `ACTION_TAP_DANCE_FN_ADVANCED()` for each tapdance keycode, passing in `finished` and `reset` functions
 qk_tap_dance_action_t tap_dance_actions[] = {
-//     [TD_ENTER] = ACTION_TAP_DANCE_DOUBLE(KC_RSFT, KC_ENT), // simple: Tap once for RShift, twice for Enter
-    [TD_ENTER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, shiftent_finished, shiftent_reset), // complex: once for Enter + one-shot Shift
-    [TD_LSFT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lshiftesc_finished, lshiftesc_reset)
+//     [TD_ENTER] = ACTION_TAP_DANCE_DOUBLE(KC_RSFT, KC_CAPS), // simple: Tap once for RShift, twice for Enter
+    [TD_ENTER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, shiftent_finished, shiftent_reset) // complex
 };
