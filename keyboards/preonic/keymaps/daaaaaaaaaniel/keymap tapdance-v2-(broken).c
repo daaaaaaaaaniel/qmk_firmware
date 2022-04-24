@@ -25,11 +25,9 @@ bool is_layer_toggled_on = false;
 /* declare layers */
 enum preonic_layers {
   _QWERTY,
-  _INV,
   _LOWER,
   _RAISE,
   _TAB,
-  _ARROWS,
   _EXTRA,
   _MIDI
 };
@@ -55,7 +53,7 @@ enum preonic_keycodes {
 // Tap Dance declarations
 enum td_keycodes {
     TD_ENTER, // RShift when held, one-shot RShift + Enter when tapped. Add additional keycodes for each tapdance.
-//     TD_LSFT
+    TD_LSFT
 };
 
 // Define a type containing as many tapdance states as you need
@@ -83,16 +81,16 @@ td_state_t cur_dance(qk_tap_dance_state_t *state);
 // `finished` and `reset` functions for each tapdance keycode
 void shiftent_finished(qk_tap_dance_state_t *state, void *user_data);
 void shiftent_reset(qk_tap_dance_state_t *state, void *user_data);
-// void lshiftesc_finished(qk_tap_dance_state_t *state, void *user_data);
-// void lshiftesc_reset(qk_tap_dance_state_t *state, void *user_data);
+void lshiftesc_finished(qk_tap_dance_state_t *state, void *user_data);
+void lshiftesc_reset(qk_tap_dance_state_t *state, void *user_data);
 
 #define AA_RCMD RCMD_T(KC_BSPC) // command (hold); backspace (tap)
 #define AA_ROPT ROPT_T(KC_DEL) // option (hold); delete (tap)
 #define AA_RCTL RCTL_T(KC_LBRC)
-// #define AA_LCMD // | (old version) - OSM(MOD_LGUI) // one-shot command
-// #define AA_LOPT // | (old version) // OSM(MOD_LALT) // one-shot option
-// #define AA_LCTL // | (old version) // OSM(MOD_LCTL) // one-shot control
-// #define AA_LSFT // | (old version) // OSM(MOD_LSFT)// one-shot left shift
+#define AA_LCMD OSM(MOD_LGUI) // one-shot command
+#define AA_LOPT OSM(MOD_LALT) // one-shot option
+#define AA_LCTL OSM(MOD_LCTL) // one-shot control
+#define AA_LSFT OSM(MOD_LSFT)// one-shot left shift
 #define AA_RSFT OSM(MOD_RSFT)// one-shot right shift
 #define SX_ESC SFT_T(KC_ESC) // shift (hold); escape (tap)
 #define DD_CMD LCMD_T(KC_DEL) // command (hold); delete (tap)
@@ -153,15 +151,12 @@ void shiftent_reset(qk_tap_dance_state_t *state, void *user_data);
 // When both SPACE keys are tapped together, execute ENTER. When both SPACE keys are HELD, activate _EXTRA layer.
 enum combos {
   SPC_ENTER,
-  MOD_ARROWS,
 };
 
 const uint16_t PROGMEM adj_combo[] = {LT(_LOWER, KC_SPC), LT(_RAISE, KC_SPC), COMBO_END};
-const uint16_t PROGMEM arrow_combo[] = {KC_A, KC_S, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
  [SPC_ENTER] = COMBO(adj_combo, LT(_EXTRA, KC_ENT)), // HITTING and HOLDING both space bars together activates _EXTRA layer (Combo that executes a layer tap), although concievably it could activate any layer, thus making holding the COMBO different from pressing the keys at different times and holding them. 
- [MOD_ARROWS] = COMBO(arrow_combo, MO(_ARROWS)), // S + D to toggle on _ARROWS layer 
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -183,29 +178,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
   AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
-  SX_ESC,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, TD(TD_ENTER), /* AA_RSFT, */
-  DF(_INV)/* KC_CAPS */, KC_LCTL, KC_LOPT, KC_LCMD,     AA_LSPC,          AA_RSPC,      AA_RCMD, AA_ROPT, AA_RCTL, KC_RBRC
-),
-
-/* Inverted Space Bars (inverted base layer)
- * ,-----------------------------------------------------------------------------------.
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |     Lower   |    Raise    |      |      |      |      |
- * `-----------------------------------------------------------------------------------'
- */
-[_INV] = LAYOUT_preonic_2x2u(
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  DF(_QWERTY), _______, _______, _______,     AA_RSPC,          AA_LSPC,      _______, _______, _______, _______
+  /* AA_LSFT */TD(TD_LSFT), KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, TD(TD_ENTER), /* AA_RSFT, */
+  KC_CAPS, AA_LCTL, AA_LOPT, AA_LCMD,     AA_LSPC,          AA_RSPC,      AA_RCMD, AA_ROPT, AA_RCTL, KC_RBRC
 ),
 
 /* Raise (Navigation layer) - holding Right Space
@@ -269,27 +243,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______,     PREVTAB,          NEXTTAB,      _______, _______, _______, _______
-),
-    
-/* Arrow Keys (Ergonomic Arrow Cluser and modifiers) - activated via S + D combo
- * ,-----------------------------------------------------------------------------------.
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |  Up  |      |      |      |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |QWERTY|      | Shift| Opt  | Cmd  |      |      | Left | Down | Right|      |      |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |QWERTY|      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |             |             |      |      |      |      |
- * `-----------------------------------------------------------------------------------'
- */
-[_ARROWS] = LAYOUT_preonic_2x2u(
-  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,  
-  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_UP,   KC_NO,   KC_NO,   KC_NO,
-  TG(_ARROWS),KC_NO,KC_LSFT, KC_LOPT, KC_LCMD, KC_NO,   KC_NO,   KC_LEFT, KC_DOWN, KC_RGHT, KC_NO,   KC_NO,
-  TG(_ARROWS), KC_NO, KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-  KC_NO,   KC_NO,   KC_NO,   KC_NO,     TG(_ARROWS),          TG(_ARROWS),        KC_NO,   KC_NO,   KC_NO,   KC_NO
 ),
 
 /* Extra (Media Functions layer) - holding Left Space + Right Space
@@ -729,56 +682,56 @@ void shiftent_reset(qk_tap_dance_state_t *state, void *user_data) {
     shiftent_tap_state.state = 0; // shiftent_tap_state.state = TD_NONE;
 }
 
-// /* One-Shot LEFT Shift / Double-tap Escape */
-// static td_tap_t lshiftesc_tap_state = {
-//     .is_press_action = true,
-//     .state = 0
-// };
-// void lshiftesc_finished(qk_tap_dance_state_t *state, void *user_data) {
-//     lshiftesc_tap_state.state = cur_dance(state);
-//     switch (lshiftesc_tap_state.state) {
-//         case TD_SINGLE_TAP:
-//             set_oneshot_mods(MOD_BIT(KC_LSFT)); // emulate one shot mod
-//             break;
-//         case TD_SINGLE_HOLD:
-//             register_code(KC_LSFT);
-//             break;
-//         case TD_DOUBLE_TAP:
-//             register_code(KC_ESC);
-//             break;
-//         case TD_DOUBLE_HOLD:
-//             tap_code(KC_ESC);
-//             register_code(KC_LSFT);
-//             break;
-//         default:
-//             break;    
-//     }
-// }
-// void lshiftesc_reset(qk_tap_dance_state_t *state, void *user_data) {
-//     switch (lshiftesc_tap_state.state) {
-//         case TD_SINGLE_TAP:
-//             break;
-//         case TD_SINGLE_HOLD:
-// //             clear_oneshot_mods();
-//             unregister_code(KC_LSFT);
-// //             unregister_mods(MOD_BIT(KC_LSFT));
-//             break;
-//         case TD_DOUBLE_TAP:
-//             unregister_code(KC_ESC);
-//             break;
-//         case TD_DOUBLE_HOLD:
-//             unregister_code(KC_LSFT);
-//             break;
-//         default:
-//             break;
-//     }
-//     lshiftesc_tap_state.state = 0;
-// }
+/* One-Shot LEFT Shift / Double-tap Escape */
+static td_tap_t lshiftesc_tap_state = {
+    .is_press_action = true,
+    .state = 0
+};
+void lshiftesc_finished(qk_tap_dance_state_t *state, void *user_data) {
+    lshiftesc_tap_state.state = cur_dance(state);
+    switch (lshiftesc_tap_state.state) {
+        case TD_SINGLE_TAP:
+            set_oneshot_mods(MOD_BIT(KC_LSFT)); // emulate one shot mod
+            break;
+        case TD_SINGLE_HOLD:
+            register_code(KC_LSFT);
+            break;
+        case TD_DOUBLE_TAP:
+            register_code(KC_ESC);
+            break;
+        case TD_DOUBLE_HOLD:
+            tap_code(KC_ESC);
+            register_code(KC_LSFT);
+            break;
+        default:
+            break;    
+    }
+}
+void lshiftesc_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (lshiftesc_tap_state.state) {
+        case TD_SINGLE_TAP:
+            break;
+        case TD_SINGLE_HOLD:
+//             clear_oneshot_mods();
+            unregister_code(KC_LSFT);
+//             unregister_mods(MOD_BIT(KC_LSFT));
+            break;
+        case TD_DOUBLE_TAP:
+            unregister_code(KC_ESC);
+            break;
+        case TD_DOUBLE_HOLD:
+            unregister_code(KC_LSFT);
+            break;
+        default:
+            break;
+    }
+    lshiftesc_tap_state.state = 0;
+}
 
 
 // Define `ACTION_TAP_DANCE_FN_ADVANCED()` for each tapdance keycode, passing in `finished` and `reset` functions
 qk_tap_dance_action_t tap_dance_actions[] = {
 //     [TD_ENTER] = ACTION_TAP_DANCE_DOUBLE(KC_RSFT, KC_ENT), // simple: Tap once for RShift, twice for Enter
     [TD_ENTER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, shiftent_finished, shiftent_reset), // complex: once for Enter + one-shot Shift
-//     [TD_LSFT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lshiftesc_finished, lshiftesc_reset)
+    [TD_LSFT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lshiftesc_finished, lshiftesc_reset)
 };

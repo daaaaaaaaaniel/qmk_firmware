@@ -122,7 +122,7 @@
 */
 
 // How many combos?
-#define COMBO_COUNT 1
+#define COMBO_COUNT 2
 
 // Mouse controls
 #define MOUSEKEY_INTERVAL 16
