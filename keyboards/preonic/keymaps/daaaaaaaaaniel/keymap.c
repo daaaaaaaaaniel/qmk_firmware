@@ -28,6 +28,7 @@ enum preonic_layers {
   _LOWER,
   _RAISE,
   _TAB,
+  _ARROWS,
   _EXTRA,
   _MIDI
 };
@@ -151,12 +152,15 @@ void lshiftesc_reset(qk_tap_dance_state_t *state, void *user_data);
 // When both SPACE keys are tapped together, execute ENTER. When both SPACE keys are HELD, activate _EXTRA layer.
 enum combos {
   SPC_ENTER,
+  MOD_ARROWS,
 };
 
 const uint16_t PROGMEM adj_combo[] = {LT(_LOWER, KC_SPC), LT(_RAISE, KC_SPC), COMBO_END};
+const uint16_t PROGMEM arrow_combo[] = {KC_S, KC_D, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
  [SPC_ENTER] = COMBO(adj_combo, LT(_EXTRA, KC_ENT)), // HITTING and HOLDING both space bars together activates _EXTRA layer (Combo that executes a layer tap), although concievably it could activate any layer, thus making holding the COMBO different from pressing the keys at different times and holding them. 
+ [MOD_ARROWS] = COMBO(arrow_combo, TG(_ARROWS), // S + D to toggle on _ARROWS layer 
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -242,6 +246,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______,     PREVTAB,          NEXTTAB,      _______, _______, _______, _______
+),
+    
+/* Arrow Keys (Ergonomic Arrow Cluser and modifiers) - activated via S + D combo
+ * ,-----------------------------------------------------------------------------------.
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      |      |      |      |      |  Up  |      |      |      |
+ * |------+------+------+------+------+-------------+------+------+------+------+------|
+ * |      | Cmd  | Opt  | Shift|      |      |      | Left | Down | Right|      |      |
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      |   PrevTab   |   NextTab   |      |      |      |      |
+ * `-----------------------------------------------------------------------------------'
+ */
+[_ARROWS] = LAYOUT_preonic_2x2u(
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, KC_UP,   _______, _______, _______,
+  _______, KC_LCMD, KC_LOPT, KC_LSFT, _______, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,
+  TG(_ARROWS), _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______,     PREVTAB,          NEXTTAB,      _______, _______, _______, _______
 ),
 
