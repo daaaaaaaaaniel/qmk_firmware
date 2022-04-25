@@ -29,7 +29,7 @@ enum preonic_layers {
   _LOWER,
   _RAISE,
   _TAB,
-  _ARROWS,
+//   _TAB2,
   _EXTRA,
   _MIDI
 };
@@ -141,6 +141,9 @@ void shiftent_reset(qk_tap_dance_state_t *state, void *user_data);
 #define AA_RSPC LT(_RAISE,KC_SPACE)
 #define AR_LOWR AR_TOGGLE_LOWER
 #define AL_RAIS AL_TOGGLE_RAISE
+/* keycodes for Amethyst */
+#define AM_MOD1 LM(_QWERTY, MOD_LALT | MOD_LSFT)
+#define AM_MOD2 LM(_QWERTY, MOD_MEH) // Control + Option + Shift 
 
 
 /* Sounds */
@@ -153,15 +156,12 @@ void shiftent_reset(qk_tap_dance_state_t *state, void *user_data);
 // When both SPACE keys are tapped together, execute ENTER. When both SPACE keys are HELD, activate _EXTRA layer.
 enum combos {
   SPC_ENTER,
-  MOD_ARROWS,
 };
 
 const uint16_t PROGMEM adj_combo[] = {LT(_LOWER, KC_SPC), LT(_RAISE, KC_SPC), COMBO_END};
-const uint16_t PROGMEM arrow_combo[] = {KC_A, KC_S, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
  [SPC_ENTER] = COMBO(adj_combo, LT(_EXTRA, KC_ENT)), // HITTING and HOLDING both space bars together activates _EXTRA layer (Combo that executes a layer tap), although concievably it could activate any layer, thus making holding the COMBO different from pressing the keys at different times and holding them. 
- [MOD_ARROWS] = COMBO(arrow_combo, MO(_ARROWS)), // S + D to toggle on _ARROWS layer 
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -182,7 +182,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_QWERTY] = LAYOUT_preonic_2x2u(
   KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
-  AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
+  AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, LT(_TAB, KC_QUOT),
   SX_ESC,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, TD(TD_ENTER), /* AA_RSFT, */
   DF(_INV)/* KC_CAPS */, KC_LCTL, KC_LOPT, KC_LCMD,     AA_LSPC,          AA_RSPC,      AA_RCMD, AA_ROPT, AA_RCTL, KC_RBRC
 ),
@@ -212,20 +212,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |LockSc|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute | Ctrl |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | PgUp |      |  MUp | Click|RClick|SwapCh|WoSel←| Sel ←|  Up  | Sel →|WoSel→|      |
+ * | PgUp |      |  MUp | Click|RClick|SwapCh|WoSel←| Sel ←| Sel →|WoSel→|  Up  |      |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * | PgDwn| MLeft| MDown|MRight| Click|LinSrt|WrdBck| Left | Shift|Right |WrdFwd|LinEnd|
+ * | PgDwn| MLeft| MDown|MRight| Click|WrdSel|WrdBck| Left |Right |WrdFwd| Down |LinEnd|
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |  Esc |      | Cut  | Copy | Paste|      |      |WrdSel| Down |      |      | Shift|
+ * |  Esc |      | Cut  | Copy | Paste|      |      |      |      |      |      | Shift|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |  Del | Lower (Lock)|             |      |      |      | Enter|
  * `-----------------------------------------------------------------------------------'
  */
 [_RAISE] = LAYOUT_preonic_2x2u(
   KC_LOCK, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_RCTL,
-  KC_PGUP, KC_EXLM, KC_MS_U, KC_BTN1, KC_BTN2, KX_SWAP, SELWPRV, SEL_PRV, KC_UP,   SEL_NXT, SELWNXT, KC_NO,
-  KC_PGDN, KC_MS_L, KC_MS_D, KC_MS_R, KC_BTN1, LN_STRT, WD_PREV, KC_LEFT, KC_LSFT, KC_RGHT, WD_NEXT, LN_END,
-  SX_ESC,  KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_NO,   TX_SEL,  KC_DOWN, KC_NO,   KC_NO,   AA_RSFT,
+  KC_PGUP, KC_EXLM, KC_MS_U, KC_BTN1, KC_BTN2, KX_SWAP, SELWPRV, SEL_PRV, SEL_NXT, SELWNXT, KC_UP,   KC_NO,
+  KC_PGDN, KC_MS_L, KC_MS_D, KC_MS_R, KC_BTN1, TX_SEL,  WD_PREV, KC_LEFT, KC_RGHT, WD_NEXT, KC_DOWN, MO(_TAB),
+  SX_ESC,  KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   AA_RSFT,
   _______, _______, _______, DD_CMD,      AR_LOWR,          _______,      _______, _______, KC_RCTL, KC_ENT
 ),
 
@@ -254,43 +254,40 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |      |AmMod2|AmMod1|      |  Up  |SwapCh|      |      |  Up  |      |      |      |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |      | Shift|  Opt | Opt  | Down |WrdSel|WrdBck| Left | Down | Right|WrdFwd|      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |   PrevTab   |   NextTab   |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
-[_TAB] = LAYOUT_preonic_2x2u(
+[_TAB] = LAYOUT_preonic_2x2u( // NOTE: add a tap dance routine to LineStart/LineEnd such that tapping once goes to the start of the line and each additional tap goes up/down by a line !! this will make it feel more like clockwise/counterclockwise movement
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, AM_MOD2, AM_MOD1, _______, KC_UP,   KX_SWAP, _______, _______, KC_UP,   _______, _______, _______,
+  MO(_TAB),KC_LSFT, KC_LOPT, KC_LOPT, KC_DOWN, TX_SEL,  WD_PREV, KC_LEFT, KC_DOWN, KC_RGHT, WD_NEXT, _______,
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______,     PREVTAB,          NEXTTAB,      _______, _______, _______, _______
 ),
-    
-/* Arrow Keys (Ergonomic Arrow Cluser and modifiers) - activated via S + D combo
- * ,-----------------------------------------------------------------------------------.
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |  Up  |      |      |      |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |QWERTY|      | Shift| Opt  | Cmd  |      |      | Left | Down | Right|      |      |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |QWERTY|      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |             |             |      |      |      |      |
- * `-----------------------------------------------------------------------------------'
- */
-[_ARROWS] = LAYOUT_preonic_2x2u(
-  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,  
-  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_UP,   KC_NO,   KC_NO,   KC_NO,
-  TG(_ARROWS),KC_NO,KC_LSFT, KC_LOPT, KC_LCMD, KC_NO,   KC_NO,   KC_LEFT, KC_DOWN, KC_RGHT, KC_NO,   KC_NO,
-  TG(_ARROWS), KC_NO, KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-  KC_NO,   KC_NO,   KC_NO,   KC_NO,     TG(_ARROWS),          TG(_ARROWS),        KC_NO,   KC_NO,   KC_NO,   KC_NO
-),
+// // Tab layer, backup v2
+//  * ,-----------------------------------------------------------------------------------.
+//  * |      |      |      |      |      |      |      |      |      |      |      |      |
+//  * |------+------+------+------+------+------+------+------+------+------+------+------|
+//  * |      |      |      |      |  Up  |      |WoSel←| Sel ←| Sel →|WoSel→|  Up  |      |
+//  * |------+------+------+------+------+-------------+------+------+------+------+------|
+//  * |      | Shift|  Opt | Opt  | Down |LnStrt|WrdBck| Left |Right |WrdFwd| Down |      |
+//  * |------+------+------+------+------+------|------+------+------+------+------+------|
+//  * |      |      |      |      |      |      |      |WrdSel|SwapCh|      |      |      |
+//  * |------+------+------+------+------+------+------+------+------+------+------+------|
+//  * |      |      |      |      |   PrevTab   |   NextTab   |      |      |      |      |
+//  * `-----------------------------------------------------------------------------------'
+//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+//   _______, _______, _______, _______, KC_UP,   _______, SELWPRV, SEL_PRV, SEL_NXT, SELWNXT, KC_UP,   _______,
+//   MO(_TAB),KC_LSFT, KC_LOPT, KC_LOPT, KC_DOWN, LN_STRT, WD_PREV, KC_LEFT, KC_RGHT, WD_NEXT, KC_DOWN, _______,
+//   _______, _______, _______, _______, _______, _______, _______, TX_SEL,  KX_SWAP, _______, _______, _______,
+//   _______, _______, _______, _______,     PREVTAB,          NEXTTAB,      _______, _______, _______, _______
+// ),
 
 /* Extra (Media Functions layer) - holding Left Space + Right Space
  * ,-----------------------------------------------------------------------------------.
