@@ -265,9 +265,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_TAB] = LAYOUT_preonic_2x2u( // NOTE: add a tap dance routine to LineStart/LineEnd such that tapping once goes to the start of the line and each additional tap goes up/down by a line !! this will make it feel more like clockwise/counterclockwise movement
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, AM_MOD2, AM_MOD1, _______, _______, KX_SWAP, _______, KC_UP,   _______, PREVTAB, NEXTTAB, _______,
-  MO(_TAB),MO(_TAB_MASK),KC_LSFT,KC_LCMD,_______,TX_SEL,WD_PREV, KC_LEFT, KC_RGHT, WD_NEXT, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, KC_DOWN, _______, _______, _______,
+  _______, AM_MOD2, AM_MOD1, _______, _______, KX_SWAP, _______, _______, _______, PREVTAB, NEXTTAB, _______,
+  MO(_TAB),MO(_TAB_MASK),KC_LSFT,KC_LCMD,_______,TX_SEL,KC_LEFT, KC_UP,   KC_DOWN, KC_RGHT, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______,     PREVTAB,          NEXTTAB,      _______, _______, _______, _______
 ),
 
@@ -287,7 +287,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_TAB_MASK] = LAYOUT_preonic_2x2u( // NOTE: add a tap dance routine to LineStart/LineEnd such that tapping once goes to the start of the line and each additional tap goes up/down by a line !! this will make it feel more like clockwise/counterclockwise movement
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   _______, AM_MOD2, AM_MOD1, _______, _______, KX_SWAP, _______, KC_UP,   _______, PREVTAB, NEXTTAB, _______,
-  MO(_TAB),_______, KC_LSFT, KC_LCMD, _______, TX_SEL,  KC_LEFT, KC_UP,   KC_DOWN, KC_RGHT, _______, _______,
+  MO(_TAB),_______, KC_LSFT, KC_LCMD, _______, TX_SEL,  WD_PREV, KC_LEFT, KC_RGHT, WD_NEXT, _______, _______,
   _______, _______, _______, _______, _______, _______, _______, _______, KC_DOWN, _______, _______, _______,
   _______, _______, _______, _______,     PREVTAB,          NEXTTAB,      _______, _______, _______, _______
 ),
