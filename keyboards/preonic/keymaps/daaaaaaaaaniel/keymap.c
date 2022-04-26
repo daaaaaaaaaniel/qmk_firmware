@@ -30,6 +30,8 @@ enum preonic_layers {
   _RAISE,
   _TAB,
   _TAB_MASK,
+  _CMD1,
+  _CMD2,
   _EXTRA,
   _MIDI
 };
@@ -181,7 +183,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_QWERTY] = LAYOUT_preonic_2x2u(
   KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
-  KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
+  MEH_T(KC_GRV),  LSA_T(KC_Q),    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
   AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, LT(_TAB, KC_QUOT),
   SX_ESC,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, TD(TD_ENTER), /* AA_RSFT, */
   DF(_INV)/* KC_CAPS */, KC_LCTL, KC_LOPT, KC_LCMD,     AA_LSPC,          AA_RSPC,      AA_RCMD, AA_ROPT, AA_RCTL, KC_RBRC
@@ -231,7 +233,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Lower (Symbol layer) - holding Left Space
  * ,-----------------------------------------------------------------------------------.
- * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
+ * |LockSc|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute |  F12 |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * |   ~  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  |  +   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -243,7 +245,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_LOWER] = LAYOUT_preonic_2x2u(
-  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
+  KC_LOCK, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE,  KC_F12,
   KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_PLUS,
   ALL_APP, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   SX_ESC,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC, KC_BSLS, KC_PIPE,
@@ -254,45 +256,65 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |AmMod2|AmMod1|      |      |SwapCh|      |  Up  |      |PrvTab|NxtTab|      |
+ * |      |AmMod2|      |      |      |SwapCh|WrdSel|      |      |PrvTab|NxtTab|      |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |//Opt/| Shift|  Cmd |      |WrdSel|WrdBck| Left |Right |WrdFwd|      |      |
+ * |      |//Opt/| Shift|SftOpt|      |      | Left |  Up  | Down |Right |      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      | Down |      |      |      |
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |   PrevTab   |   NextTab   |      |      |      |      |
+ * |      |      |      |      |             |             |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_TAB] = LAYOUT_preonic_2x2u( // NOTE: add a tap dance routine to LineStart/LineEnd such that tapping once goes to the start of the line and each additional tap goes up/down by a line !! this will make it feel more like clockwise/counterclockwise movement
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, AM_MOD2, AM_MOD1, _______, _______, KX_SWAP, _______, _______, _______, PREVTAB, NEXTTAB, _______,
-  MO(_TAB),MO(_TAB_MASK),KC_LSFT,KC_LCMD,_______,TX_SEL,KC_LEFT, KC_UP,   KC_DOWN, KC_RGHT, _______, _______,
+  _______, AM_MOD2, _______, _______, _______, KX_SWAP, TX_SEL,  _______, _______, PREVTAB, NEXTTAB, _______,
+  MO(_TAB),MO(_TAB_MASK),KC_LSFT,LOPT(KC_LSFT),_______,_______,KC_LEFT,KC_UP,KC_DOWN, KC_RGHT,_______,_______,
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______,     PREVTAB,          NEXTTAB,      _______, _______, _______, _______
+  _______, _______, _______, _______,     _______,          _______,      _______, _______, _______, _______
 ),
 
 /* Mod Tabs - replace left/right with up/down
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |AmMod2|AmMod1|      |      |SwapCh|      |  Up  |      |PrvTab|NxtTab|      |
+ * |      |AmMod2|      |      |      |SwapCh|WrdSel|      |      |PrvTab|NxtTab|      |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |  Opt | Shift|  Cmd |      |WrdSel| Left |  Up  | Down |Right |      |      |
+ * |      |//Opt/| Shift|SftOpt|      |      |WrdBck| Left |Right |WrdFwd|      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      | Down |      |      |      |
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |   PrevTab   |   NextTab   |      |      |      |      |
+ * |      |      |      |      |             |             |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_TAB_MASK] = LAYOUT_preonic_2x2u( // NOTE: add a tap dance routine to LineStart/LineEnd such that tapping once goes to the start of the line and each additional tap goes up/down by a line !! this will make it feel more like clockwise/counterclockwise movement
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, AM_MOD2, AM_MOD1, _______, _______, KX_SWAP, _______, KC_UP,   _______, PREVTAB, NEXTTAB, _______,
-  MO(_TAB),_______, KC_LSFT, KC_LCMD, _______, TX_SEL,  WD_PREV, KC_LEFT, KC_RGHT, WD_NEXT, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, KC_DOWN, _______, _______, _______,
-  _______, _______, _______, _______,     PREVTAB,          NEXTTAB,      _______, _______, _______, _______
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, WD_PREV, KC_LEFT, KC_RGHT, WD_NEXT, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______,     _______,          _______,      _______, _______, _______, _______
 ),
 
-/* Extra (Media Functions layer) - holding Left Space + Right Space
+/* CMD1 (Empty - this is just for accessing a tri-layer when CMD1+CMD2 are active simultaneously)
+ */
+[_CMD1] = LAYOUT_preonic_2x2u(
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______,     _______,          _______,      _______, _______, _______, _______
+),
+
+/* CMD2 (Empty - this is just for accessing a tri-layer when CMD1+CMD2 are active simultaneously)
+ */
+[_CMD2] = LAYOUT_preonic_2x2u(
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______,     _______,          _______,      _______, _______, _______, _______
+),
+
+/* Extra (Media Functions layer) - holding Left Space + Right Space || or in 1x2u layout, access via CMD1+CMD2
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
