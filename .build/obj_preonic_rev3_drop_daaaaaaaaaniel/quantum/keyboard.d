@@ -159,7 +159,7 @@
  quantum/process_keycode/process_magic.h \
  quantum/process_keycode/process_grave_esc.h quantum/dip_switch.h \
  quantum/encoder.h quantum/bootmagic/magic.h quantum/command.h \
- quantum/mousekey.h drivers/eeprom/eeprom_driver.h platforms/eeprom.h \
+ drivers/eeprom/eeprom_driver.h platforms/eeprom.h \
  platforms/chibios/eeprom_stm32_defs.h
 
 keyboards/preonic/config.h:
@@ -577,8 +577,6 @@ quantum/encoder.h:
 quantum/bootmagic/magic.h:
 
 quantum/command.h:
-
-quantum/mousekey.h:
 
 drivers/eeprom/eeprom_driver.h:
 

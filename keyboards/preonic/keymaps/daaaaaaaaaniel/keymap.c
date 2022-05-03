@@ -25,13 +25,10 @@ bool is_layer_toggled_on = false;
 /* declare layers */
 enum preonic_layers {
   _QWERTY,
-  _INV,
-  _LOWER,
-  _RAISE,
+  _SYM,
   _TAB,
-  _TAB_MASK,
-  _CMD1,
-  _CMD2,
+//   _CMD1,
+//   _CMD2,
   _EXTRA,
   _MIDI
 };
@@ -48,20 +45,16 @@ enum preonic_keycodes {
   KC_DO_NOT_DISTURB,
   KC_LOCK_SCREEN,
   KC_LAUNCHPAD, // _AC_SHOW_ALL_APPS // AC Desktop Show All Applications 
-  AR_TOGGLE_LOWER,
-  AL_TOGGLE_RAISE,
 //   TEXT_DESELECT,
   TEXT_SELECT_WORD,
+//   AA_RCMD,
+//   AA_LCMD
 };
 
 #define AA_RCMD RCMD_T(KC_BSPC) // command (hold); backspace (tap)
 #define AA_ROPT ROPT_T(KC_DEL) // option (hold); delete (tap)
 #define AA_RCTL RCTL_T(KC_LBRC)
-// #define AA_LCMD // | (old version) - OSM(MOD_LGUI) // one-shot command
-// #define AA_LOPT // | (old version) // OSM(MOD_LALT) // one-shot option
-// #define AA_LCTL // | (old version) // OSM(MOD_LCTL) // one-shot control
-// #define AA_LSFT // | (old version) // OSM(MOD_LSFT)// one-shot left shift
-#define AA_RSFT OSM(MOD_RSFT)// one-shot right shift
+#define AA_RSFT LT(LM(_QWERTY,MOD_RSFT),KC_ENT) // idk this doesn't quite work  /* alt version: // OSM(MOD_RSFT) // one-shot right shift */
 #define SX_ESC SFT_T(KC_ESC) // shift (hold); escape (tap)
 #define DD_CMD LCMD_T(KC_DEL) // command (hold); delete (tap)
 #define DD_BSPC ROPT_T(KC_BSPC) // option (hold); backspace (tap)
@@ -84,6 +77,7 @@ enum preonic_keycodes {
 #define KX_SWAP LCTL(KC_T) // swap characters adjacent to insersion point
 
 /* short names / aliases */
+#define KX_PALT LCMD(LSFT(KC_X))
 #define KC_MCTL KC_MISSION_CONTROL
 #define KC_SPLT KC_SPOTLIGHT
 #define KC_DICT KC_DICTATION
@@ -102,16 +96,15 @@ enum preonic_keycodes {
 #define LN_END  LINE_END
 #define LN_STRT LINE_START
 // #define TX_DSEL TEXT_DESELECT
-#define TX_SEL TEXT_SELECT_WORD
+#define TX_SEL  TEXT_SELECT_WORD
 /* keycodes for moving between layers */
-#define AA_TAB LT(_TAB, KC_TAB)
-#define AA_LSPC LT(_LOWER,KC_SPACE)
-#define AA_RSPC LT(_RAISE,KC_SPACE)
-#define AR_LOWR AR_TOGGLE_LOWER
-#define AL_RAIS AL_TOGGLE_RAISE
+#define AA_TAB  LT(_TAB, KC_TAB)
+#define AA_SPC  LT(_SYM,KC_SPACE)
 /* keycodes for Amethyst */
 #define AM_MOD1 LM(_QWERTY, MOD_LALT | MOD_LSFT)
 #define AM_MOD2 LM(_QWERTY, MOD_MEH) // Control + Option + Shift 
+#define AA_GRV  LSA_T(KC_GRV)
+#define AA_Q    LCTL_T(KC_Q)
 
 
 /* Sounds */
@@ -123,18 +116,22 @@ enum preonic_keycodes {
 /* Combos */
 // When both SPACE keys are tapped together, execute ENTER. When both SPACE keys are HELD, activate _EXTRA layer.
 enum combos {
-  SPC_ENTER,
+  CMD_ENTER,
 };
 
-const uint16_t PROGMEM adj_combo[] = {LT(_LOWER, KC_SPC), LT(_RAISE, KC_SPC), COMBO_END};
+const uint16_t PROGMEM adj_combo[] = {KC_LCMD, AA_RCMD, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
- [SPC_ENTER] = COMBO(adj_combo, LT(_EXTRA, KC_ENT)), // HITTING and HOLDING both space bars together activates _EXTRA layer (Combo that executes a layer tap), although concievably it could activate any layer, thus making holding the COMBO different from pressing the keys at different times and holding them. 
+ [CMD_ENTER] = COMBO(adj_combo, LT(_EXTRA, KC_ENT)), // HITTING and HOLDING both space bars together activates _EXTRA layer (Combo that executes a layer tap), although concievably it could activate any layer, thus making holding the COMBO different from pressing the keys at different times and holding them. 
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+/* 
+NOTE
+I'm chaning the _RAISE and _LOWER layers. In the next `push`, I'm only having QWERTY and one other "special" layer for numbers/symbols. The Nav layer will be accessed through the pinkies, not the thumbs.
+*/
 
-/* QWERTY (Default layer)
+ /* QWERTY (Default layer)
  * ,-----------------------------------------------------------------------------------.
  * |  Esc |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  =   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -142,62 +139,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * | Tab  |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |  "   |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  | Enter|
+ * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  | Shift|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  fn  | Ctrl | Opt  | Cmd  |     Lower   |    Raise    | Bksp |  Del |   [  |   ]  |
+ * |  fn  |      | Ctrl | Opt  | Cmd  |    Space    | Bksp |  Del |   [  |   ]  | Enter|
  * `-----------------------------------------------------------------------------------'
  */
-[_QWERTY] = LAYOUT_preonic_2x2u(
+[_QWERTY] = LAYOUT_preonic_1x2uC(
   KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
-  LSA_T(KC_GRV),  LCTL_T(KC_Q),    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
+  AA_GRV,  AA_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
   AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, LT(_TAB, KC_QUOT),
-  SX_ESC,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, LT(LM(_INV,MOD_RSFT),KC_ENT), /* AA_RSFT, */
-  DF(_INV)/*KC_CAPS*/, KC_LCTL, KC_LOPT, KC_LCMD,     AA_LSPC,          AA_RSPC,      AA_RCMD, AA_ROPT, AA_RCTL, KC_RBRC
+  SX_ESC,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, AA_RSFT,
+  KC_CAPS, KX_PALT, KC_LCTL, KC_LOPT, KC_LCMD,      AA_SPC,      AA_RCMD, AA_ROPT, AA_RCTL, KC_RBRC, KC_ENT
 ),
 
-/* Inverted Space Bars (inverted base layer)
- * ,-----------------------------------------------------------------------------------.
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |     Lower   |    Raise    |      |      |      |      |
- * `-----------------------------------------------------------------------------------'
- */
-[_INV] = LAYOUT_preonic_2x2u(
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  DF(_QWERTY), _______, _______, _______,     AA_RSPC,          AA_LSPC,      _______, _______, _______, _______
-),
-
-/* Raise (Navigation layer) - holding Right Space
- * ,-----------------------------------------------------------------------------------.
- * |LockSc|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute | Ctrl |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | PgUp |      |  MUp | Click|RClick|SwapCh|WoSel←| Sel ←| Sel →|WoSel→|  Up  |      |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
- * | PgDwn| MLeft| MDown|MRight| Click|WrdSel|WrdBck| Left |Right |WrdFwd| Down |LinEnd|
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |  Esc |      | Cut  | Copy | Paste|      |      |      |      |      |      | Shift|
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |  Del | Lower (Lock)|             |      |      |      | Enter|
- * `-----------------------------------------------------------------------------------'
- */
-[_RAISE] = LAYOUT_preonic_2x2u(
-  KC_LOCK, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_RCTL,
-  KC_PGUP, KC_EXLM, KC_MS_U, KC_BTN1, KC_BTN2, KX_SWAP, SELWPRV, SEL_PRV, SEL_NXT, SELWNXT, KC_UP,   KC_NO,
-  KC_PGDN, KC_MS_L, KC_MS_D, KC_MS_R, KC_BTN1, TX_SEL,  WD_PREV, KC_LEFT, KC_RGHT, WD_NEXT, KC_DOWN, MO(_TAB),
-  SX_ESC,  KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   AA_RSFT,
-  _______, _______, _______, DD_CMD,      AR_LOWR,          _______,      _______, _______, KC_RCTL, KC_ENT
-),
-
-/* Lower (Symbol layer) - holding Left Space
+/* Numbers and Symbols - holding Space
  * ,-----------------------------------------------------------------------------------.
  * |LockSc|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute |  F12 |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
@@ -205,87 +160,59 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |AppSwi|   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  =   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  Esc |      |      |      |      |      |   {  |   }  |   [  |   ]  |   \  |  |   |
+ * |  Esc |      |      |      |      |   |  |   {  |   }  |   [  |   ]  |  Up  |  \   |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * | MIDI |      |      |      |             | Raise (Lock)|  Del | Bksp |      | Enter|
+ * | MIDI |(Lock)|      |      |      |             |  Del | Bksp | Left | Down |Right |
  * `-----------------------------------------------------------------------------------'
  */
-[_LOWER] = LAYOUT_preonic_2x2u(
-  KC_LOCK, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE,  KC_F12,
+[_SYM] = LAYOUT_preonic_1x2uC(
+  KC_LOCK, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_F12,
   KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_PLUS,
   ALL_APP, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
-  SX_ESC,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC, KC_BSLS, KC_PIPE,
-  MIDI,    _______, _______, _______,      _______,  AL_RAIS,      RCMD_T(KC_DEL), DD_BSPC, _______, KC_ENT
+  _______,TO(_QWERTY),KX_CUT,KX_COPY, KX_PSTE, KC_PIPE, KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC, KC_UP,   KC_BSLS,
+  MIDI,   TO(_SYM), _______, _______, _______,  _______,  RCMD_T(KC_DEL), DD_BSPC, KC_LEFT, KC_DOWN, KC_RGHT
 ),
 
-/* Tab (Window Switcher layer) - holding Tab
+/* Tab (Window Managment layer) - holding Tab
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |AmMod2| Shift|SftOpt|      |SwapCh|WrdSel|      |      |PrvTab|NxtTab|      |
+ * |      |AmMod2| Shift|      |      |SwapCh|WrdSel|      |  Up  |PrvTab|NxtTab|      |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      | Mask |MShift|SftOpt|      |      | Left |  Up  | Down |Right |      |      |
+ * |      | Opt  | Shift|SftOpt|      |      |      | Left | Down |Right | PgUp |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |      |      | Cut  | Copy | Paste|      |      |      |      |      | PgDwn|      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |             |             |      |      |      |      |
+ * |Qwerty|(Lock)|      |      |  Del |             |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
-[_TAB] = LAYOUT_preonic_2x2u( // NOTE: add a tap dance routine to LineStart/LineEnd such that tapping once goes to the start of the line and each additional tap goes up/down by a line !! this will make it feel more like clockwise/counterclockwise movement
+[_TAB] = LAYOUT_preonic_1x2uC( // NOTE: add a tap dance routine to LineStart/LineEnd such that tapping once goes to the start of the line and each additional tap goes up/down by a line !! this will make it feel more like clockwise/counterclockwise movement
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, AM_MOD2, KC_LSFT, LOPT(KC_LSFT), _______, KX_SWAP, TX_SEL,  _______, _______, PREVTAB, NEXTTAB, _______,
-  MO(_TAB),KC_LOPT, KC_LSFT, MO(_TAB_MASK), _______, _______, KC_LEFT, KC_UP,KC_DOWN, KC_RGHT, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______,     _______,          _______,      _______, _______, _______, _______
+  _______, AM_MOD2, KC_LSFT, KC_NO,   KC_NO,   KX_SWAP, TX_SEL,  KC_NO,   KC_UP,   PREVTAB, NEXTTAB, _______,
+  MO(_TAB),KC_LOPT, KC_LSFT, LOPT(KC_LSFT),KC_NO,KC_NO, KC_NO,   KC_LEFT, KC_DOWN, KC_RGHT, KC_PGUP, MO(_TAB),
+  _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_PGDN, _______,
+  TO(_QWERTY),TO(_TAB), _______, _______, DD_CMD,      _______,      _______, _______, _______, _______, _______
 ),
-// - BACKUP -
+
+// /* CMD1 (Empty - this is just for accessing a tri-layer when CMD1+CMD2 are active simultaneously)
+//  */
+// [_CMD1] = LAYOUT_preonic_1x2uC(
 //   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-//   _______, AM_MOD2, KC_LSFT, LOPT(KC_LSFT), _______, KX_SWAP, TX_SEL,  _______, _______, PREVTAB, NEXTTAB, _______,
-//   MO(_TAB), MO(_TAB_MASK), LM(_TAB_MASK,MOD_LSFT), _______, _______, _______, KC_LEFT, KC_UP,KC_DOWN, KC_RGHT, _______, _______,
 //   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-//   _______, _______, _______, _______,     _______,          _______,      _______, _______, _______, _______
+//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+//   _______, _______, _______, _______, _______,      _______,     _______, _______, _______, _______, _______
 // ),
-
-/* Mod Tabs - replace left/right with up/down
- * ,-----------------------------------------------------------------------------------.
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |AmMod2|      |      |      |SwapCh|WrdSel|      |      |PrvTab|NxtTab|      |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |//Opt/| Shift|SftOpt|      |      |WrdBck| Left |Right |WrdFwd|      |      |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |             |             |      |      |      |      |
- * `-----------------------------------------------------------------------------------'
- */
-[_TAB_MASK] = LAYOUT_preonic_2x2u( // NOTE: add a tap dance routine to LineStart/LineEnd such that tapping once goes to the start of the line and each additional tap goes up/down by a line !! this will make it feel more like clockwise/counterclockwise movement
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, WD_PREV, KC_LEFT, KC_RGHT, WD_NEXT, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______,     _______,          _______,      _______, _______, _______, _______
-),
-
-/* CMD1 (Empty - this is just for accessing a tri-layer when CMD1+CMD2 are active simultaneously)
- */
-[_CMD1] = LAYOUT_preonic_2x2u(
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______,     _______,          _______,      _______, _______, _______, _______
-),
-
-/* CMD2 (Empty - this is just for accessing a tri-layer when CMD1+CMD2 are active simultaneously)
- */
-[_CMD2] = LAYOUT_preonic_2x2u(
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______,     _______,          _______,      _______, _______, _______, _______
-),
+// 
+// /* CMD2 (Empty - this is just for accessing a tri-layer when CMD1+CMD2 are active simultaneously)
+//  */
+// [_CMD2] = LAYOUT_preonic_1x2uC(
+//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+//   _______, _______, _______, _______, _______,      _______,     _______, _______, _______, _______, _______
+// ),
 
 /* Extra (Media Functions layer) - holding Left Space + Right Space || or in 1x2u layout, access via CMD1+CMD2
  * ,-----------------------------------------------------------------------------------.
@@ -297,15 +224,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |      |      | Next | Vol- | Vol+ |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |             |             |      |      |      |      |
+ * |      |(Lock)|      |      |      |             |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
-[_EXTRA] = LAYOUT_preonic_2x2u(
+[_EXTRA] = LAYOUT_preonic_1x2uC(
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
   ALL_APP, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU,
-  _______, _______, _______, _______,     _______,          _______,      _______, _______, _______, _______
+  _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_MNXT, KC_VOLD, KC_VOLU,
+  TO(_QWERTY),TO(_EXTRA), _______, _______, _______,      _______,     _______, _______, _______, _______, _______
 ),
 
 /* MIDI
@@ -318,17 +245,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |  C3  |  D♭3 |  D3  |  E♭3 |  E3  |  F3  |  G♭3 |  G3  |  A♭3 |  A3  |  B♭3 |  B3  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |Qwerty|      | Vel-1| Vel+1| Pitch Bend+ | Pitch Bend- |Oct-1 |Oct+1 |Note-1|Note+1|
+ * |Qwerty| Vel-1| Vel+1| Bend+| Bend-|             |      |Oct-1 |Oct+1 |Note-1|Note+1|
  * `-----------------------------------------------------------------------------------'
  */
-[_MIDI] = LAYOUT_preonic_2x2u(
+[_MIDI] = LAYOUT_preonic_1x2uC(
   MI_C,    MI_Db,   MI_D,    MI_Eb,   MI_E,    MI_F,    MI_Gb,   MI_G,    MI_Ab,   MI_A,    MI_Bb,   MI_B,
   MI_C_1,  MI_Db_1, MI_D_1,  MI_Eb_1, MI_E_1,  MI_F_1,  MI_Gb_1, MI_G_1,  MI_Ab_1, MI_A_1,  MI_Bb_1, MI_B_1,
   MI_C_2,  MI_Db_2, MI_D_2,  MI_Eb_2, MI_E_2,  MI_F_2,  MI_Gb_2, MI_G_2,  MI_Ab_2, MI_A_2,  MI_Bb_2, MI_B_2,
   MI_C_3,  MI_Db_3, MI_D_3,  MI_Eb_3, MI_E_3,  MI_F_3,  MI_Gb_3, MI_G_3,  MI_Ab_3, MI_A_3,  MI_Bb_3, MI_B_3,
-  QWERTY, _______,  MI_VELD, MI_VELU,     MI_BENDD,         MI_BENDU,     MI_OCTD, MI_OCTU, MI_TRNSD, MI_TRNSU
+  QWERTY,  MI_VELD, MI_VELU, MI_BENDD, MI_BENDU,    _______,     _______, MI_OCTD, MI_OCTU, MI_TRNSD, MI_TRNSU
 )
-
 
 };
 
@@ -450,80 +376,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 //           }
           return false;
           break;
-        case AR_TOGGLE_LOWER: // pressing _LOWER while on the _RAISE layer
-          if (record->event.pressed) {
-            if (is_raise_key_held == 0) {
-              layer_off(_RAISE);
-//               SEND_STRING("___________RAISE-off__");tap_code16(KC_ENT);
-//               SEND_STRING("___________RAISE-off__");tap_code16(KC_ENT);
-            }
-            is_lower_key_held = true;
-            layer_on(_LOWER);
-//             SEND_STRING("__________AR_LOWR pressed__");tap_code16(KC_ENT);
-          } else { // key up
-              // if both keys were held together, toggle ON the _LOWER layer 
-              if (is_raise_key_held == 0 && is_layer_toggled_on == true) { // release from pressing from hands-free mode
-                is_layer_toggled_on = false;
-                layer_off(_RAISE);
-                layer_off(_LOWER);
-//                 SEND_STRING("__________LOWER_KEYUP-release-hands-free-mode__");tap_code16(KC_ENT);
-              }
-              if (is_raise_key_held == 1) {
-                is_layer_toggled_on = true;
-                layer_off(_RAISE);
-//                 SEND_STRING("__________KEYUP_hands-free-on_LOWER__");tap_code16(KC_ENT);
-              }
-            // in every case
-            is_lower_key_held = false;
-//             SEND_STRING("__________KEYUP_LOWER__");tap_code16(KC_ENT);
-          }
-          break;
-        case AL_TOGGLE_RAISE: // pressing _RAISE while on the _LOWER layer
-          if (record->event.pressed) {
-            if (is_lower_key_held == 0) {
-              layer_off(_LOWER);
-//               SEND_STRING("__________hands-free-raise-on__");tap_code16(KC_ENT);
-            }
-            is_raise_key_held = true;
-            layer_on(_RAISE);
-//             SEND_STRING("__________AL_RAIS pressed__");tap_code16(KC_ENT);
-          } else { // key up
-              if (is_lower_key_held == 0 && is_layer_toggled_on == true) { // release from pressing while in hands-free mode
-                is_layer_toggled_on = false;
-                layer_off(_LOWER);
-                layer_off(_RAISE);
-//                 SEND_STRING("__________RAISE_KEYUP-release-hands-free-mode__");tap_code16(KC_ENT);
-              }
-              if (is_lower_key_held == 1) { // both keys held, don't turn off the _RAISE layer
-                is_layer_toggled_on = true;
-                layer_off(_LOWER);
-//                 SEND_STRING("__________KEYUP-hands-free-on_RAISE__");tap_code16(KC_ENT);
-              }
-            // key up
-            is_raise_key_held = false;
-//             SEND_STRING("__________KEYUP_RAISE__");tap_code16(KC_ENT);
-          }
-          break;
-        case LT(_RAISE,KC_SPACE): // Space/Raise (layer tap)
-        // this is kind of broken because it adds a space if its tapped, wheen really it should just disable the layer toggle. fix it by changing the line before "break;" to "return false;", and then change the press condition to include "&& record->event.pressed" to intercept taps, and add an "else if (record->event.pressed)" to incercept holds. 
-            if (record->event.pressed) {
-                is_raise_key_held = true;
-//                 SEND_STRING("__________AA_SPACE_RAISE pressed__");tap_code16(KC_ENT);
-            } else { // Intercept hold function
-                is_raise_key_held = false;
-                layer_off(_RAISE);
-//                 SEND_STRING("__________AA_SPACE_RAISE_release_hold__");tap_code16(KC_ENT);
-            }
-            return true;             // Return true for normal processing of tap keycode
-            break;
-        case LT(_LOWER,KC_SPACE): // Space/Lower (layer tap)
+        case LT(_SYM,KC_SPACE): // Space/Lower (layer tap)
         // this is kind of broken because it adds a space if its tapped, wheen really it should just disable the layer toggle. fix it by changing the line before "break;" to "return false;", and then change the press condition to include "&& record->event.pressed" to intercept taps, and add an "else if (record->event.pressed)" to incercept holds. 
             if (record->event.pressed) {
                 is_lower_key_held = true;
 //                 SEND_STRING("__________AA_SPACE_LOWER pressed__");tap_code16(KC_ENT);
             } else { 
                 is_lower_key_held = false;
-                layer_off(_LOWER);
+                layer_off(_SYM);
 //                 SEND_STRING("__________AA_SPACE_LOWER_release_hold__");tap_code16(KC_ENT);
             }
             return true;             // Return true for normal processing of tap keycode
@@ -549,51 +409,31 @@ uint16_t muse_counter = 0;
 uint8_t muse_offset = 70;
 uint16_t muse_tempo = 50;
 
-bool encoder_update_user(uint8_t index, bool clockwise) {
-  if (muse_mode) {
-    if (IS_LAYER_ON(_RAISE)) {
-      if (clockwise) {
-        muse_offset++;
-      } else {
-        muse_offset--;
-      }
-    } else {
-      if (clockwise) {
-        muse_tempo+=1;
-      } else {
-        muse_tempo-=1;
-      }
-    }
-  } else {
-    if (clockwise) {
-      register_code(KC_PGDN);
-      unregister_code(KC_PGDN);
-    } else {
-      register_code(KC_PGUP);
-      unregister_code(KC_PGUP);
-    }
-  }
-    return true;
-}
-
-//* Leftover from default keymap *//
-//
-// bool dip_switch_update_user(uint8_t index, bool active) {
-//     switch (index) {
-//         case 0:
-//             if (active) {
-//                 layer_on(_ADJUST);
-//             } else {
-//                 layer_off(_ADJUST);
-//             }
-//             break;
-//         case 1:
-//             if (active) {
-//                 muse_mode = true;
-//             } else {
-//                 muse_mode = false;
-//             }
+/* Encoder (Leftover from default keymap) */
+// bool encoder_update_user(uint8_t index, bool clockwise) {
+//   if (muse_mode) {
+//     if (IS_LAYER_ON(_RAISE)) {
+//       if (clockwise) {
+//         muse_offset++;
+//       } else {
+//         muse_offset--;
+//       }
+//     } else {
+//       if (clockwise) {
+//         muse_tempo+=1;
+//       } else {
+//         muse_tempo-=1;
+//       }
 //     }
+//   } else {
+//     if (clockwise) {
+//       register_code(KC_PGDN);
+//       unregister_code(KC_PGDN);
+//     } else {
+//       register_code(KC_PGUP);
+//       unregister_code(KC_PGUP);
+//     }
+//   }
 //     return true;
 // }
 
@@ -617,15 +457,3 @@ void matrix_scan_user(void) {
     }
 #endif
 }
-
-/* 
- * bool music_mask_user(uint16_t keycode) {
- *   switch (keycode) {
- *     case RAISE:
- *     case LOWER:
- *       return false;
- *     default:
- *       return true;
- *   }
- * }
- */

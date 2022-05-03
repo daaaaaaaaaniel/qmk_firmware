@@ -7,12 +7,12 @@ BOOTLOADER = stm32-dfu
 # Build Options
 #   change yes to no to disable
 #
-BOOTMAGIC_ENABLE =  yes     # Enable Bootmagic Lite
-MOUSEKEY_ENABLE = yes       # Mouse keys
+BOOTMAGIC_ENABLE =  yes     # Bootmagic Lite
+MOUSEKEY_ENABLE = no        # Enable mouse keys
 EXTRAKEY_ENABLE = yes       # Audio control and System control
 # CONSOLE_ENABLE = yes        # Console for debug
-COMMAND_ENABLE = no         # Magic commands for debug and configuration
-NKRO_ENABLE = yes           # Enable N-Key Rollover (Must be set to 'no' to activate enable Apple FN patch)
+COMMAND_ENABLE = no         # Enable magic commands for debug and configuration
+NKRO_ENABLE = yes           # N-Key Rollover (Must be set to 'no' to activate enable Apple FN patch)
 BACKLIGHT_ENABLE = no       # Enable keyboard backlight functionality
 RGBLIGHT_ENABLE = no        # Enable keyboard RGB underglow
 AUDIO_ENABLE = yes          # Audio output
