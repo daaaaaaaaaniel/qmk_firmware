@@ -77,7 +77,7 @@ enum preonic_keycodes {
 #define KX_SWAP LCTL(KC_T) // swap characters adjacent to insersion point
 
 /* short names / aliases */
-#define KX_PALT LCMD(LSFT(KC_X))
+// #define KX_PALT LCMD(LSFT(KC_X))
 #define KC_MCTL KC_MISSION_CONTROL
 #define KC_SPLT KC_SPOTLIGHT
 #define KC_DICT KC_DICTATION
@@ -141,15 +141,15 @@ I'm chaning the _RAISE and _LOWER layers. In the next `push`, I'm only having QW
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  | Shift|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  fn  |      | Ctrl | Opt  | Cmd  |    Space    | Bksp |  Del |   [  |   ]  | Enter|
+ * |  fn  | Ctrl | Opt  | Cmd  |     Lower   |    Raise    | Bksp |  Del |   [  |   ]  |
  * `-----------------------------------------------------------------------------------'
  */
-[_QWERTY] = LAYOUT_preonic_1x2uC(
+[_QWERTY] = LAYOUT_preonic_2x2u(
   KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   AA_GRV,  AA_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
   AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, LT(_TAB, KC_QUOT),
   SX_ESC,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, AA_RSFT,
-  KC_CAPS, KX_PALT, KC_LCTL, KC_LOPT, KC_LCMD,      AA_SPC,      AA_RCMD, AA_ROPT, AA_RCTL, KC_RBRC, KC_ENT
+  KC_CAPS, KC_LCTL, KC_LOPT, KC_LCMD,     KC_ENT,          AA_SPC,      AA_RCMD, AA_ROPT, AA_RCTL, KC_RBRC
 ),
 
 /* Numbers and Symbols - holding Space
@@ -162,41 +162,41 @@ I'm chaning the _RAISE and _LOWER layers. In the next `push`, I'm only having QW
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |  Esc |      |      |      |      |   |  |   {  |   }  |   [  |   ]  |  Up  |  \   |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * | MIDI |(Lock)|      |      |      |             |  Del | Bksp | Left | Down |Right |
+ * | MIDI |      |      |      |             |             |  Del | Left | Down |Right |
  * `-----------------------------------------------------------------------------------'
  */
-[_SYM] = LAYOUT_preonic_1x2uC(
+[_SYM] = LAYOUT_preonic_2x2u(
   KC_LOCK, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_F12,
   KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_PLUS,
   ALL_APP, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   _______,TO(_QWERTY),KX_CUT,KX_COPY, KX_PSTE, KC_PIPE, KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC, KC_UP,   KC_BSLS,
-  MIDI,   TO(_SYM), _______, _______, _______,  _______,  RCMD_T(KC_DEL), DD_BSPC, KC_LEFT, KC_DOWN, KC_RGHT
+  MIDI,   TO(_SYM), _______, _______,      _______,         _______,    RCMD_T(KC_DEL), KC_LEFT, KC_DOWN, KC_RGHT
 ),
 
 /* Tab (Window Managment layer) - holding Tab
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |AmMod2| Shift|      |      |SwapCh|WrdSel|      |  Up  |PrvTab|NxtTab|      |
+ * |      |AmMod2| Shift|      |      |SwapCh|WrdSel|      |      |PrvTab|NxtTab|      |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      | Opt  | Shift|SftOpt|      |      |      | Left | Down |Right | PgUp |      |
+ * |      | Opt  | Shift| Cmd  |      |      | Left | Down |  Up  |Right |      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      | Cut  | Copy | Paste|      |      |      |      |      | PgDwn|      |
+ * |      |      | Cut  | Copy | Paste|      |      | PgUp | PgDwn|      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |Qwerty|(Lock)|      |      |  Del |             |      |      |      |      |      |
+ * |Qwerty|(Lock)|      |      |             |             |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
-[_TAB] = LAYOUT_preonic_1x2uC( // NOTE: add a tap dance routine to LineStart/LineEnd such that tapping once goes to the start of the line and each additional tap goes up/down by a line !! this will make it feel more like clockwise/counterclockwise movement
+[_TAB] = LAYOUT_preonic_2x2u( // NOTE: add a tap dance routine to LineStart/LineEnd such that tapping once goes to the start of the line and each additional tap goes up/down by a line !! this will make it feel more like clockwise/counterclockwise movement
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, AM_MOD2, KC_LSFT, KC_NO,   KC_NO,   KX_SWAP, TX_SEL,  KC_NO,   KC_UP,   PREVTAB, NEXTTAB, _______,
-  MO(_TAB),KC_LOPT, KC_LSFT, LOPT(KC_LSFT),KC_NO,KC_NO, KC_NO,   KC_LEFT, KC_DOWN, KC_RGHT, KC_PGUP, MO(_TAB),
-  _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_PGDN, _______,
-  TO(_QWERTY),TO(_TAB), _______, _______, DD_CMD,      _______,      _______, _______, _______, _______, _______
+  _______, AM_MOD2, KC_LSFT, KC_NO,   KC_NO,   KX_SWAP, TX_SEL,  KC_NO,   KC_NO,   PREVTAB, NEXTTAB, _______,
+  MO(_TAB),KC_LOPT, KC_LSFT, KC_LCMD, KC_NO,   KC_NO,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_NO,   MO(_TAB),
+  _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_NO,   KC_PGDN, KC_PGUP, KC_NO,   KC_NO,   _______,
+  TO(_QWERTY),TO(_TAB), _______, _______, DD_CMD,      _______,      _______, _______, _______, _______
 ),
 
 // /* CMD1 (Empty - this is just for accessing a tri-layer when CMD1+CMD2 are active simultaneously)
 //  */
-// [_CMD1] = LAYOUT_preonic_1x2uC(
+// [_CMD1] = LAYOUT_preonic_2x2u(
 //   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
 //   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
 //   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
@@ -206,7 +206,7 @@ I'm chaning the _RAISE and _LOWER layers. In the next `push`, I'm only having QW
 // 
 // /* CMD2 (Empty - this is just for accessing a tri-layer when CMD1+CMD2 are active simultaneously)
 //  */
-// [_CMD2] = LAYOUT_preonic_1x2uC(
+// [_CMD2] = LAYOUT_preonic_2x2u(
 //   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
 //   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
 //   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
@@ -227,12 +227,12 @@ I'm chaning the _RAISE and _LOWER layers. In the next `push`, I'm only having QW
  * |      |(Lock)|      |      |      |             |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
-[_EXTRA] = LAYOUT_preonic_1x2uC(
+[_EXTRA] = LAYOUT_preonic_2x2u(
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
   ALL_APP, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, _______,
   _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_MNXT, KC_VOLD, KC_VOLU,
-  TO(_QWERTY),TO(_EXTRA), _______, _______, _______,      _______,     _______, _______, _______, _______, _______
+  TO(_QWERTY),TO(_EXTRA), _______, _______,      _______,     _______, _______, _______, _______, _______
 ),
 
 /* MIDI
@@ -245,15 +245,15 @@ I'm chaning the _RAISE and _LOWER layers. In the next `push`, I'm only having QW
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |  C3  |  D♭3 |  D3  |  E♭3 |  E3  |  F3  |  G♭3 |  G3  |  A♭3 |  A3  |  B♭3 |  B3  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |Qwerty| Vel-1| Vel+1| Bend+| Bend-|             |      |Oct-1 |Oct+1 |Note-1|Note+1|
+ * |Qwerty|      | Vel-1| Vel+1| Pitch Bend+ | Pitch Bend- |Oct-1 |Oct+1 |Note-1|Note+1|
  * `-----------------------------------------------------------------------------------'
  */
-[_MIDI] = LAYOUT_preonic_1x2uC(
+[_MIDI] = LAYOUT_preonic_2x2u(
   MI_C,    MI_Db,   MI_D,    MI_Eb,   MI_E,    MI_F,    MI_Gb,   MI_G,    MI_Ab,   MI_A,    MI_Bb,   MI_B,
   MI_C_1,  MI_Db_1, MI_D_1,  MI_Eb_1, MI_E_1,  MI_F_1,  MI_Gb_1, MI_G_1,  MI_Ab_1, MI_A_1,  MI_Bb_1, MI_B_1,
   MI_C_2,  MI_Db_2, MI_D_2,  MI_Eb_2, MI_E_2,  MI_F_2,  MI_Gb_2, MI_G_2,  MI_Ab_2, MI_A_2,  MI_Bb_2, MI_B_2,
   MI_C_3,  MI_Db_3, MI_D_3,  MI_Eb_3, MI_E_3,  MI_F_3,  MI_Gb_3, MI_G_3,  MI_Ab_3, MI_A_3,  MI_Bb_3, MI_B_3,
-  QWERTY,  MI_VELD, MI_VELU, MI_BENDD, MI_BENDU,    _______,     _______, MI_OCTD, MI_OCTU, MI_TRNSD, MI_TRNSU
+  QWERTY, _______,  MI_VELD, MI_VELU,     MI_BENDD,         MI_BENDU,     MI_OCTD, MI_OCTU, MI_TRNSD, MI_TRNSU
 )
 
 };
