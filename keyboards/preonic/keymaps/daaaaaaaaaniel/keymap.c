@@ -62,8 +62,8 @@ enum preonic_keycodes {
 #define KX_COPY LCMD(KC_C) // command-c
 #define KX_PSTE LCMD(KC_V) // command-v
 #define SHOW_ALL_APP_WINDOWS LCTL(KC_DOWN) // Control-Down Arrow
-#define NEXTTAB SCMD(KC_RCBR) // Command-Shift-] (or perhaps Control-Tab)
-#define PREVTAB SCMD(KC_LCBR) // Command-Shift-[ (or perhaps Control-Shift-Tab)
+#define NEXTTAB SCMD(KC_RBRC) // Command-Shift-] (or perhaps Control-Tab)
+#define PREVTAB SCMD(KC_LBRC) // Command-Shift-[ (or perhaps Control-Shift-Tab)
 // #define NEXT_WORD_DELETE LOPT(KC_DEL) // Option-Delete
 // #define PREVIOUS_WORD_BACKSPACE LOPT(KC_BSPC) // Option-Backspace
 #define NEXT_WORD LOPT(KC_RGHT) // Option-Right Arrow. Alternatively, use Opt-Cmd-F (or a custom keybind in DefaultKeyBinding.dict).
