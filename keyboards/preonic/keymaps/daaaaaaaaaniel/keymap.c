@@ -27,9 +27,8 @@ enum preonic_layers {
   _QWERTY,
   _SYM,
   _TAB,
-//   _CMD1,
-//   _CMD2,
   _EXTRA,
+//   _CMD1,
   _MIDI
 };
 
@@ -54,7 +53,7 @@ enum preonic_keycodes {
 #define AA_RCMD RCMD_T(KC_BSPC) // command (hold); backspace (tap)
 #define AA_ROPT ROPT_T(KC_DEL) // option (hold); delete (tap)
 #define AA_RCTL RCTL_T(KC_LBRC)
-#define AA_RSFT LT(LM(_QWERTY,MOD_RSFT),KC_ENT) // idk this doesn't quite work  /* alt version: // OSM(MOD_RSFT) // one-shot right shift */
+#define AA_RSFT LM(_QWERTY,MOD_RSFT), // idk this doesn't quite work  /* alt version: // OSM(MOD_RSFT) // one-shot right shift */
 #define SX_ESC SFT_T(KC_ESC) // shift (hold); escape (tap)
 #define DD_CMD LCMD_T(KC_DEL) // command (hold); delete (tap)
 #define DD_BSPC ROPT_T(KC_BSPC) // option (hold); backspace (tap)
@@ -117,13 +116,14 @@ enum preonic_keycodes {
 /* Combos */
 // When both SPACE keys are tapped together, execute ENTER. When both SPACE keys are HELD, activate _EXTRA layer.
 enum combos {
-  CMD_ENTER,
+  CMD_SELECT_ALL,
 };
 
 const uint16_t PROGMEM adj_combo[] = {KC_LCMD, AA_RCMD, COMBO_END};
 
 combo_t key_combos[COMBO_COUNT] = {
- [CMD_ENTER] = COMBO(adj_combo, LT(_EXTRA, KC_ENT)), // HITTING and HOLDING both space bars together activates _EXTRA layer (Combo that executes a layer tap), although concievably it could activate any layer, thus making holding the COMBO different from pressing the keys at different times and holding them. 
+ [CMD_SELECT_ALL] = COMBO(adj_combo, LT(_EXTRA, KC_CAPS)), // HITTING anf HOLDING both Cmd keys together activates _EXTRA layer (Combo that executes a layer tap). TAPPING both Cmd keys together triggers Caps Lock.
+ // HITTING and HOLDING both space bars together activates _EXTRA layer (Combo that executes a layer tap), although concievably it could activate any layer, thus making holding the COMBO different from pressing the keys at different times and holding them. 
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -171,7 +171,7 @@ I'm chaning the _RAISE and _LOWER layers. In the next `push`, I'm only having QW
   KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_PLUS,
   ALL_APP, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   _______,TO(_QWERTY),KX_CUT,KX_COPY, KX_PSTE, KC_PIPE, KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC, KC_UP,   KC_BSLS,
-  MIDI,   TO(_SYM), _______, _______,      _______,         _______,    RCMD_T(KC_DEL), KC_LEFT, KC_DOWN, KC_RGHT
+  MIDI,   TO(_SYM), _______, _______, LT(_SYM,KC_ESC), LT(_SYM,KC_ESC), RCMD_T(KC_DEL), KC_LEFT, KC_DOWN, KC_RGHT
 ),
 
 /* Tab (Window Managment layer) - holding Tab
@@ -180,7 +180,7 @@ I'm chaning the _RAISE and _LOWER layers. In the next `push`, I'm only having QW
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |AmMod2| Shift|      |      |SwapCh|WrdSel|      |      |PrvTab|NxtTab|      |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      | Opt  | Shift| Cmd  |      |      | Left | Down |  Up  |Right |      |      |
+ * |      | Shift| Opt  | Cmd  |      |      | Left | Down |  Up  |Right | Opt  |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      | Cut  | Copy | Paste|      |      | PgUp | PgDwn|      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -190,32 +190,12 @@ I'm chaning the _RAISE and _LOWER layers. In the next `push`, I'm only having QW
 [_TAB] = LAYOUT_preonic_2x2u( // NOTE: add a tap dance routine to LineStart/LineEnd such that tapping once goes to the start of the line and each additional tap goes up/down by a line !! this will make it feel more like clockwise/counterclockwise movement
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   _______, AM_MOD2, KC_LSFT, KC_NO,   KC_NO,   KX_SWAP, TX_SEL,  KC_NO,   KC_NO,   PREVTAB, NEXTTAB, _______,
-  MO(_TAB),KC_LOPT, KC_LSFT, KC_LCMD, KC_NO,   KC_NO,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_NO,   MO(_TAB),
+  MO(_TAB),KC_LSFT, KC_LOPT, KC_LCMD, KC_NO,   KC_NO,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_ROPT, MO(_TAB),
   _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_NO,   KC_PGDN, KC_PGUP, KC_NO,   KC_NO,   _______,
-  TO(_QWERTY),TO(_TAB), _______, _______, DD_CMD,      _______,      _______, _______, _______, _______
+  TO(_QWERTY),TO(_TAB), _______, DD_CMD,   _______,         _______,      _______, _______, _______, _______
 ),
 
-// /* CMD1 (Empty - this is just for accessing a tri-layer when CMD1+CMD2 are active simultaneously)
-//  */
-// [_CMD1] = LAYOUT_preonic_2x2u(
-//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-//   _______, _______, _______, _______, _______,      _______,     _______, _______, _______, _______, _______
-// ),
-// 
-// /* CMD2 (Empty - this is just for accessing a tri-layer when CMD1+CMD2 are active simultaneously)
-//  */
-// [_CMD2] = LAYOUT_preonic_2x2u(
-//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-//   _______, _______, _______, _______, _______,      _______,     _______, _______, _______, _______, _______
-// ),
-
-/* Extra (Media Functions layer) - holding Left Space + Right Space || or in 1x2u layout, access via CMD1+CMD2
+/* Extra (Media Functions layer) - holding Left Space + Right Space || or in 1x2u layout, access via layers CMD1+CMD2
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -225,7 +205,7 @@ I'm chaning the _RAISE and _LOWER layers. In the next `push`, I'm only having QW
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |      |      | Next | Vol- | Vol+ |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |(Lock)|      |      |      |             |      |      |      |      |      |
+ * |      |(Lock)|      |      |             |             |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_EXTRA] = LAYOUT_preonic_2x2u(
@@ -233,8 +213,19 @@ I'm chaning the _RAISE and _LOWER layers. In the next `push`, I'm only having QW
   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
   ALL_APP, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, _______,
   _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_MNXT, KC_VOLD, KC_VOLU,
-  TO(_QWERTY),TO(_EXTRA), _______, _______,      _______,     _______, _______, _______, _______, _______
+  TO(_QWERTY),TO(_EXTRA), _______, _______,  _______,    _______,      _______, _______, _______, _______
 ),
+
+// /* CMD1 (Empty - this is just for accessing a tri-layer when CMD1+CMD2 are active simultaneously)
+//  */
+// [_CMD1] = LAYOUT_preonic_2x2u(
+//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+//   _______, _______, _______, _______,      _______,         _______,      _______, _______, _______, _______
+// ),
+
 
 /* MIDI
  * ,-----------------------------------------------------------------------------------.
