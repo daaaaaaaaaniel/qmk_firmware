@@ -62,8 +62,8 @@ enum preonic_keycodes {
 #define KX_COPY LCMD(KC_C) // command-c
 #define KX_PSTE LCMD(KC_V) // command-v
 #define SHOW_ALL_APP_WINDOWS LCTL(KC_DOWN) // Control-Down Arrow
-#define NEXTTAB RSG(KC_RBRC) // Command-Shift-] (or perhaps Control-Tab)
-#define PREVTAB RSG(KC_LBRC) // Command-Shift-[ (or perhaps Control-Shift-Tab)
+#define NEXTTAB SCMD(KC_RCBR) // Command-Shift-] (or perhaps Control-Tab)
+#define PREVTAB SCMD(KC_LCBR) // Command-Shift-[ (or perhaps Control-Shift-Tab)
 // #define NEXT_WORD_DELETE LOPT(KC_DEL) // Option-Delete
 // #define PREVIOUS_WORD_BACKSPACE LOPT(KC_BSPC) // Option-Backspace
 #define NEXT_WORD LOPT(KC_RGHT) // Option-Right Arrow. Alternatively, use Opt-Cmd-F (or a custom keybind in DefaultKeyBinding.dict).
@@ -99,7 +99,8 @@ enum preonic_keycodes {
 #define TX_SEL  TEXT_SELECT_WORD
 /* keycodes for moving between layers */
 #define AA_TAB  LT(_TAB, KC_TAB)
-#define AA_SPC  LT(_SYM,KC_SPACE)
+#define AA_RSPC  LT(_SYM,KC_SPACE)
+#define AA_LSPC  LT(_SYM,KC_ENT)
 /* keycodes for Amethyst */
 #define AM_MOD1 LM(_QWERTY, MOD_LALT | MOD_LSFT)
 #define AM_MOD2 LM(_QWERTY, MOD_MEH) // Control + Option + Shift 
@@ -149,7 +150,7 @@ I'm chaning the _RAISE and _LOWER layers. In the next `push`, I'm only having QW
   AA_GRV,  AA_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
   AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, LT(_TAB, KC_QUOT),
   SX_ESC,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, AA_RSFT,
-  KC_CAPS, KC_LCTL, KC_LOPT, KC_LCMD,     KC_ENT,          AA_SPC,      AA_RCMD, AA_ROPT, AA_RCTL, KC_RBRC
+  KC_CAPS, KC_LCTL, KC_LOPT, KC_LCMD,     AA_LSPC,          AA_RSPC,      AA_RCMD, AA_ROPT, AA_RCTL, KC_RBRC
 ),
 
 /* Numbers and Symbols - holding Space
