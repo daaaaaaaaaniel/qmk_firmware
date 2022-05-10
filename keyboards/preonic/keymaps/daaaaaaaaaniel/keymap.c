@@ -178,20 +178,20 @@ I'm chaning the _RAISE and _LOWER layers. In the next `push`, I'm only having QW
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |AmMod2| Shift|      |      |SwapCh|WrdSel|      |      |PrvTab|NxtTab|      |
+ * |      |AmMod2| Shift|      |      |SwapCh|WrdSel|      |  Up  |PrvTab|NxtTab|      |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      | Shift| Opt  | Cmd  |      |      | Left | Down |  Up  |Right | Opt  |      |
+ * |      | Shift| Opt  | Cmd  |      |      |      | Left | Down |Right | Opt  |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      | Cut  | Copy | Paste|      |      | PgUp | PgDwn|      |      |      |
+ * |      |      | Cut  | Copy | Paste|      | Home | PgDwn| PgUp | End  |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |Qwerty|(Lock)|      |      |             |             |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_TAB] = LAYOUT_preonic_2x2u( // NOTE: add a tap dance routine to LineStart/LineEnd such that tapping once goes to the start of the line and each additional tap goes up/down by a line !! this will make it feel more like clockwise/counterclockwise movement
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, AM_MOD2, KC_LSFT, KC_NO,   KC_NO,   KX_SWAP, TX_SEL,  KC_NO,   KC_NO,   PREVTAB, NEXTTAB, _______,
-  MO(_TAB),KC_LSFT, KC_LOPT, KC_LCMD, KC_NO,   KC_NO,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_ROPT, MO(_TAB),
-  _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_NO,   KC_PGDN, KC_PGUP, KC_NO,   KC_NO,   _______,
+  _______, AM_MOD2, KC_LSFT, KC_NO,   KC_NO,   KX_SWAP, TX_SEL,  KC_NO,   KC_UP,   PREVTAB, NEXTTAB, _______,
+  MO(_TAB),KC_LSFT, KC_LOPT, KC_LCMD, KC_NO,   KC_NO,   KC_NO,   KC_LEFT, KC_DOWN, KC_RGHT, KC_ROPT, MO(_TAB),
+  _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_HOME, KC_PGDN, KC_PGUP, KC_END,   KC_NO,   _______,
   TO(_QWERTY),TO(_TAB), _______, DD_CMD,   _______,         _______,      _______, _______, _______, _______
 ),
 
