@@ -62,9 +62,9 @@ uint16_t bespoke_tap_timer = 0;
 #define AA_MOD4 RCMD_T(KC_BSPC) // command (hold); backspace (tap)
 #define AA_MOD5 RCTL_T(KC_LEFT) // control (hold); left arrow (tap)
 #define AA_MOD6 ROPT_T(KC_UP) // option (hold); up arrow (tap)
-#define AA_RSFT RSFT_T(KC_BSPC) // right shift (hold); backspace (tap) /* alt version: // OSM(MOD_RSFT) // one-shot right shift */
+#define AA_RCMD RCMD_T(KC_BSPC) // right shift (hold); backspace (tap) /* alt version: // OSM(MOD_RSFT) // one-shot right shift */
 #define SX_GRV SFT_T(KC_GRV) // shift (hold); grave (tap)
-// #define DD_CMD LCMD_T(KC_DEL) // command (hold); delete (tap)
+#define DD_CMD LCMD_T(KC_DEL) // command (hold); delete (tap)
 #define DD_BSPC ROPT_T(KC_BSPC) // option (hold); backspace (tap)
 #define KX_CUT LCMD(KC_X) // command-x
 #define KX_COPY LCMD(KC_C) // command-c
@@ -190,17 +190,17 @@ I'm changing the _RAISE and _LOWER layers. In the next `push`, I'm only having Q
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | Tab  |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |  "   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |`Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |  Up  |
+ * |`Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  | Bksp |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  fn  | Ctrl | Opt  | _SYM | Cmd  |   R-space   | Bksp | Left |  Up  | Down |Right |
+ * |  fn  | Ctrl | Opt  | Cmd  | _SYM |   R-space   | Bksp | Left |  Up  | Down |Right |
  * `-----------------------------------------------------------------------------------'
  */
 [_QWERTY] = LAYOUT_preonic_1x2uC(
   KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
   AA_TAB,LT(_HOME,KC_A),KC_S,KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, LT(_EXT, KC_QUOT),
-  SX_GRV,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, AA_RSFT,
-  KC_CAPS, KC_LCTL, KC_LOPT, MO(_SYM), CMD_T(KC_ENT), AA_RSPC,  AA_MOD4, AA_MOD5, AA_MOD6, KC_DOWN, KC_RGHT
+  SX_GRV,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, AA_RCMD,
+  KC_CAPS, KC_LCTL, KC_LOPT, KC_LCMD, LT(_SYM,KC_ENT), AA_RSPC,  AA_MOD4, AA_MOD5, AA_MOD6, KC_DOWN, KC_RGHT
 ),
 
 /* Space (nav controls, no changes to alphas) - holding Space
@@ -242,7 +242,7 @@ I'm changing the _RAISE and _LOWER layers. In the next `push`, I'm only having Q
   WN_FOCU, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   WN_SWIT, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_PLUS,
   KC_ESC,  KC_NO,   KX_CUT,  KC_TILD, KC_PIPE, KC_BSLS, KC_LBRC, KC_RBRC, KC_UNDS, KC_LCBR, KC_RCBR, RSFT_T(KC_DEL),
-  MIDI,   TO(_SYM), _______, _______, KC_LCMD, LT(_SPACE,KC_SPACE), RCMD_T(KC_DEL), RCTL_T(KC_RGHT), ROPT_T(KC_DOWN), S(A(KC_MINS)), A(KC_MINS)
+  MIDI,   TO(_SYM), _______, _______, MO(_SYM), LT(_SPACE,KC_SPACE), RCMD_T(KC_DEL), RCTL_T(KC_RGHT), ROPT_T(KC_DOWN), S(A(KC_MINS)), A(KC_MINS)
 ),
 
 /* Tab (Window Managment layer) - holding Tab
@@ -263,7 +263,7 @@ I'm changing the _RAISE and _LOWER layers. In the next `push`, I'm only having Q
   _______, ALL_APP, KC_ESC,  WN_FOCU, WN_SWIT, KC_ESC,  KX_SWAP, TX_SEL,  KC_UP,   PREVTAB, NEXTTAB, _______,
   MO(_EXT),MO(_HOME),KC_LSFT,KC_LOPT, KC_LCMD, KC_NO,   KC_NO,   KC_LEFT, KC_DOWN, KC_RGHT, KC_ROPT, MO(_EXT),
   _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_HOME, KC_PGDN, KC_PGUP, KC_END,  KC_NO,   _______,
-  TO(_QWERTY),TO(_EXT), _______, _______, _______,   _______,     _______, _______, _______, _______, _______
+  TO(_QWERTY),TO(_EXT), _______, DD_CMD, _______,   _______,     _______, _______, _______, _______, _______
 ),
 
 /* Home row mods - holding A
@@ -284,7 +284,7 @@ I'm changing the _RAISE and _LOWER layers. In the next `push`, I'm only having Q
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   MO(_EXT),MO(_HOME),KC_LSFT,KC_LOPT, KC_LCMD, KC_NO,   _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  TO(_QWERTY),TO(_EXT), _______, _______, _______,   _______,     RCMD_T(KC_DEL), RCTL_T(KC_RGHT), ROPT_T(KC_DOWN), _______, _______
+  TO(_QWERTY),TO(_EXT), _______, DD_CMD, _______,   _______,     RCMD_T(KC_DEL), RCTL_T(KC_RGHT), ROPT_T(KC_DOWN), _______, _______
 ),
 
 /* Extra (Media Functions layer) - holding Left Space + Right Space || or in 1x2u layout, access via layers CMD1+CMD2
