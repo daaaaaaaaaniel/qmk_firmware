@@ -25,6 +25,7 @@
 /* declare layers */
 enum preonic_layers {
   _QWERTY,
+  _SPACE,
   _SYM,
   _EXT,
   _HOME,
@@ -191,7 +192,7 @@ I'm changing the _RAISE and _LOWER layers. In the next `push`, I'm only having Q
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |`Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |  Up  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  fn  | Opt  | Ctrl | Cmd  | Shift|   R-space   | Bksp | Left | Down |Right |      |
+ * |  fn  | Opt  | Ctrl | Cmd  | Shift|   R-space   | Bksp | Left |  Up  | Down |Right |
  * `-----------------------------------------------------------------------------------'
  */
 [_QWERTY] = LAYOUT_preonic_1x2uC(
@@ -199,28 +200,49 @@ I'm changing the _RAISE and _LOWER layers. In the next `push`, I'm only having Q
   KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
   AA_TAB,LT(_HOME,KC_A),KC_S,KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, LT(_EXT, KC_QUOT),
   SX_GRV,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, AA_RSFT,
-  KC_CAPS, KC_LCTL, KC_LOPT, KC_LCMD, SFT_T(KC_ENT),      AA_RSPC,     AA_MOD4, AA_MOD5, AA_MOD6, KC_RGHT, _______
+  KC_CAPS, KC_LCTL, KC_LOPT, KC_LCMD, LT(_SYM,KC_ENT), AA_RSPC,  AA_MOD4, AA_MOD5, AA_MOD6, KC_DOWN, KC_RGHT
 ),
 
-/* Numbers and Symbols - holding Space
+/* Space (nav controls, no changes to alphas) - holding Space
  * ,-----------------------------------------------------------------------------------.
- * |  Esc |Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute |  F12 |
+ * |AppSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute |  F12 |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * | Focus|   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  =   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |WinSwi|   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  |  +   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |AppSwi|      |      |   ~  |   |  |  \   |   [  |   ]  |   _  |   {  |   }  | Down |
+ * |  Esc |      |      |   ~  |   |  |  \   |   [  |   ]  |   _  |   {  |   }  |AppSwi|
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * | MIDI |      |      |      |      |             |  Del | Right| Down |   —  |   –  |
+ * `-----------------------------------------------------------------------------------'
+ */
+[_SPACE] = LAYOUT_preonic_1x2uC(
+  ALL_APP,  KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_F12,
+  WN_FOCU, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  WN_SWIT, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  KC_ESC,  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, ALL_APP,
+  MIDI,   TO(_SYM), _______, _______, _______, MO(_SPACE), RCMD_T(KC_DEL), RCTL_T(KC_RGHT), ROPT_T(KC_DOWN), S(A(KC_MINS)), A(KC_MINS)
+),
+
+/* Numbers and Symbols - holding Space
+ * ,-----------------------------------------------------------------------------------.
+ * |AppSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute |  F12 |
+ * |------+------+------+------+------+-------------+------+------+------+------+------|
+ * | Focus|   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  =   |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |WinSwi|   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  |  +   |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |  Esc |      |      |   ~  |   |  |  \   |   [  |   ]  |   _  |   {  |   }  | Down |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * | MIDI |      |      |      |      |             |  Del | Right|  Up  |   —  |   –  |
  * `-----------------------------------------------------------------------------------'
  */
 [_SYM] = LAYOUT_preonic_1x2uC(
-  KC_ESC,  KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_F12,
+  ALL_APP, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_F12,
   WN_FOCU, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   WN_SWIT, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_PLUS,
-  ALL_APP, KC_NO,   KX_CUT,  KC_TILD, KC_PIPE, KC_BSLS, KC_LBRC, KC_RBRC, KC_UNDS, KC_LCBR, KC_RCBR, RSFT_T(KC_DOWN),
-  MIDI,   TO(_SYM), _______, _______, _______, MO(_SYM), RCMD_T(KC_DEL), RCTL_T(KC_RGHT), ROPT_T(KC_DOWN), S(A(KC_MINS)), A(KC_MINS)
+  KC_ESC,  KC_NO,   KX_CUT,  KC_TILD, KC_PIPE, KC_BSLS, KC_LBRC, KC_RBRC, KC_UNDS, KC_LCBR, KC_RCBR, RSFT_T(KC_DOWN),
+  MIDI,   TO(_SYM), _______, _______, MO(_SYM), LT(_SPACE,KC_SPACE), RCMD_T(KC_DEL), RCTL_T(KC_RGHT), ROPT_T(KC_DOWN), S(A(KC_MINS)), A(KC_MINS)
 ),
 
 /* Tab (Window Managment layer) - holding Tab
@@ -477,22 +499,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           if (record->event.pressed) {
             // Records press timer
             bespoke_tap_timer = timer_read();
-            // turn on the SYM layer
-            layer_on(_SYM);
+            // turn on the SPACE layer
+            layer_on(_SPACE);
           } else if (is_alt_tab_active) {
-            // turn off the SYM layer
-            layer_off(_SYM);
+            // turn off the SPACE layer
+            layer_off(_SPACE);
             // deactivate alt-tab
             is_alt_tab_active = false;
             unregister_code(KC_LCMD);
           } else if (timer_elapsed(bespoke_tap_timer) < TAPPING_TERM) {
-            // turn off the SYM layer
-            layer_off(_SYM);
+            // turn off the SPACE layer
+            layer_off(_SPACE);
             // Sends out 'space' if the key is held for less than tapping term 
             tap_code(KC_SPACE);
           } else {
-            // turn off the SYM layer
-            layer_off(_SYM);
+            // turn off the SPACE layer
+            layer_off(_SPACE);
           } 
           return false;
           break;
