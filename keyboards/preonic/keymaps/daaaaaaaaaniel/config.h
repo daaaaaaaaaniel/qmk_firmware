@@ -122,7 +122,9 @@
 */
 
 // How many combos?
-#define COMBO_COUNT 1
+#undef COMBO_COUNT
+// combo timeout
+#define COMBO_TERM 45
 
 // Mouse controls
 #define MOUSEKEY_INTERVAL 16

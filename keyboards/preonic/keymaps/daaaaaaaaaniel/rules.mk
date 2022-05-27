@@ -32,5 +32,6 @@ WAIT_FOR_USB = yes			# maybe this will fix startup sound?
 
 SRC += muse.c
 SRC += matrix.c
+# SRC += swapper.c
 
 LAYOUTS = ortho_5x12
