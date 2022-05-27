@@ -27,6 +27,7 @@ enum preonic_layers {
   _QWERTY,
   _SYM,
   _EXT,
+  _HOME,
   _EXTRA,
 //   _CMD1,
   _MIDI
@@ -59,7 +60,7 @@ uint16_t bespoke_tap_timer = 0;
 
 #define AA_MOD4 RCMD_T(KC_BSPC) // command (hold); backspace (tap)
 #define AA_MOD5 RCTL_T(KC_LEFT) // control (hold); left arrow (tap)
-#define AA_MOD6 ROPT_T(KC_DOWN) // option (hold); down arrow (tap)
+#define AA_MOD6 ROPT_T(KC_UP) // option (hold); up arrow (tap)
 #define AA_RSFT RSFT_T(KC_UP) // right shift (hold); up arrow (tap) /* alt version: // OSM(MOD_RSFT) // one-shot right shift */
 #define SX_GRV SFT_T(KC_GRV) // shift (hold); grave (tap)
 #define DD_CMD LCMD_T(KC_DEL) // command (hold); delete (tap)
@@ -178,6 +179,8 @@ NOTE
 I'm changing the _RAISE and _LOWER layers. In the next `push`, I'm only having QWERTY and one other "special" layer for numbers/symbols. The Nav layer will be accessed through the pinkies, not the thumbs.
 */
 
+// SEE PREVIOUS 1x2uC KEYMAP HERE - https://github.com/daaaaaaaaaniel/qmk_firmware/blob/3289f8d3af05a677b77b2cc89f0f98e43c83b2b3/keyboards/preonic/keymaps/daaaaaaaaaniel/keymap.c
+
  /* QWERTY (Default layer)
  * ,-----------------------------------------------------------------------------------.
  * |  Esc |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  =   |
@@ -188,15 +191,15 @@ I'm changing the _RAISE and _LOWER layers. In the next `push`, I'm only having Q
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |`Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |  Up  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  fn  | Opt  | Ctrl | Cmd  | Shift|   L-space   | Bksp | Left | Down |Right |      |
+ * |  fn  | Opt  | Ctrl | Cmd  | Shift|   R-space   | Bksp | Left | Down |Right |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_QWERTY] = LAYOUT_preonic_1x2uC(
   KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
-  AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, LT(_EXT, KC_QUOT),
+  AA_TAB,LT(_HOME,KC_A),KC_S,KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, LT(_EXT, KC_QUOT),
   SX_GRV,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, AA_RSFT,
-  KC_CAPS, KC_LCTL, KC_LOPT, KC_LCMD, KC_LSFT,      AA_LSPC,     AA_MOD4, AA_MOD5, AA_MOD6, KC_RGHT, _______
+  KC_CAPS, KC_LCTL, KC_LOPT, KC_LCMD, SFT_T(KC_ENT),      AA_RSPC,     AA_MOD4, AA_MOD5, AA_MOD6, KC_RGHT, _______
 ),
 
 /* Numbers and Symbols - holding Space
@@ -209,7 +212,7 @@ I'm changing the _RAISE and _LOWER layers. In the next `push`, I'm only having Q
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |AppSwi|      |      |   ~  |   |  |  \   |   [  |   ]  |   _  |   {  |   }  | Down |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * | MIDI |      |      |      |      |             |  Del | Right|   —  |   –  |      |
+ * | MIDI |      |      |      |      |             |  Del | Right|  Up  |   —  |   –  |
  * `-----------------------------------------------------------------------------------'
  */
 [_SYM] = LAYOUT_preonic_1x2uC(
@@ -217,7 +220,7 @@ I'm changing the _RAISE and _LOWER layers. In the next `push`, I'm only having Q
   WN_FOCU, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   WN_SWIT, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_PLUS,
   ALL_APP, KC_NO,   KX_CUT,  KC_TILD, KC_PIPE, KC_BSLS, KC_LBRC, KC_RBRC, KC_UNDS, KC_LCBR, KC_RCBR, RSFT_T(KC_DOWN),
-  MIDI,   TO(_SYM), _______, _______, _______, LT(_SYM,KC_ESC),  RCMD_T(KC_DEL), RCTL_T(KC_RGHT), S(A(KC_MINS)), A(KC_MINS),  _______
+  MIDI,   TO(_SYM), _______, _______, _______, MO(_SYM), RCMD_T(KC_DEL), RCTL_T(KC_RGHT), ROPT_T(KC_DOWN), S(A(KC_MINS)), A(KC_MINS)
 ),
 
 /* Tab (Window Managment layer) - holding Tab
@@ -236,9 +239,30 @@ I'm changing the _RAISE and _LOWER layers. In the next `push`, I'm only having Q
 [_EXT] = LAYOUT_preonic_1x2uC( // [Ergonomic Keyboard Mods: Extend Layer](http://colemakmods.github.io/ergonomic-mods/extend.html)
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   _______, ALL_APP, KC_ESC,  WN_FOCU, WN_SWIT, KC_ESC,  KX_SWAP, TX_SEL,  KC_UP,   PREVTAB, NEXTTAB, _______,
-  MO(_EXT),KC_LSFT, KC_LOPT, KC_LCMD, KC_NO,   KC_NO,   KC_NO,   KC_LEFT, KC_DOWN, KC_RGHT, KC_ROPT, MO(_EXT),
+  MO(_EXT),MO(_HOME),KC_LSFT,KC_LOPT, KC_LCMD, KC_NO,   KC_NO,   KC_LEFT, KC_DOWN, KC_RGHT, KC_ROPT, MO(_EXT),
   _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_HOME, KC_PGDN, KC_PGUP, KC_END,  KC_NO,   _______,
-  TO(_QWERTY),TO(_EXT), _______, DD_CMD, _______,      _______,     _______, _______, _______, _______, _______
+  TO(_QWERTY),TO(_EXT), _______, DD_CMD, _______,   _______,     _______, _______, _______, _______, _______
+),
+
+/* Home row mods - holding A
+ * ,-----------------------------------------------------------------------------------.
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |AppSwi|  Esc |WinSwR|WinSwi|  Esc |SwapCh|WrdSel|  Up  |PrvTab|NxtTab|      |
+ * |------+------+------+------+------+-------------+------+------+------+------+------|
+ * |      | Shift| Opt  | Cmd  |      |      |      | Left | Down |Right | Opt  |      |
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * |      |      | Cut  | Copy | Paste|      | Home | PgDwn| PgUp | End  |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |Qwerty|(Lock)|      |      |      |             |      |      |      |      |      |
+ * `-----------------------------------------------------------------------------------'
+ */
+[_HOME] = LAYOUT_preonic_1x2uC( // [Ergonomic Keyboard Mods: Extend Layer](http://colemakmods.github.io/ergonomic-mods/extend.html)
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  MO(_EXT),MO(_HOME),KC_LSFT,KC_LOPT, KC_LCMD, KC_NO,   _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  TO(_QWERTY),TO(_EXT), _______, DD_CMD, _______,   _______,     RCMD_T(KC_DEL), RCTL_T(KC_RGHT), ROPT_T(KC_DOWN), _______, _______
 ),
 
 /* Extra (Media Functions layer) - holding Left Space + Right Space || or in 1x2u layout, access via layers CMD1+CMD2
