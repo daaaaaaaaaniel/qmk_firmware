@@ -20,6 +20,7 @@ WS2812_DRIVER = pwm
 CUSTOM_MATRIX = yes
 # ENCODER_ENABLE = yes
 # DIP_SWITCH_ENABLE = yes
+KEY_OVERRIDE_ENABLE = yes   # Key overrides
 
 # Do not enable RGB_MATRIX_ENABLE together with RGBLIGHT_ENABLE
 RGB_MATRIX_ENABLE = no
