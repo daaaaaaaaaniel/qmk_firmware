@@ -28,6 +28,7 @@ enum preonic_layers {
   _SPACE,
   _SYM,
   _EXT,
+  _NAV,
   _HOME,
   _EXTRA,
 //   _CMD1,
@@ -54,7 +55,8 @@ enum preonic_keycodes {
 //   WINDOW_SWITCHER_REVERSE,
   AA_LSPC,
   AA_RSPC,
-  AA_TAB
+  AA_TAB,
+  AA_SYM
 };
 bool is_alt_tab_active = false;
 uint16_t bespoke_tap_timer = 0;
@@ -62,7 +64,7 @@ uint16_t bespoke_tap_timer = 0;
 #define AA_MOD4 RCMD_T(KC_BSPC) // command (hold); backspace (tap)
 #define AA_MOD5 RCTL_T(KC_LEFT) // control (hold); left arrow (tap)
 #define AA_MOD6 ROPT_T(KC_UP) // option (hold); up arrow (tap)
-#define AA_RCMD RCMD_T(KC_BSPC) // right shift (hold); backspace (tap) /* alt version: // OSM(MOD_RSFT) // one-shot right shift */
+// #define AA_SYM LT(_SYM,G(C(KC_SPC))) // right shift (hold); character viewer (tap) /* alt version: // OSM(MOD_RSFT) // one-shot right shift */
 #define SX_GRV SFT_T(KC_GRV) // shift (hold); grave (tap)
 #define DD_CMD LCMD_T(KC_DEL) // command (hold); delete (tap)
 #define DD_BSPC ROPT_T(KC_BSPC) // option (hold); backspace (tap)
@@ -89,6 +91,7 @@ uint16_t bespoke_tap_timer = 0;
 // #define AA_RSPC LSFT_T(KC_SPACE) // shift (hold); space (tap) // /* alt version:*/ LT(_SYM,KC_SPACE)
 // #define AA_LSPC  LT(_SYM,KC_ENT)
 #define WN_SWIT WINDOW_SWITCHER
+#define K_NAV LT(_NAV, KC_K)
 
 /* short names / aliases */
 // #define KX_PALT LCMD(LSFT(KC_X))
@@ -147,13 +150,13 @@ uint16_t COMBO_LEN = COMBO_LENGTH;
 /* press these keys together to trigger combo */
 const uint16_t PROGMEM cmd_combo[] = {KC_LCMD, AA_MOD4, COMBO_END};
 const uint16_t PROGMEM space_combo[] = {AA_LSPC, AA_RSPC, COMBO_END};
-const uint16_t PROGMEM focus_combo[] = {KC_GRV, KC_Q, COMBO_END};
-const uint16_t PROGMEM escape_combo[] = {AA_TAB, LT(_HOME,KC_A), COMBO_END};
+const uint16_t PROGMEM focus_combo[] = {KC_ESC, KC_Q, COMBO_END};
+const uint16_t PROGMEM escape_combo[] = {AA_TAB, KC_A, COMBO_END};
 const uint16_t PROGMEM escape_sym_combo[] = {WN_SWIT, KC_EXLM, COMBO_END};
-const uint16_t PROGMEM left_combo[] = {KC_J, KC_K, COMBO_END};// {KC_AMPR, KC_ASTR, COMBO_END};
-const uint16_t PROGMEM right_combo[] = {KC_K, KC_L, COMBO_END};// {KC_ASTR, KC_LPRN, COMBO_END};
+const uint16_t PROGMEM left_combo[] = {KC_J, K_NAV, COMBO_END};// {KC_AMPR, KC_ASTR, COMBO_END};
+const uint16_t PROGMEM right_combo[] = {K_NAV, KC_L, COMBO_END};// {KC_ASTR, KC_LPRN, COMBO_END};
 const uint16_t PROGMEM up_combo[] = {KC_J, KC_I, COMBO_END};// {KC_AMPR, KC_8, COMBO_END};
-const uint16_t PROGMEM down_combo[] = {KC_M, KC_K, COMBO_END};// {KC_RCBR, KC_ASTR, COMBO_END};
+const uint16_t PROGMEM down_combo[] = {KC_M, K_NAV, COMBO_END};// {KC_RCBR, KC_ASTR, COMBO_END};
 const uint16_t PROGMEM delete_combo[] = {KC_COMM, AA_MOD4, COMBO_END};
 const uint16_t PROGMEM right2_combo[] = {KC_DOT, AA_MOD5, COMBO_END};
 
@@ -190,17 +193,17 @@ I'm changing the _RAISE and _LOWER layers. In the next `push`, I'm only having Q
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | Tab  |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |  "   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |`Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  | Bksp |
+ * |`Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  | _SYM |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  fn  | Ctrl | Opt  | Cmd  | _SYM |   R-space   | Bksp | Left |  Up  | Down |Right |
+ * |  fn  | _SYM | Ctrl | Opt  | Cmd  |   R-space   | Bksp | Left |  Up  | Down |Right |
  * `-----------------------------------------------------------------------------------'
  */
 [_QWERTY] = LAYOUT_preonic_1x2uC(
-  KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
-  KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
-  AA_TAB,LT(_HOME,KC_A),KC_S,KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, LT(_EXT, KC_QUOT),
-  SX_GRV,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, AA_RCMD,
-  KC_CAPS, KC_LCTL, KC_LOPT, KC_LCMD, LT(_SYM,KC_ENT), AA_RSPC,  AA_MOD4, AA_MOD5, AA_MOD6, KC_DOWN, KC_RGHT
+  KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
+  KC_ESC,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
+  AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    K_NAV,   KC_L,    KC_SCLN, LT(_EXT, KC_QUOT),
+  SX_GRV,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, AA_SYM,
+  KC_CAPS, MO(_SYM),KC_LCTL, KC_LOPT, CMD_T(KC_ENT),AA_RSPC,     AA_MOD4, AA_MOD5, AA_MOD6, KC_DOWN, KC_RGHT
 ),
 
 /* Space (nav controls, no changes to alphas) - holding Space
@@ -219,9 +222,9 @@ I'm changing the _RAISE and _LOWER layers. In the next `push`, I'm only having Q
 [_SPACE] = LAYOUT_preonic_1x2uC(
   ALL_APP,  KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_F12,
   WN_FOCU, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_EQL,
-  WN_SWIT, _______, SFT_T(KC_S), OPT_T(KC_D), CMD_T(KC_F), _______, _______, _______, _______, _______, KC_COLN, KC_DQT,
+  WN_SWIT, LT(_HOME,KC_A), SFT_T(KC_S), OPT_T(KC_D), CMD_T(KC_F), _______, _______, _______, _______, _______, KC_COLN, KC_DQT,
   KC_ESC,  _______, _______, _______, _______, _______, _______, _______, KC_LABK, KC_RABK, KC_QUES, ALL_APP,
-  MIDI,   TO(_SYM), _______, _______, _______, MO(_SPACE), RCMD_T(KC_DEL), RCTL_T(KC_RGHT), ROPT_T(KC_DOWN), S(A(KC_MINS)), A(KC_MINS)
+  MIDI,    _______, _______, _______, _______, MO(_SPACE), RCMD_T(KC_DEL), RCTL_T(KC_RGHT), ROPT_T(KC_DOWN), S(A(KC_MINS)), A(KC_MINS)
 ),
 
 /* Numbers and Symbols - holding Space
@@ -242,7 +245,7 @@ I'm changing the _RAISE and _LOWER layers. In the next `push`, I'm only having Q
   WN_FOCU, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   WN_SWIT, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_PLUS,
   KC_ESC,  KC_NO,   KX_CUT,  KC_TILD, KC_PIPE, KC_BSLS, KC_LBRC, KC_RBRC, KC_UNDS, KC_LCBR, KC_RCBR, RSFT_T(KC_DEL),
-  MIDI,   TO(_SYM), _______, _______, MO(_SYM), LT(_SPACE,KC_SPACE), RCMD_T(KC_DEL), RCTL_T(KC_RGHT), ROPT_T(KC_DOWN), S(A(KC_MINS)), A(KC_MINS)
+  MIDI,    _______, _______, _______, MO(_SYM), LT(_SPACE,KC_SPACE), RCMD_T(KC_DEL), RCTL_T(KC_RGHT), ROPT_T(KC_DOWN), S(A(KC_MINS)), A(KC_MINS)
 ),
 
 /* Tab (Window Managment layer) - holding Tab
@@ -263,18 +266,40 @@ I'm changing the _RAISE and _LOWER layers. In the next `push`, I'm only having Q
   _______, ALL_APP, KC_ESC,  WN_FOCU, WN_SWIT, KC_ESC,  KX_SWAP, TX_SEL,  KC_UP,   PREVTAB, NEXTTAB, _______,
   MO(_EXT),MO(_HOME),KC_LSFT,KC_LOPT, KC_LCMD, KC_NO,   KC_NO,   KC_LEFT, KC_DOWN, KC_RGHT, KC_ROPT, MO(_EXT),
   _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_HOME, KC_PGDN, KC_PGUP, KC_END,  KC_NO,   _______,
-  TO(_QWERTY),TO(_EXT), _______, DD_CMD, _______,   _______,     _______, _______, _______, _______, _______
+  TO(_QWERTY),_______,_______,DD_CMD, _______,   _______,        _______, _______, _______, _______, _______
+),
+
+/* Navigation - holding K
+ * (keep it minimal so it doesn't interfere with regular typing)
+ * ,-----------------------------------------------------------------------------------.
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |Qwerty|(Lock)|      |      |      |             |      |      |      |      |      |
+ * `-----------------------------------------------------------------------------------'
+ */
+[_NAV] = LAYOUT_preonic_1x2uC(
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, KC_UP,   _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, KC_LEFT, MO(_NAV),KC_RGHT, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, KC_DOWN, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______,     _______,      _______, _______, _______, _______, _______
 ),
 
 /* Home row mods - holding A
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |AppSwi|  Esc |WinSwR|WinSwi|  Esc |SwapCh|WrdSel|  Up  |PrvTab|NxtTab|      |
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      | Shift| Opt  | Cmd  |      |      |      | Left | Down |Right | Opt  |      |
+ * |      | Shift| Opt  | Cmd  |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      | Cut  | Copy | Paste|      | Home | PgDwn| PgUp | End  |      |      |
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |Qwerty|(Lock)|      |      |      |             |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
@@ -284,7 +309,7 @@ I'm changing the _RAISE and _LOWER layers. In the next `push`, I'm only having Q
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   MO(_EXT),MO(_HOME),KC_LSFT,KC_LOPT, KC_LCMD, KC_NO,   _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  TO(_QWERTY),TO(_EXT), _______, DD_CMD, _______,   _______,     RCMD_T(KC_DEL), RCTL_T(KC_RGHT), ROPT_T(KC_DOWN), _______, _______
+  TO(_QWERTY),_______, _______, DD_CMD, _______,   _______,      RCMD_T(KC_DEL), RCTL_T(KC_RGHT), ROPT_T(KC_DOWN), _______, _______
 ),
 
 /* Extra (Media Functions layer) - holding Left Space + Right Space || or in 1x2u layout, access via layers CMD1+CMD2
@@ -305,7 +330,7 @@ I'm changing the _RAISE and _LOWER layers. In the next `push`, I'm only having Q
   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
   ALL_APP, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, _______,
   _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_MNXT, KC_VOLD, KC_VOLU,
-  TO(_QWERTY),TO(_EXTRA), _______, _______, _______,      _______,     _______, _______, _______, _______, _______
+  TO(_QWERTY), _______, _______, _______, _______,      _______,     _______, _______, _______, _______, _______
 ),
 
 // /* CMD1 (Empty - this is just for accessing a tri-layer when CMD1+CMD2 are active simultaneously)
@@ -472,23 +497,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 //             }
 //             return true;             // Return true for normal processing of tap keycode
 //             break;
-        case AA_LSPC: // modifed from https://github.com/davidagross/qmk_firmware/blob/1ccdb0dd461023398076eb3ea92ff050c5aba6ef/keyboards/minidox/keymaps/dgroseph/keymap.c (NAVHOM key) which is based on http://blog.hgao.net/post/qmk-mod-key/
+        case AA_SYM:
           if (record->event.pressed) {
             // Records press timer
             bespoke_tap_timer = timer_read();
             // turn on the SYM layer
             layer_on(_SYM);
-          } else if (is_alt_tab_active) {
-            // turn off the SYM layer
-            layer_off(_SYM);
-            // deactivate alt-tab
-            is_alt_tab_active = false;
-            unregister_code(KC_LCMD);
+//           } else if (is_alt_tab_active) {
+//             // turn off the SYM layer
+//             layer_off(_SYM);
+//             // deactivate alt-tab
+//             is_alt_tab_active = false;
+//             unregister_code(KC_LCMD);
           } else if (timer_elapsed(bespoke_tap_timer) < TAPPING_TERM) {
             // turn off the SYM layer
             layer_off(_SYM);
-            // Sends out 'enter' if the key is held for less than tapping term 
-            tap_code(KC_ENT);
+            // Sends out 'command-control-space' (character viewer) if the key is held for less than tapping term 
+            tap_code16(G(C(KC_SPC)));
           } else {
             // turn off the SYM layer
             layer_off(_SYM);
@@ -533,7 +558,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           } else if (timer_elapsed(bespoke_tap_timer) < TAPPING_TERM) {
             // turn off the _EXT layer
             layer_off(_EXT);
-            // Sends out 'home' if the key is held for less than tapping term 
+            // Sends out 'tab' if the key is held for less than tapping term 
             tap_code(KC_TAB);
           } else {
             // turn off the _EXT layer
@@ -567,18 +592,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 };
 
-bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case SFT_T(KC_GRV):
-            // Immediately select the hold action (Shift) when another key (grave key?) is pressed.
-            return true;
-        default:
-            // Do not select the hold action when another key is pressed. (Don't send Shift on every single keypress on the keyboard.)
-            return false;
-    }
-}
+// SX_GRV aka SFT_T(KC_GRV)
+// i think this does nothing in the current config…
+// its supposed to help make the shift/grave key more biased towards the hold (shift) action and reduce delay. but i think it would work even wihtout this? 
+// bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
+//     switch (keycode) {
+//         case SFT_T(KC_GRV):
+//             // Immediately select the hold action (Shift) when another key is pressed.
+//             return true;
+//         default:
+//             // Do not select the hold action when another key is pressed. (Don't send Shift on every single keypress on the keyboard.)
+//             return false;
+//     }
+// }
 
 // // [QMK triggers: reacting to interesting events](https://getreuer.info/posts/keyboards/triggers/index.html#action-on-double-tap-without-delay)
+// i was trying to make it so that a mod would act as Opt when held and Cmd when double tapped?
 // if (record->event.pressed) {
 //   static bool tapped = false;
 //   static uint16_t tap_timer = 0;
