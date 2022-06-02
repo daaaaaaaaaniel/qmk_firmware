@@ -30,6 +30,7 @@ enum preonic_layers {
   _EXT,
   _NAV,
   _HOME,
+  _SPEC,
   _EXTRA,
 //   _CMD1,
   _MIDI
@@ -63,11 +64,11 @@ uint16_t bespoke_tap_timer = 0;
 
 #define AA_MOD4 RCMD_T(KC_BSPC) // command (hold); backspace (tap)
 #define AA_MOD5 RCTL_T(KC_LEFT) // control (hold); left arrow (tap)
-#define AA_MOD6 ROPT_T(KC_UP) // option (hold); up arrow (tap)
+#define AA_MOD6 ROPT_T(KC_RIGHT) // option (hold); right arrow (tap)
 // #define O_RSFT OSM(MOD_RSFT) // one-shot right shift
 #define SX_GRV SFT_T(KC_GRV) // shift (hold); grave (tap)
 #define DD_CMD LCMD_T(KC_DEL) // command (hold); delete (tap)
-#define DD_BSPC ROPT_T(KC_BSPC) // option (hold); backspace (tap)
+// #define DD_BSPC ROPT_T(KC_BSPC) // option (hold); backspace (tap)
 #define KX_CUT LCMD(KC_X) // command-x
 #define KX_COPY LCMD(KC_C) // command-c
 #define KX_PSTE LCMD(KC_V) // command-v
@@ -107,6 +108,7 @@ uint16_t bespoke_tap_timer = 0;
 #define EM_DASH S(A(KC_MINS)) // —
 
 /* short names / aliases */
+#define CH_EMOJ CHARACTER_VIEWER
 #define KC_BRIT KC_BRITISH_POUND
 #define KC_SECT KC_SECTION
 #define KC_MCTL KC_MISSION_CONTROL
@@ -164,8 +166,8 @@ uint16_t COMBO_LEN = COMBO_LENGTH;
 
 /* press these keys together to trigger combo */
 const uint16_t PROGMEM cmd_combo[] = {KC_LCMD, AA_MOD4, COMBO_END};
-const uint16_t PROGMEM space_combo[] = {AA_LSPC, AA_RSPC, COMBO_END};
-const uint16_t PROGMEM focus_combo[] = {KC_ESC, KC_Q, COMBO_END}; // possibly needs to switch KC_ESC to QK_GESC 
+const uint16_t PROGMEM space_combo[] = {CMD_T(KC_ENT), AA_RSPC, COMBO_END};
+const uint16_t PROGMEM focus_combo[] = {QK_GESC, KC_Q, COMBO_END}; // possibly needs to switch KC_ESC to QK_GESC 
 const uint16_t PROGMEM escape_combo[] = {AA_TAB, KC_A, COMBO_END};
 const uint16_t PROGMEM escape_spc_combo[] = {APP_SWI, LT(_HOME,KC_A), COMBO_END};
 const uint16_t PROGMEM left_combo[] = {KC_J, K_NAV, COMBO_END};// {KC_AMPR, KC_ASTR, COMBO_END};
@@ -192,30 +194,16 @@ combo_t key_combos[] = {
 };
 /* END Combos */
 
-/* Key Overrides */
-// https://docs.qmk.fm/#/feature_key_overrides?id=key-overrides
-
-/* made redundant by QK_GESC QK_GRAVE_ESCAPE
-// GUI + esc = `
-const key_override_t cmd_grave_esc_override = ko_make_with_layers(MOD_MASK_GUI, KC_ESC, KC_GRV, 1<<_QWERTY); // broken with karabiner? needs further testing
-// // GUI + esc = window focus (GUI`)
-// const key_override_t cmd_grave_esc_override = ko_make_with_layers(MOD_MASK_GUI, KC_ESC, WN_FOCU, 1<<_QWERTY); // broken with karabiner? needs further testing
-*/
-
-// GUI + tapped Left Shift(hold/grave(tap) = escape // aka SX_GRV or SFT_T(KC_GRV) (or Left Shift)
-// const key_override_t cmd_esc_grave_override = ko_make_with_layers(MOD_MASK_GUI, SFT_T(KC_GRV), KC_ESC, 1<<_QWERTY); // doesn't work?
-
-// Shift + esc = ~
-const key_override_t shift_tilde_esc_override = ko_make_with_layers(MOD_MASK_SHIFT, KC_ESC, S(KC_GRV), 1<<_QWERTY);
-
-// This globally defines all key overrides to be used
-const key_override_t **key_overrides = (const key_override_t *[]){
-    &shift_tilde_esc_override,
-//     &cmd_grave_esc_override,
-//     &cmd_esc_grave_override,
-    NULL // Null terminate the array of overrides!
-};
-/* END Key Overrides */
+// just throwing this in kind of randomly… 
+// one shot mods // https://docs.qmk.fm/#/one_shot_keys?id=one-shot-keys
+void oneshot_mods_changed_user(uint8_t mods) {
+    if (!{HOLDING DOWN THE CUSTOM KEY}) { 
+        oneshot_disable();
+    }
+    else {
+        oneshot_enable(); 
+    }
+}
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -231,7 +219,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |`Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  | _SYM |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  fn  | _SYM | Ctrl | Opt  | Cmd  |   _SPACE    | Bksp | Left |  Up  | Down |Right |
+ * |  fn  | _SYM | Ctrl | Opt  | Cmd  |   _SPACE    | Bksp | Left | Right|  Up  | Down |
  * `-----------------------------------------------------------------------------------'
  */
 [_QWERTY] = LAYOUT_preonic_1x2uC(
@@ -239,7 +227,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   QK_GESC, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
   AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    K_NAV,   KC_L,    KC_SCLN, LT(_EXT, KC_QUOT),
   SX_GRV,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, LT(_SYM, KC_ESC),
-  KC_CAPS, MO(_SYM),KC_LCTL, KC_LOPT, CMD_T(KC_ENT),AA_RSPC,     AA_MOD4, AA_MOD5, AA_MOD6, KC_DOWN, KC_RGHT
+  KC_CAPS, MO(_SYM),OSM(MOD_LCTL), OSM(MOD_LALT), CMD_T(KC_ENT),AA_RSPC,     AA_MOD4, AA_MOD5, AA_MOD6, KC_UP,   KC_DOWN
 ),
 
 /* Space (nav controls, no changes to alphas) - holding Space
@@ -248,19 +236,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | Focus|      |      |      |      |      |      |      |      |      |      |   =  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |AppSwi|      | Shift| Opt  | Cmd  |      |      |      |      |      |   :  |   "  |
+ * |AppSwi|      | Shift| Opt  | Cmd  |      |      |      |      |      |  Up  |   "  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |   <  |   >  |   ?  |  Esc |
+ * |      |      |      |      |      |      |      |      |      | Left | Down | Right|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | MIDI |      |      |      |      |-|||||||||||-|  Del | Right| Down |   —  |   –  |
+ * | MIDI |      |      |      |      |-|||||||||||-|  Del |  Up  | Down |   —  |   –  |
  * `-----------------------------------------------------------------------------------'
  */
 [_SPACE] = LAYOUT_preonic_1x2uC(
   ALL_APP,  KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_F12,
   WN_FOCU, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_EQL,
-  APP_SWI, LT(_HOME,KC_A), SFT_T(KC_S), OPT_T(KC_D), CMD_T(KC_F), _______, _______, _______, _______, _______, KC_COLN, KC_DQT,
-  _______, _______, _______, _______, _______, _______, _______, _______, KC_LABK, KC_RABK, KC_QUES, LT(_SYM, KC_ESC),
-  MIDI,    _______, _______, _______, _______, MO(_SPACE), RCMD_T(KC_DEL), RCTL_T(KC_RGHT), ROPT_T(KC_DOWN), EM_DASH, EN_DASH
+  APP_SWI, LT(_HOME,KC_A), SFT_T(KC_S), OPT_T(KC_D), CMD_T(KC_F), _______, _______, _______, _______, _______, KC_UP, KC_DQT,
+  SFT_T(KC_ESC),_______, _______, _______, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN, LT(_SYM, KC_RGHT),
+  MIDI,    _______, _______, _______, _______, MO(_SPACE), RCMD_T(KC_DEL), RCTL_T(KC_UP), ROPT_T(KC_DOWN), EM_DASH, EN_DASH
 ),
 
 /* Numbers and Symbols - holding _SYM
@@ -271,7 +259,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |   `  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  |  +   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  Esc |   §  |   €  |   £  |   |  |  \   |   [  |   ]  |   _  |   {  |   }  |=||||=|
+ * | Emoji|   §  |   €  |   £  |   |  |  \   |   [  |   ]  |   _  |   {  |   }  |=||||=|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | MIDI |=||||=|      |      |      |             |  Del | Right|  Up  |   —  |   –  |
  * `-----------------------------------------------------------------------------------'
@@ -280,7 +268,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ALL_APP, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_F12,
   KC_TILD, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   KC_GRV,  KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_PLUS,
-  KC_ESC,KC_SECTION,KC_EURO, KC_BRITISH_POUND, KC_PIPE, KC_BSLS, KC_LBRC, KC_RBRC, KC_UNDS, KC_LCBR, KC_RCBR, _______,
+  CH_EMOJ, KC_SECT, KC_EURO, KC_BRIT, KC_PIPE, KC_BSLS, KC_LBRC, KC_RBRC, KC_UNDS, KC_LCBR, KC_RCBR, _______,
   MIDI,    _______, _______, _______, _______, LT(_SPACE,KC_SPACE), RCMD_T(KC_DEL), RCTL_T(KC_RGHT), ROPT_T(KC_DOWN), S(A(KC_MINS)), A(KC_MINS)
 ),
 
@@ -348,7 +336,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   TO(_QWERTY),_______, _______, DD_CMD, _______,   _______,      RCMD_T(KC_DEL), RCTL_T(KC_RGHT), ROPT_T(KC_DOWN), _______, _______
 ),
 
-/* Extra (Media Functions layer) - holding Left Space + Right Space || or in 1x2u layout, access via layers CMD1+CMD2
+/* Special (Macros) - holding Space + pinkie modifer (Shift/_EXT/_SYM)
+ * ,-----------------------------------------------------------------------------------.
+ * |      |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |   Z  |   X  |   C  |   V  |   B  |   N  |Paletr|   ,  |   .  |   /  |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      |      |-|||||||||||-|      |      |      |      |      |
+ * `-----------------------------------------------------------------------------------'
+ */
+[_SPEC] = LAYOUT_preonic_1x2uC(
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______,KC_NO/* Q */,KC_NO/* W */,KC_NO/* E */,KC_NO/* R */,KC_NO/* T */,KC_NO/* Y */,KC_NO/* U */,KC_NO/* I */,KC_NO/* O */,KC_NO/* P */,_______,
+  _______,KC_NO/* A */,KC_NO/* S */,KC_NO/* D */,KC_NO/* F */,KC_NO/* G */,KC_NO/* H */,KC_NO/* J */,KC_NO/* K */,KC_NO/* L */,KC_NO/* ; */,_______,
+  _______,KC_NO/* Z */,KC_NO/* X */,KC_NO/* C */,KC_NO/* V */,KC_NO/* B */,KC_NO/* N */,KC_NO/* M */,KC_NO/* N */,KC_NO/* . */,KC_NO/* / */,_______,
+  _______, _______, _______, _______, _______,      _______,     _______, _______, _______, _______, _______
+),
+
+
+/* Extra (Media Functions layer) - holding Left Cmd + Space
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -368,6 +378,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_MNXT, KC_VOLD, KC_VOLU,
   TO(_QWERTY), _______, _______, _______, _______,      _______,     _______, _______, _______, _______, _______
 ),
+
 
 // /* CMD1 (Empty - this is just for accessing a tri-layer when CMD1+CMD2 are active simultaneously)
 //  */
@@ -551,11 +562,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           return false;
           break;
         case AA_RSPC: // modifed from https://github.com/davidagross/qmk_firmware/blob/1ccdb0dd461023398076eb3ea92ff050c5aba6ef/keyboards/minidox/keymaps/dgroseph/keymap.c (NAVHOM key) which is based on http://blog.hgao.net/post/qmk-mod-key/
+        // 1) starts timer to check if tapped or held; 2) turn on OSM and _SPACE layer while held; 3) turn off OSM and _SPACE layer when released 
           if (record->event.pressed) {
             // Records press timer
             bespoke_tap_timer = timer_read();
             // turn on the SPACE layer
             layer_on(_SPACE);
+            if (!is_oneshot_enabled()) { // check if oneshot mods are enabled, then turn them on
+                oneshot_enable(); // turn ON oneshot mods
+            }
           } else if (is_alt_tab_active) { // release alt_tab when releasing this spacebar
           /* ideally this would also unregister LCMD if any other key is pressed besides TAB, ESCAPE, or GRAVE but idk how. */
             // turn off the SPACE layer
@@ -571,6 +586,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           } else { // on key release
             // turn off the SPACE layer
             layer_off(_SPACE);
+            if ((get_oneshot_mods()) && !has_oneshot_mods_timed_out()) { // turn off active one shot mods
+                clear_oneshot_mods();
+            }   
+            oneshot_disable(); // disable oneshot mods
           } 
           return false;
           break;
@@ -624,7 +643,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // update: after testing, it seems like it actually helps a lot! tested twice and confirmed to make a major improvment! 
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case SFT_T(KC_GRV):
+        case SX_GRV:
             // Immediately select the hold action (Shift) when another key is pressed.
             return true;
         default:
