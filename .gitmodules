@@ -18,6 +18,3 @@
 [submodule "lib/printf"]
 	path = lib/printf
 	url = https://github.com/qmk/printf
-[submodule "Submod"]
-	url = https://github.com/daaaaaaaaaniel/qmk_firmware.git
-	branch = Development
