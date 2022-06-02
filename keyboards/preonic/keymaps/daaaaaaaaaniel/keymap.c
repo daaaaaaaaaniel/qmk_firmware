@@ -571,7 +571,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             // turn on the SPACE layer
             layer_on(_SPACE);
             if (!is_oneshot_enabled()) { // check if oneshot mods are enabled, then turn them on
-                oneshot_enable(); // turn ON oneshot mods /
+                oneshot_enable(); // turn ON oneshot mods
             }
           } else if (is_alt_tab_active) { // release alt_tab when releasing this spacebar
           /* ideally this would also unregister LCMD if any other key is pressed besides TAB, ESCAPE, or GRAVE but idk how. */
