@@ -59,7 +59,8 @@ enum preonic_keycodes {
   AA_RSPC,
   AA_TAB,
   AA_SYM,
-  AA_MOD3
+  AA_MOD3,
+  SHIFTED_SLASHGRAVE_OVERRIDE
 };
 bool is_alt_tab_active = false;
 uint16_t bespoke_tap_timer = 0;
@@ -231,12 +232,12 @@ const key_override_t shift_comma_exclam_override = ko_make_basic(MOD_MASK_SHIFT,
 // Shift + . = ?
 const key_override_t shift_period_question_override = ko_make_basic(MOD_MASK_SHIFT, KC_DOT, S(KC_SLASH));//ko_make_with_layers(MOD_MASK_SHIFT, KC_DOT, S(KC_SLASH), 1<<_QWERTY);
 // Shift + / = `
-const key_override_t shift_slash_grave_override = ko_make_basic(MOD_MASK_SHIFT, KC_SLASH, KC_GRV);                                           
+// const key_override_t shift_slash_grave_override = ko_make_basic(MOD_MASK_SHIFT, KC_SLASH, KC_GRV /* SHIFTED_SLASHGRAVE_OVERRIDE */);                                           
 // This globally defines all key overrides to be used
 const key_override_t **key_overrides = (const key_override_t *[]){
     &shift_comma_exclam_override,
     &shift_period_question_override,
-    &shift_slash_grave_override,
+//     &shift_slash_grave_override,
     NULL // Null terminate the array of overrides!
 };
 
@@ -267,7 +268,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    AA_RTOP,
   AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    K_NAV,   KC_L,    KC_SCLN, AA_QUOT,
-  TD_SESC, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, AA_RSFT,
+  TD_SESC, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  SHIFTED_SLASHGRAVE_OVERRIDE, AA_RSFT,
   KC_CAPS, KC_LOCK, OSM_CTL, OSM_OPT, AA_MOD3,     TD_SPC,       AA_MOD4, AA_MOD5, AA_MOD6, KC_UP,   RSFT_T(KC_DOWN)
 ),
 
@@ -483,8 +484,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //   return update_tri_layer_state(state, _LOWER, _RAISE, _EXTRA);
 // }
 
-
+uint8_t mod_state; // Initialize variable holding the binary representation of active modifiers.
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  mod_state = get_mods(); // Store the current modifier state in the variable for later reference
   switch (keycode) {
         case QWERTY:
           if (record->event.pressed) {
@@ -727,6 +729,55 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           } 
           return false;
           break;
+        case SHIFTED_SLASHGRAVE_OVERRIDE:
+//         {
+//           static bool slashoverride_registered;
+          if (record->event.pressed) {
+            if (mod_state & MOD_MASK_SHIFT) { 
+              unregister_mods(MOD_BIT(KC_LSFT));
+              tap_code(KC_GRV);
+//               slashoverride_registered = true;
+              register_mods(MOD_BIT(KC_LSFT));
+            } else {
+              register_code(KC_SLSH);
+            }
+          } else {
+//             if (slashoverride_registered || (mod_state & MOD_MASK_SHIFT)) {
+//               register_mods(MOD_BIT(KC_LSFT));
+//             } else {
+              unregister_code(KC_SLSH);
+//             }
+          }
+//         }
+          return false;
+          break;
+//         case KC_SLSH:
+//         {
+//           static bool slashoverride_registered;
+//           if (record->event.pressed) {
+//             if (mod_state & MOD_MASK_SHIFT) { 
+//               del_mods(MOD_MASK_SHIFT);
+//               register_code(KC_GRV);
+//               slashoverride_registered = true;
+//               set_mods(mod_state);
+//               return false;
+//             }
+//           } else {
+//             if (slashoverride_registered) { // In case KC_GRV is still being sent even after the release of KC_GRV
+//               unregister_code(KC_GRV);
+//               slashoverride_registered = false;
+//               return false;
+//             }
+//             if (get_mods() & MOD_MASK_SHIFT) { 
+//               unregister_code(KC_GRV);
+//               register_mods(MOD_BIT(KC_LSFT));
+//             } else {
+//               unregister_code(KC_SLSH);
+//             }
+//           }
+//         }
+//         return true; // Let QMK process the KC_SLSH keycode as usual outside of shift
+//           break;
       }
     return true;
 };
