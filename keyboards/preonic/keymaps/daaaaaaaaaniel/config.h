@@ -107,7 +107,7 @@
 // reduce advertised power consumption for use with iOS/iPadOS devices
 #define USB_MAX_POWER_CONSUMPTION 100
 
-#define SELECT_SOFT_SERIAL_SPEED 2
+// #define SELECT_SOFT_SERIAL_SPEED 2
 /* Sets the protocol speed when using serial communication
  * Speeds:
  * 0: about 189kbps (Experimental only)
@@ -118,8 +118,8 @@
  * 5: about 20kbps
  */
 
-// sets the USB polling rate in milliseconds for the keyboard, mouse, and shared (NKRO/media keys) interfaces
-#define USB_POLLING_INTERVAL_MS 20
+// // sets the USB polling rate in milliseconds for the keyboard, mouse, and shared (NKRO/media keys) interfaces
+// #define USB_POLLING_INTERVAL_MS 20
 
 // prevent acccidentally triggered modifer keys when interrupting a mod tap key.
 #define IGNORE_MOD_TAP_INTERRUPT
@@ -131,8 +131,8 @@
 // makes sure that the Shift(hold)/Escape(tap) triggers Shift the majority of cases.
 #define HOLD_ON_OTHER_KEY_PRESS_PER_KEY
 
-#define TAPPING_TERM 80
-//#define TAPPING_TERM_PER_KEY // this actually isn't an issue… or is it? (troubleshooting the SPACE bar
+#define TAPPING_TERM 200
+#define TAPPING_TERM_PER_KEY // this actually isn't an issue… or is it? (troubleshooting the SPACE bar
 
 
 /* //disables macOS FN key to allow compatibility with Vial etc. If using Karabiner, remap Caps Locks to Apple FN, or adjust the Modifier Keys in Systems Preferences so that Caps Locks triggers FN.

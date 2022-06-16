@@ -777,16 +777,16 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
-// /* per-key tapping term configuration */
-// // https://docs.qmk.fm/#/tap_hold?id=tapping-term
-// uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
-//     switch (keycode) {
-//         case AA_RSPC: // give the _SPACE layer a longer tapping term, making it less likely to accidentally turn on the layer during regular typing.
-//             return TAPPING_TERM + 125;
-//         default:
-//             return TAPPING_TERM;
-//     }
-// }
+/* per-key tapping term configuration */
+// https://docs.qmk.fm/#/tap_hold?id=tapping-term
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case AA_RSPC: // give the _SPACE layer a longer tapping term, making it less likely to accidentally turn on the layer during regular typing.
+            return 65;
+        default:
+            return TAPPING_TERM;
+    }
+}
 
 // // [QMK triggers: reacting to interesting events](https://getreuer.info/posts/keyboards/triggers/index.html#action-on-double-tap-without-delay)
 // i was trying to make it so that a mod would act as Opt when held and Cmd when double tapped?
