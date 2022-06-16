@@ -30,7 +30,6 @@ enum preonic_layers {
   _SYM,
   _EXT,
   _NAV,
-  _HOME,
   _SPEC,
   _EXTRA,
 //   _CMD1,
@@ -163,7 +162,6 @@ enum combos {
   SPACE_LTEXTRA,
   QGRAVE_FOCUS, // Q+adjacent key on far right 
   TABA_ESCAPE,
-  TABA_ESCAPE_SPC,
   JK_LEFT,
   KL_RIGHT,
   JI_UP,
@@ -181,7 +179,6 @@ const uint16_t PROGMEM cmd_combo[] = {AA_MOD3, AA_MOD4, COMBO_END};
 const uint16_t PROGMEM space_combo[] = {AA_MOD3, AA_RSPC, COMBO_END};
 const uint16_t PROGMEM focus_combo[] = {KC_GRV, KC_Q, COMBO_END}; // possibly switch to QK_GESC ? 
 const uint16_t PROGMEM escape_combo[] = {AA_TAB, KC_A, COMBO_END};
-const uint16_t PROGMEM escape_spc_combo[] = {APP_SWI, LT(_HOME,KC_A), COMBO_END};
 const uint16_t PROGMEM left_combo[] = {KC_J, K_NAV, COMBO_END};// {KC_AMPR, KC_ASTR, COMBO_END};
 const uint16_t PROGMEM right_combo[] = {K_NAV, KC_L, COMBO_END};// {KC_ASTR, KC_LPRN, COMBO_END};
 const uint16_t PROGMEM up_combo[] = {KC_J, KC_I, COMBO_END};// {KC_AMPR, KC_8, COMBO_END};
@@ -197,7 +194,6 @@ combo_t key_combos[] = {
  [SPACE_LTEXTRA] = COMBO(space_combo, LT(_EXTRA, OSM(MOD_MEH))),
  [QGRAVE_FOCUS] = COMBO(focus_combo, G(KC_GRV)),
  [TABA_ESCAPE] = COMBO(escape_combo, KC_ESC),
- [TABA_ESCAPE_SPC] = COMBO(escape_spc_combo, KC_ESC),
  [JK_LEFT] = COMBO(left_combo, KC_LEFT),
  [KL_RIGHT] = COMBO(right_combo, KC_RGHT),
  [JI_UP] = COMBO(up_combo, KC_UP),
@@ -292,7 +288,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |AppSwi|      |   ←  |   ↓  |   →  |      |      |   ←  |   ↓  |   →  |   ↑  |§  =  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |⇧ Esc |_  Z  |⇧  X  |⌥  C  |⌘  V  |      |      |      |   ,  |   ←  |   ↓  |⎈  →  |
+ * |⇧ Esc |      |⇧  X  |⌥  C  |⌘  V  |      |      |      |   ,  |   ←  |   ↓  |⎈  →  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | MIDI |      |      |      |      |=|||||||||||=|⌘ Del |⌥  ↑  |⌃  ↓  |   —  |   –  |
  * `-----------------------------------------------------------------------------------'
@@ -301,7 +297,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ALL_APP, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_F12,
   KC_TILD, _______, _______, KC_UP,   _______, _______, _______, _______, KC_UP,   _______, _______, KC_PLUS,
   APP_SWI, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, KC_UP, LT(_SYM, KC_EQL),
-  SFT_T(KC_ESC),LT(_HOME,KC_Z), SFT_T(KC_X), OPT_T(KC_C), CMD_T(KC_V), _______, _______, _______, KC_PCMM, KC_LEFT, KC_DOWN, LT(_EXT, KC_RGHT),
+  SFT_T(KC_ESC),_______, SFT_T(KC_X), OPT_T(KC_C), CMD_T(KC_V), _______, _______, _______, KC_PCMM, KC_LEFT, KC_DOWN, LT(_EXT, KC_RGHT),
   MIDI,    _______, _______, _______, _______, MO(_SPACE), RCMD_T(KC_DEL), ROPT_T(KC_UP), RCTL_T(KC_DOWN), EM_DASH, EN_DASH
 ),
 
@@ -390,27 +386,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, _______, _______, _______, _______, KC_LEFT, MO(_NAV),KC_RGHT, _______, _______,
   _______, _______, _______, _______, _______, _______, _______, KC_DOWN, _______, _______, _______, _______,
   _______, _______, _______, _______, _______,     _______,      _______, _______, _______, _______, _______
-),
-
-/* Home row mods - holding A
- * ,-----------------------------------------------------------------------------------.
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |=||||=| Shift| Opt  | Cmd  |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |=||||=| Shift| Opt  | Cmd  |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |Qwerty|(Lock)|      |      |      |             |      |      |      |      |      |
- * `-----------------------------------------------------------------------------------'
- */
-[_HOME] = LAYOUT_preonic_1x2uC(
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  MO(_SYM),MO(_HOME),KC_LSFT,KC_LOPT, KC_LCMD, KC_NO,   _______, _______, _______, _______, _______, _______,
-  _______, MO(_HOME),KC_LSFT,KC_LOPT, KC_LCMD, KC_NO,   _______, _______, _______, _______, _______, _______,
-  TO(_QWERTY),_______, _______, _______, _______,   _______,      RCMD_T(KC_DEL), RCTL_T(KC_RGHT), ROPT_T(KC_DOWN), _______, _______
 ),
 
 /* Special (Macros) - holding Space + pinkie modifer (Shift/_EXT/_SYM)
