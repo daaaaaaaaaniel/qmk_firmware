@@ -2,6 +2,7 @@
 /* Tap Dance keycodes */
 enum td_keycodes {
     TD_SHIFT_ESC,
+    TD_SPACEBAR,
 };
  
 /* Define a type containing as many tapdance states as you need */
@@ -34,6 +35,9 @@ td_state_t cur_dance(qk_tap_dance_state_t *state);
 // `finished` and `reset` functions for each tapdance keycode
 void shiftesc_finished(qk_tap_dance_state_t *state, void *user_data);
 void shiftesc_reset(qk_tap_dance_state_t *state, void *user_data);
+
+void spacebar_finished(qk_tap_dance_state_t *state, void *user_data);
+void spacebar_reset(qk_tap_dance_state_t *state, void *user_data);
 
 
 #elif defined TAPDANCE_BOTTOM
@@ -68,6 +72,10 @@ td_state_t cur_dance(qk_tap_dance_state_t *state) {
 // Initialize tap structure associated with example tap dance key
 // Create an instance of 'td_tap_t' for the sftesc tap dance.
 static td_tap_t sftesc_tap_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+static td_tap_t spacebar_tap_state = {
     .is_press_action = true,
     .state = TD_NONE
 };
@@ -107,7 +115,6 @@ void shiftesc_finished(qk_tap_dance_state_t *state, void *user_data) {
             break;
     }
 }
-
 void shiftesc_reset(qk_tap_dance_state_t *state, void *user_data) {
     switch (sftesc_tap_state.state) {
         case TD_SINGLE_TAP:
@@ -137,11 +144,46 @@ void shiftesc_reset(qk_tap_dance_state_t *state, void *user_data) {
     sftesc_tap_state.state = TD_NONE;
 }
 
+void spacebar_each(qk_tap_dance_state_t *state, void *user_data) {
+    bespoke_tap_timer = timer_read();
+    if (timer_elapsed(bespoke_tap_timer) < TAPPING_TERM) { // if tapped, don't use _SPACE layer
+        tap_code(KC_SPACE);
+    } 
+}
+void spacebar_finished(qk_tap_dance_state_t *state, void *user_data) {
+    spacebar_tap_state.state = cur_dance(state);
+    switch (spacebar_tap_state.state) {
+        case TD_SINGLE_TAP:
+            break;
+        case TD_SINGLE_HOLD:
+            spacebar_layer_tracker++; // this should allow the `post_process_record_user` to go to work!
+            layer_on(_SPACE);
+            break;
+        case TD_DOUBLE_TAP:
+            break;
+        case TD_DOUBLE_HOLD:
+            break;
+        case TD_DOUBLE_SINGLE_TAP:
+            break;
+        default:
+            break;
+    }
+}
+void spacebar_reset(qk_tap_dance_state_t *state, void *user_data) {
+    if(spacebar_layer_tracker) {
+        layer_off(_SPACE);
+        spacebar_layer_tracker--;
+    }
+    spacebar_tap_state.state = TD_NONE;
+}
+
+
 /* Tap Dance definitions */
 // Define `ACTION_TAP_DANCE_DOUBLE` or `ACTION_TAP_DANCE_FN_ADVANCED()` for each tapdance keycode, passing in `finished` and `reset` functions
 qk_tap_dance_action_t tap_dance_actions[] = {
 //     [TD_SHIFT_ESC] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_ESC), // Tap once for Shift, twice for Escape
-    [TD_SHIFT_ESC] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, shiftesc_finished, shiftesc_reset) // Tap once for Shift, twice for Escape, 
+    [TD_SHIFT_ESC] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, shiftesc_finished, shiftesc_reset), // Tap once for Shift, twice for Escape, 
+    [TD_SPACEBAR] = ACTION_TAP_DANCE_FN_ADVANCED(spacebar_each, spacebar_finished, spacebar_reset)
 };
 
 

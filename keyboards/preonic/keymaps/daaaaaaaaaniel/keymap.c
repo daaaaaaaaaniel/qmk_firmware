@@ -63,6 +63,7 @@ enum preonic_keycodes {
 };
 bool is_alt_tab_active = false;
 uint16_t bespoke_tap_timer = 0;
+static uint8_t spacebar_layer_tracker;
 
 /* alias for keys in high-use positions */
 /* right hand */
@@ -266,7 +267,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    AA_RTOP,
   AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    K_NAV,   KC_L,    KC_SCLN, AA_QUOT,
   TD_SESC, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, AA_RSFT,
-  KC_CAPS, KC_LOCK, OSM_CTL, OSM_OPT, AA_MOD3,     AA_RSPC,      AA_MOD4, AA_MOD5, AA_MOD6, KC_UP,   RSFT_T(KC_DOWN)
+  KC_CAPS, KC_LOCK, OSM_CTL, OSM_OPT, AA_MOD3,     TD(TD_SPACEBAR),      AA_MOD4, AA_MOD5, AA_MOD6, KC_UP,   RSFT_T(KC_DOWN)
 ),
 
 /*  Space ␣ (nav controls) - holding Space 
@@ -624,34 +625,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           } 
           return false;
           break;
-        case AA_RSPC: // modifed from https://github.com/davidagross/qmk_firmware/blob/1ccdb0dd461023398076eb3ea92ff050c5aba6ef/keyboards/minidox/keymaps/dgroseph/keymap.c (NAVHOM key) which is based on http://blog.hgao.net/post/qmk-mod-key/
-        // 1) starts timer to check if tapped or held; 2) turn on OSM and _SPACE layer while held; 3) turn off OSM and _SPACE layer when released 
-          if (record->event.pressed) {
-            // Records press timer
-            bespoke_tap_timer = timer_read();
-            // turn on the SPACE layer
-//            layer_on(_SPACE);
-            if (!is_oneshot_enabled()) { // check if oneshot mods are enabled, then turn them on
-                oneshot_enable(); // turn ON oneshot mods
-            }
-          } else if (timer_elapsed(bespoke_tap_timer) < TAPPING_TERM) { // if tapped, don't use _SPACE layer
-            // turn off the SPACE layer
-//            layer_off(_SPACE);
-            // Sends out 'space' if the key is held for less than tapping term 
-            tap_code(KC_SPACE);
-          } else if (timer_elapsed(bespoke_tap_timer) >= TAPPING_TERM) { // if held, use _SPACE layer
-//             turn on the SPACE layer
-            layer_on(_SPACE);
-          } else { // on key release
-            // turn off the SPACE layer
-//             layer_off(_SPACE);
-//             if ((get_oneshot_mods()) && !has_oneshot_mods_timed_out()) { // turn off active one shot mods
-//                 clear_oneshot_mods();
-//             }   
-//             oneshot_disable(); // disable oneshot mods
-          } 
-          return false;
-          break;
         case AA_TAB: // modifed from https://github.com/davidagross/qmk_firmware/blob/1ccdb0dd461023398076eb3ea92ff050c5aba6ef/keyboards/minidox/keymaps/dgroseph/keymap.c (NAVHOM key) which is based on http://blog.hgao.net/post/qmk-mod-key/
           if (record->event.pressed) { // on keypress turn on _SYM layer
             bespoke_tap_timer = timer_read(); // Records press timer
@@ -720,23 +693,56 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 //           }
 //           return false;
 //           break;
+        case AA_RSPC: // modifed from https://github.com/davidagross/qmk_firmware/blob/1ccdb0dd461023398076eb3ea92ff050c5aba6ef/keyboards/minidox/keymaps/dgroseph/keymap.c (NAVHOM key) which is based on http://blog.hgao.net/post/qmk-mod-key/
+        // 1) starts timer to check if tapped or held; 2) turn on OSM and _SPACE layer while held; 3) turn off OSM and _SPACE layer when released 
+          if (record->event.pressed) {
+            // Records press timer
+            bespoke_tap_timer = timer_read();
+            if (timer_elapsed(bespoke_tap_timer) >= TAPPING_TERM) { // if held, use _SPACE layer
+                spacebar_layer_tracker++;
+            }
+            if (!is_oneshot_enabled()) { // check if oneshot mods are enabled, then turn them on
+                oneshot_enable(); // turn ON oneshot mods
+            }
+          } else if (timer_elapsed(bespoke_tap_timer) < TAPPING_TERM) { // if tapped, don't use _SPACE layer
+            // turn off the SPACE layer
+//            layer_off(_SPACE);
+            // Sends out 'space' if the key is held for less than tapping term 
+            tap_code(KC_SPACE);
+          } else if (timer_elapsed(bespoke_tap_timer) >= TAPPING_TERM) { // if held, use _SPACE layer
+//             turn on the SPACE layer
+            spacebar_layer_tracker++;
+//             layer_on(_SPACE);
+          } else { // on key release
+            layer_off(_SPACE);
+            if ((get_oneshot_mods()) && !has_oneshot_mods_timed_out()) { // turn off active one shot mods
+                clear_oneshot_mods();
+            }
+            if (is_alt_tab_active) { // release alt_tab when releasing this spacebar
+                is_alt_tab_active = false;
+                unregister_code(KC_LCMD);
+            }
+            oneshot_disable(); // disable oneshot mods
+          } 
+          return false;
+          break;
       }
     return true;
 };
 
-// processed after regular keypress
+// processed after regular keypress        
 void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case AA_RSPC:
-      if (!record->event.pressed) {
-        layer_off(_SPACE);
-        if (is_alt_tab_active) { // turn off active one shot mods
-            is_alt_tab_active = false;
-            unregister_code(KC_LCMD);
-        } else if ((get_oneshot_mods()) && !has_oneshot_mods_timed_out()) { // release alt_tab when releasing this spacebar
-            clear_oneshot_mods();
+      if (record->event.pressed) {
+        if (spacebar_layer_tracker) {
+          layer_on(_SPACE);
         }
-        oneshot_disable(); // disable oneshot mods
+      } else {
+        if (spacebar_layer_tracker) {
+          layer_off(_SPACE);
+          spacebar_layer_tracker--;
+        }
       }
       break;
   }
