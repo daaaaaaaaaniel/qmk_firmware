@@ -634,28 +634,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (!is_oneshot_enabled()) { // check if oneshot mods are enabled, then turn them on
                 oneshot_enable(); // turn ON oneshot mods
             }
-          } else if (is_alt_tab_active) { // release alt_tab when releasing this spacebar
-          /* ideally this would also unregister LCMD if any other key is pressed besides TAB, ESCAPE, or GRAVE but idk how. */
-            // turn off the SPACE layer
-//            layer_off(_SPACE);
-            // deactivate alt-tab
-            is_alt_tab_active = false;
-            unregister_code(KC_LCMD);
           } else if (timer_elapsed(bespoke_tap_timer) < TAPPING_TERM) { // if tapped, don't use _SPACE layer
             // turn off the SPACE layer
 //            layer_off(_SPACE);
             // Sends out 'space' if the key is held for less than tapping term 
             tap_code(KC_SPACE);
-          } else if (timer_elapsed(bespoke_tap_timer) > TAPPING_TERM) { // if held, use _SPACE layer
+          } else if (timer_elapsed(bespoke_tap_timer) >= TAPPING_TERM) { // if held, use _SPACE layer
 //             turn on the SPACE layer
             layer_on(_SPACE);
           } else { // on key release
             // turn off the SPACE layer
-            layer_off(_SPACE);
-            if ((get_oneshot_mods()) && !has_oneshot_mods_timed_out()) { // turn off active one shot mods
-                clear_oneshot_mods();
-            }   
-            oneshot_disable(); // disable oneshot mods
+//             layer_off(_SPACE);
+//             if ((get_oneshot_mods()) && !has_oneshot_mods_timed_out()) { // turn off active one shot mods
+//                 clear_oneshot_mods();
+//             }   
+//             oneshot_disable(); // disable oneshot mods
           } 
           return false;
           break;
@@ -730,6 +723,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
     return true;
 };
+
+// processed after regular keypress
+void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case AA_RSPC:
+      if (!record->event.pressed) {
+        layer_off(_SPACE);
+        if (is_alt_tab_active) { // turn off active one shot mods
+            is_alt_tab_active = false;
+            unregister_code(KC_LCMD);
+        } else if ((get_oneshot_mods()) && !has_oneshot_mods_timed_out()) { // release alt_tab when releasing this spacebar
+            clear_oneshot_mods();
+        }
+        oneshot_disable(); // disable oneshot mods
+      }
+      break;
+  }
+}
 
 /* per-key hold on other key press configuration */
 // SX_GRV aka SFT_T(KC_GRV)
