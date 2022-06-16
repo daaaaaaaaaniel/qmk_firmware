@@ -174,6 +174,10 @@ void spacebar_reset(qk_tap_dance_state_t *state, void *user_data) {
         layer_off(_SPACE);
         spacebar_layer_tracker--;
     }
+    if (is_alt_tab_active) { // release alt_tab when releasing this spacebar
+        is_alt_tab_active = false;
+        unregister_code(KC_LCMD);
+    }
     spacebar_tap_state.state = TD_NONE;
 }
 

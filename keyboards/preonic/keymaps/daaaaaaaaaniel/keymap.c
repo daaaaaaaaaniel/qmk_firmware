@@ -145,6 +145,7 @@ static uint8_t spacebar_layer_tracker;
 // #define TX_DSEL TEXT_DESELECT
 #define TX_SEL  TEXT_SELECT_WORD
 #define TD_SESC TD(TD_SHIFT_ESC)
+#define TD_SPC  TD(TD_SPACEBAR)
 
 // #define WN_REV APP_SWITCHER_REVERSE // same effect as WN_FOCU (command-grave)
 /* keycodes for Amethyst */
@@ -267,7 +268,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    AA_RTOP,
   AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    K_NAV,   KC_L,    KC_SCLN, AA_QUOT,
   TD_SESC, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, AA_RSFT,
-  KC_CAPS, KC_LOCK, OSM_CTL, OSM_OPT, AA_MOD3,     TD(TD_SPACEBAR),      AA_MOD4, AA_MOD5, AA_MOD6, KC_UP,   RSFT_T(KC_DOWN)
+  KC_CAPS, KC_LOCK, OSM_CTL, OSM_OPT, AA_MOD3,     TD_SPC,       AA_MOD4, AA_MOD5, AA_MOD6, KC_UP,   RSFT_T(KC_DOWN)
 ),
 
 /*  Space ␣ (nav controls) - holding Space 
