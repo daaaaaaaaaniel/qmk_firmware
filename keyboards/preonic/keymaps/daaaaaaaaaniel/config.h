@@ -17,10 +17,18 @@
 #pragma once
 
 /* USB Device descriptor parameter */
-#define DEVICE_VER 0x0003
-#define PRODUCT_ID 0xA649
-#undef MANUFACTURER
-#define MANUFACTURER Drop
+// #define DEVICE_VER 0x0003
+// #define PRODUCT_ID 0xA649
+// #undef MANUFACTURER
+// #define MANUFACTURER Drop
+
+// ID info copied from my 2020 M1 Apple Internal Keyboard as displayed in System Information → Hardware → SPI 
+#undef  PRODUCT_ID
+#define PRODUCT_ID 0x029c
+#undef  VENDOR_ID
+#define VENDOR_ID  0x05ac // (Apple Inc.)
+#undef  MANUFACTURER
+#define MANUFACTURER Apple Inc.
 
 #undef MATRIX_ROWS
 #undef MATRIX_COLS
@@ -96,18 +104,35 @@
 /* override number of MIDI tone keycodes (each octave adds 12 keycodes and allocates 12 bytes) */
 //#define MIDI_TONE_KEYCODE_OCTAVES 2
 
-
 // reduce advertised power consumption for use with iOS/iPadOS devices
 #define USB_MAX_POWER_CONSUMPTION 100
+
+#define SELECT_SOFT_SERIAL_SPEED 2
+/* Sets the protocol speed when using serial communication
+ * Speeds:
+ * 0: about 189kbps (Experimental only)
+ * 1: about 137kbps (default)
+ * 2: about 75kbps
+ * 3: about 39kbps
+ * 4: about 26kbps
+ * 5: about 20kbps
+ */
+
+// sets the USB polling rate in milliseconds for the keyboard, mouse, and shared (NKRO/media keys) interfaces
+#define USB_POLLING_INTERVAL_MS 20
 
 // prevent acccidentally triggered modifer keys when interrupting a mod tap key.
 #define IGNORE_MOD_TAP_INTERRUPT
 
-// for rapidly typing sequences like MT(SHIFT) -> i -> release i -> release MT(SHIFT), which should ideally output a capital I. This option fixes it so that it won't trigger the mod key's tap functionality in this scenario.
-#define PERMISSIVE_HOLD
+// for rapidly typing sequences like MT(SHIFT) -> i -> release i -> release MT(SHIFT), which should ideally output a capital I. This option fixes it so that it won't trigger the mod key's tap functionality in this scenario. … or maybe i have it backwards?
+// #define PERMISSIVE_HOLD // remember to disable permissibe hold for the SPACE BAR
+#define PERMISSIVE_HOLD_PER_KEY
 
 // makes sure that the Shift(hold)/Escape(tap) triggers Shift the majority of cases.
 #define HOLD_ON_OTHER_KEY_PRESS_PER_KEY
+
+#define TAPPING_TERM 80
+//#define TAPPING_TERM_PER_KEY // this actually isn't an issue… or is it? (troubleshooting the SPACE bar
 
 
 /* //disables macOS FN key to allow compatibility with Vial etc. If using Karabiner, remap Caps Locks to Apple FN, or adjust the Modifier Keys in Systems Preferences so that Caps Locks triggers FN.
