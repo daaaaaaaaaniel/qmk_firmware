@@ -74,6 +74,10 @@ uint16_t bespoke_tap_timer = 0;
 #define AA_MOD5 LT(_NUM, KC_LEFT) // _NUM (hold); left arrow (tap)
 #define AA_MOD6 LT(_NUM, KC_RIGHT) // _NUM (hold); right arrow (tap)
 
+#define OSM_CTL OSM(MOD_LCTL)
+#define OSM_ALT OSM(MOD_LALT)
+#define OSM_OPT OSM(MOD_LALT)
+
 // #define O_RSFT OSM(MOD_RSFT) // one-shot right shift
 #define SX_GRV SFT_T(KC_GRV) // shift (hold); grave (tap)
 // #define DD_BSPC ROPT_T(KC_BSPC) // option (hold); backspace (tap)
@@ -244,21 +248,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 // SEE PREVIOUS 1x2uC KEYMAP HERE - https://github.com/daaaaaaaaaniel/qmk_firmware/blob/3289f8d3af05a677b77b2cc89f0f98e43c83b2b3/keyboards/preonic/keymaps/daaaaaaaaaniel/keymap.c
 
-/* SHIFT - holding Left Shift (key overrides)
-- turn RShift position into actual Shift key (useful for arrows)
- * ,-----------------------------------------------------------------------------------.
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |=||||=|      |      |      |      |      |      |      |      |      |      |RShift|
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |             |      |⌥Opt  |⇧Shift|⌥⇧    |      |
- * `-----------------------------------------------------------------------------------'
- */
-
  /* QWERTY (Default layer)
  * ,-----------------------------------------------------------------------------------.
  * |  Esc |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  =   |
@@ -277,28 +266,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    AA_RTOP,
   AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    K_NAV,   KC_L,    KC_SCLN, AA_QUOT,
   TD_SESC, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, AA_RSFT,
-  KC_CAPS, KC_LOCK, OSM(MOD_LCTL), OSM(MOD_LALT), AA_MOD3, AA_RSPC,     AA_MOD4, AA_MOD5, AA_MOD6, KC_UP,   RSFT_T(KC_DOWN)
+  KC_CAPS, KC_LOCK, OSM_CTL, OSM_OPT, AA_MOD3,     AA_RSPC,      AA_MOD4, AA_MOD5, AA_MOD6, KC_UP,   RSFT_T(KC_DOWN)
 ),
 
-/*  Space ␣ (nav controls, no changes to alphas) - holding Space 
+/*  Space ␣ (nav controls) - holding Space 
  * ,-----------------------------------------------------------------------------------.
  * |WinSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute |  F12 |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |   ~  |      |      |   ↑  |      |      |      |      |   ↑  |      |      |   +  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |AppSwi|      |   ←  |   ↓  |   →  |      |      |   ←  |   ↓  |   →  |   ↑  |§  =  |
+ * |AppSwi|      |   ←  |   ↓  |   →  |      |      |   ←  |   ↓  |   →  |      |§  =  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |⇧ Esc |      |⇧  X  |⌥  C  |⌘  V  |      |      |      |   ,  |   ←  |   ↓  |⎈  →  |
+ * |⇧ Esc |      |⇧  X  |⌥  C  |⌘  V  |      |      |      |   <  |   >  |   \  |⎈     |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | MIDI |      |      |      |      |=|||||||||||=|⌘ Del |⌥  ↑  |⌃  ↓  |   —  |   –  |
+ * | MIDI |      |      |      |      |=|||||||||||=|⌘ Del |⌥  ←  |⌃  →  |   ↑  |   ↓  |
  * `-----------------------------------------------------------------------------------'
  */
 [_SPACE] = LAYOUT_preonic_1x2uC(
   ALL_APP, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_F12,
   KC_TILD, _______, _______, KC_UP,   _______, _______, _______, _______, KC_UP,   _______, _______, KC_PLUS,
-  APP_SWI, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, KC_UP, LT(_SYM, KC_EQL),
-  SFT_T(KC_ESC),_______, SFT_T(KC_X), OPT_T(KC_C), CMD_T(KC_V), _______, _______, _______, KC_PCMM, KC_LEFT, KC_DOWN, LT(_EXT, KC_RGHT),
-  MIDI,    _______, _______, _______, _______, MO(_SPACE), RCMD_T(KC_DEL), ROPT_T(KC_UP), RCTL_T(KC_DOWN), EM_DASH, EN_DASH
+  APP_SWI, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, LT(_SYM, KC_EQL),
+  SFT_T(KC_ESC),_______, SFT_T(KC_X), OPT_T(KC_C), CMD_T(KC_V), _______, _______, _______, KC_LABK, KC_RABK, KC_BSLS, MO(_EXT),
+  MIDI,    _______, _______, _______, _______, MO(_SPACE), RCMD_T(KC_DEL), ROPT_T(KC_LEFT), RCTL_T(KC_RGHT), KC_UP, KC_DOWN
 ),
 
 /* Numeric Keypad # - holding MOD5/MOD6
@@ -348,21 +337,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |WinSwi|  Esc |   ↑  |AppSwR|AppSwi|SwapCh| Home |   ↑  | End  |      | PgUp |
+ * |      |WinSwi|  Esc |   ↑  |AppSwR|AppSwi|SwapCh| Home |   ↑  | End  | PgUp |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |§     |⇧Shift|   ←  |   ↓  |   →  |      |WrdSel|   ←  |   ↓  |   →  |⇧  ↑  |§PgDwn|
+ * |§     |⇧Shift|   ←  |   ↓  |   →  |      |WrdSel|   ←  |   ↓  |   →  |⇧PgDwn|§     |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |⇧Shift|      | Cut  | Copy | Paste|      | Enter|PrvTab|NxtTab|   ←  |   ↓  |=||||=|
+ * |⇧Shift|      | Cut  | Copy | Paste|      | Enter|PrvTab|NxtTab|      |      |=||||=|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |Qwerty|      |      |      |      |             |      |⌥Opt  |⇧Shift|⌥⇧    |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_EXT] = LAYOUT_preonic_1x2uC( // [Ergonomic Keyboard Mods: Extend Layer](http://colemakmods.github.io/ergonomic-mods/extend.html)
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  KC_TILD, ALL_APP, KC_ESC,  KC_UP,   WN_FOCU, APP_SWI, KX_SWAP, KC_HOME, KC_UP,   KC_END,  KC_NO,   KC_PGUP,
+  KC_TILD, ALL_APP, KC_ESC,  KC_UP,   WN_FOCU, APP_SWI, KX_SWAP, KC_HOME, KC_UP,   KC_END,  KC_PGUP, _______,
   LT(_SYM, KC_GRV) // intercept this key and use it for changing tabs, or for chaning windows in the current application
-         , KC_LSFT, KC_LEFT, KC_DOWN, KC_RGHT, KC_NO,   TX_SEL,  KC_LEFT, KC_DOWN, KC_RGHT, RSFT_T(KC_UP),   LT(_SYM, KC_PGDN),
-  _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_ENT,  PREVTAB, NEXTTAB, KC_LEFT, KC_DOWN, LT(_EXT, KC_RGHT),
+         , KC_LSFT, KC_LEFT, KC_DOWN, KC_RGHT, KC_NO,   TX_SEL,  KC_LEFT, KC_DOWN, KC_RGHT, RSFT_T(KC_PGDN), MO(_SYM),
+  _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_ENT,  PREVTAB, NEXTTAB, _______, _______, MO(_EXT),
   TO(_QWERTY),_______,_______,_______,_______,     _______,      RCMD_T(KC_DEL), KC_ROPT, KC_RSFT, S(KC_ROPT), _______
 ),
 
@@ -394,9 +383,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |      |
+ * |=||||=|   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |=||||=|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |   Z  |   X  |   C  |   V  |   B  |   N  |Paletr|   ,  |   .  |   /  |=||||=|
+ * |=||||=|   Z  |   X  |   C  |   V  |   B  |   N  |Paletr|   ,  |   .  |   /  |=||||=|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |      |=|||||||||||=|      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
