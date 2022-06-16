@@ -278,9 +278,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |   ~  |      |      |   ↑  |      |      |      |      |   ↑  |      |      |   +  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |AppSwi|      |   ←  |   ↓  |   →  |      |      |   ←  |   ↓  |   →  |      |§  =  |
+ * |AppSwi|⇧  A  |   ←  |   ↓  |   →  |      |      |   ←  |   ↓  |   →  |⇧  ;  |§  =  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |⇧ Esc |      |⇧  X  |⌥  C  |⌘  V  |      |      |      |   <  |   >  |   \  |⎈     |
+ * |⇧ Esc |⌥  Z  |⇧  X  |⌥  C  |⌘  V  |      |      |      |   <  |   >  |   \  |⎈     |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | MIDI |      |      |      |      |=|||||||||||=|⌘ Del |⌥  ←  |⌃  →  |   ↑  |   ↓  |
  * `-----------------------------------------------------------------------------------'
@@ -288,8 +288,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_SPACE] = LAYOUT_preonic_1x2uC(
   ALL_APP, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_F12,
   KC_TILD, _______, _______, KC_UP,   _______, _______, _______, _______, KC_UP,   _______, _______, KC_PLUS,
-  APP_SWI, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, LT(_SYM, KC_EQL),
-  SFT_T(KC_ESC),_______, SFT_T(KC_X), OPT_T(KC_C), CMD_T(KC_V), _______, _______, _______, KC_LABK, KC_RABK, KC_BSLS, MO(_EXT),
+  APP_SWI, LSFT_T(KC_A), KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, RSFT_T(KC_SCLN), LT(_SYM, KC_EQL),
+  SFT_T(KC_ESC),LOPT_T(KC_Z), SFT_T(KC_X), OPT_T(KC_C), CMD_T(KC_V), _______, _______, _______, KC_LABK, KC_RABK, KC_BSLS, MO(_EXT),
   MIDI,    _______, _______, _______, _______, MO(_SPACE), RCMD_T(KC_DEL), ROPT_T(KC_LEFT), RCTL_T(KC_RGHT), KC_UP, KC_DOWN
 ),
 
