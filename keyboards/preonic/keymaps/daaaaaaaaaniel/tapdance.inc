@@ -145,10 +145,10 @@ void shiftesc_reset(qk_tap_dance_state_t *state, void *user_data) {
 }
 
 void spacebar_each(qk_tap_dance_state_t *state, void *user_data) {
-    bespoke_tap_timer = timer_read();
-    if (timer_elapsed(bespoke_tap_timer) < TAPPING_TERM) { // if tapped, don't use _SPACE layer
-        tap_code(KC_SPACE);
-    } 
+//     bespoke_tap_timer = timer_read();
+//     if (timer_elapsed(bespoke_tap_timer) < TAPPING_TERM) { // if tapped, don't use _SPACE layer
+//         tap_code(KC_SPACE);
+//     } 
 }
 void spacebar_finished(qk_tap_dance_state_t *state, void *user_data) {
     spacebar_tap_state.state = cur_dance(state);

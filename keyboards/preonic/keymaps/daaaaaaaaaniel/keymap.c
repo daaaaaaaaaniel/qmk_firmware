@@ -734,16 +734,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // processed after regular keypress        
 void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case AA_RSPC:
+    case TD_SPC:
       if (record->event.pressed) {
-        if (spacebar_layer_tracker) {
-          layer_on(_SPACE);
-        }
-      } else {
-        if (spacebar_layer_tracker) {
-          layer_off(_SPACE);
-          spacebar_layer_tracker--;
-        }
+        bespoke_tap_timer = timer_read();
+      } else if (timer_elapsed(bespoke_tap_timer) < TAPPING_TERM) { // if tapped, don't use _SPACE layer
+        tap_code(KC_SPACE);
       }
       break;
   }
