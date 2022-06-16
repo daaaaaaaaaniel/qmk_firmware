@@ -20,7 +20,7 @@ WS2812_DRIVER = pwm
 CUSTOM_MATRIX = yes
 # ENCODER_ENABLE = yes
 # DIP_SWITCH_ENABLE = yes
-# KEY_OVERRIDE_ENABLE = yes   # Key overrides
+KEY_OVERRIDE_ENABLE = yes   # Key overrides
 KEY_LOCK_ENABLE = no        # Key locks (hardware)
 LTO_ENABLE = yes            # Reduce firmware size (slower to compile)	
 
