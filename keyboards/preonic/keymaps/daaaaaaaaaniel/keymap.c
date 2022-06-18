@@ -70,9 +70,9 @@ static uint8_t spacebar_layer_tracker;
 /* right hand */
 #define AA_RTOP KC_MINS // top key position in rightmost column (below function row)  
 #define AA_QUOT LT(_SYM, KC_QUOT) // quote key position
-#define AA_RSFT LT(_EXT, KC_CAPS) // right shift key position
+#define AA_RSFT RSFT(KC_EQL) // right shift key position
 // #define AA_MOD3 CMD_T(KC_ENT) // command (hold); return (tap)
-#define AA_MOD4 RCMD_T(KC_BSPC) // command (hold); backspace (tap)
+#define AA_MOD4 LT(_EXT, KC_BSPC) // _EXT (hold); backspace (tap)
 #define AA_MOD5 LT(_NUM, KC_LEFT) // _NUM (hold); left arrow (tap)
 #define AA_MOD6 LT(_NUM, KC_RIGHT) // _NUM (hold); right arrow (tap)
 
@@ -280,7 +280,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |AppSwi|⇧  A  |   ←  |   ↓  |   →  |      |      |   ←  |   ↓  |   →  |⇧  ;  |§  =  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |⇧ Esc |⌥  Z  |⇧  X  |⌥  C  |⌘  V  |      |      |      |   <  |   >  |   \  |⎈     |
+ * |⇧ Esc |⌥  Z  |⇧  X  |⌥  C  |⌘  V  |      |      |⌘  M  |   <  |   >  |   \  |⎈     |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | MIDI |      |      |      |      |=|||||||||||=|⌘ Del |⌥  ←  |⌃  →  |   ↑  |   ↓  |
  * `-----------------------------------------------------------------------------------'
@@ -289,7 +289,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ALL_APP, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_F12,
   KC_TILD, _______, _______, KC_UP,   _______, _______, _______, _______, KC_UP,   _______, _______, KC_PLUS,
   APP_SWI, LSFT_T(KC_A), KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, RSFT_T(KC_SCLN), LT(_SYM, KC_EQL),
-  SFT_T(KC_ESC),LOPT_T(KC_Z), SFT_T(KC_X), OPT_T(KC_C), CMD_T(KC_V), _______, _______, _______, KC_LABK, KC_RABK, KC_BSLS, MO(_EXT),
+  SFT_T(KC_ESC),LOPT_T(KC_Z), SFT_T(KC_X), OPT_T(KC_C), CMD_T(KC_V), _______, _______, RCMD_T(KC_M), KC_LABK, KC_RABK, KC_BSLS, MO(_EXT),
   MIDI,    _______, _______, _______, _______, MO(_SPACE), RCMD_T(KC_DEL), ROPT_T(KC_LEFT), RCTL_T(KC_RGHT), KC_UP, KC_DOWN
 ),
 
