@@ -232,12 +232,12 @@ const key_override_t shift_comma_exclam_override = ko_make_basic(MOD_MASK_SHIFT,
 // Shift + . = ?
 const key_override_t shift_period_question_override = ko_make_basic(MOD_MASK_SHIFT, KC_DOT, S(KC_SLASH));//ko_make_with_layers(MOD_MASK_SHIFT, KC_DOT, S(KC_SLASH), 1<<_QWERTY);
 // Shift + / = `
-// const key_override_t shift_slash_grave_override = ko_make_basic(MOD_MASK_SHIFT, KC_SLASH, KC_GRV /* SHIFTED_SLASHGRAVE_OVERRIDE */);                                           
+const key_override_t shift_slash_asterisk_override = ko_make_basic(MOD_MASK_SHIFT, KC_SLASH, S(KC_8));                                           
 // This globally defines all key overrides to be used
 const key_override_t **key_overrides = (const key_override_t *[]){
     &shift_comma_exclam_override,
     &shift_period_question_override,
-//     &shift_slash_grave_override,
+    &shift_slash_asterisk_override,
     NULL // Null terminate the array of overrides!
 };
 
@@ -268,7 +268,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    AA_RTOP,
   AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    K_NAV,   KC_L,    KC_SCLN, AA_QUOT,
-  TD_SESC, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  SHIFTED_SLASHGRAVE_OVERRIDE, AA_RSFT,
+  TD_SESC, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, AA_RSFT,
   KC_CAPS, KC_LOCK, OSM_CTL, OSM_OPT, AA_MOD3,     TD_SPC,       AA_MOD4, AA_MOD5, AA_MOD6, KC_UP,   RSFT_T(KC_DOWN)
 ),
 
@@ -276,9 +276,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |WinSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute |  F12 |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |   ~  | PgUp |      |   ↑  |      |      |      | Home |   ↑  | End  | PgUp |   =  |
+ * |   ~  | PgUp |      |   ↑  |      |      | PgUp | Home |   ↑  | End  |   =  |   +  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |AppSwi|⇧PgDwn|   ←  |   ↓  |   →  |      |      |   ←  |   ↓  |   →  |⇧PgDwn|§  +  |
+ * |AppSwi|⇧PgDwn|   ←  |   ↓  |   →  |      |⇧PgDwn|   ←  |   ↓  |   →  |⇧  (  |   )  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |⇧ Esc |⌥  Z  |⇧  X  |⌥  C  |⌘  V  |      |⌥  N  |⌘  M  |   [  |   ]  |⌥  \  |⇧     |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -287,8 +287,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_SPACE] = LAYOUT_preonic_1x2uC(
   ALL_APP, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_F12,
-  KC_TILD, KC_PGUP, _______, KC_UP,   _______, _______, _______, KC_HOME, KC_UP,   KC_END,  KC_PGUP, KC_EQL,
-  APP_SWI, LSFT_T(KC_PGDN), KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, RSFT_T(KC_PGDN), LT(_SYM, KC_EQL),
+  KC_TILD, KC_PGUP, _______, KC_UP,   _______, _______, KC_PGUP, KC_HOME, KC_UP,   KC_END,  KC_EQL , KC_PLUS,
+  APP_SWI, LSFT_T(KC_PGDN), KC_LEFT, KC_DOWN, KC_RGHT, _______, RSFT_T(KC_PGDN), KC_LEFT, KC_DOWN, KC_RGHT, KC_LPRN, KC_RPRN,
   SFT_T(KC_ESC),LOPT_T(KC_Z), SFT_T(KC_X), OPT_T(KC_C), CMD_T(KC_V), _______, ROPT_T(KC_N), RCMD_T(KC_M), KC_LBRC, KC_RBRC, ROPT_T(KC_BSLS), KC_RSFT,
   MIDI,    _______, _______, _______, _______, MO(_SPACE), RCMD_T(KC_DEL), ROPT_T(KC_LEFT), RCTL_T(KC_RGHT), KC_UP, KC_DOWN
 ),
@@ -335,8 +335,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_CAPS, _______, _______, _______, _______, LT(_SPACE,KC_SPACE), RCMD_T(KC_DEL), ROPT_T(KC_UP), RCTL_T(KC_DOWN), EM_DASH, EN_DASH
 ),
 
-/* Extended ⎈ (Window Managment layer) - holding RShift
-// maybe turn these into key overrides?
+/* Extended ⎈ 
+// replace these with the un-shifted keys, then access this layer only with `LM(layer, mod)` 
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -730,25 +730,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           return false;
           break;
         case SHIFTED_SLASHGRAVE_OVERRIDE:
-//         {
-//           static bool slashoverride_registered;
           if (record->event.pressed) {
             if (mod_state & MOD_MASK_SHIFT) { 
               unregister_mods(MOD_BIT(KC_LSFT));
               tap_code(KC_GRV);
-//               slashoverride_registered = true;
               register_mods(MOD_BIT(KC_LSFT));
             } else {
               register_code(KC_SLSH);
             }
           } else {
-//             if (slashoverride_registered || (mod_state & MOD_MASK_SHIFT)) {
-//               register_mods(MOD_BIT(KC_LSFT));
-//             } else {
               unregister_code(KC_SLSH);
-//             }
           }
-//         }
           return false;
           break;
 //         case KC_SLSH:
