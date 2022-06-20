@@ -59,7 +59,7 @@ enum preonic_keycodes {
   AA_RSPC,
   AA_TAB,
   AA_SYM,
-  AA_MOD3,
+//   AA_MOD3,
   SHIFTED_SLASHGRAVE_OVERRIDE
 };
 bool is_alt_tab_active = false;
@@ -71,7 +71,7 @@ static uint8_t spacebar_layer_tracker;
 #define AA_RTOP KC_MINS // top key position in rightmost column (below function row)  
 #define AA_QUOT LT(_SYM, KC_QUOT) // quote key position
 #define AA_RSFT LSFT_T(KC_EQL) // right shift key position
-// #define AA_MOD3 CMD_T(KC_ENT) // command (hold); return (tap)
+#define AA_MOD3 CMD_T(KC_ENT) // command (hold); return (tap)
 #define AA_MOD4 LT(_EXT, KC_BSPC) // _EXT (hold); backspace (tap)
 #define AA_MOD5 LT(_NUM, KC_LEFT) // _NUM (hold); left arrow (tap)
 #define AA_MOD6 LT(_NUM, KC_RIGHT) // _NUM (hold); right arrow (tap)
@@ -651,6 +651,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           } 
           return false;
           break;
+/*           
         case AA_MOD3: // modifed from https://github.com/davidagross/qmk_firmware/blob/1ccdb0dd461023398076eb3ea92ff050c5aba6ef/keyboards/minidox/keymaps/dgroseph/keymap.c (NAVHOM key) which is based on http://blog.hgao.net/post/qmk-mod-key/
           if (record->event.pressed) { // on keypress turn on LCMD layer
             bespoke_tap_timer = timer_read(); // Records press timer
@@ -672,6 +673,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 is_alt_tab_active = false;
             } 
           } 
+*/
           return false;
           break;
         case APP_SWITCHER:
