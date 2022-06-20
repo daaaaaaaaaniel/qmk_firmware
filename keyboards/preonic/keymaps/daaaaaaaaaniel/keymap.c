@@ -26,6 +26,7 @@
 enum preonic_layers {
   _QWERTY,
   _SPACE,
+  _SPACE_L,
   _EXT,
   _NUM,
   _SYM,
@@ -79,6 +80,11 @@ static uint8_t spacebar_layer_tracker;
 #define OSM_CTL OSM(MOD_LCTL)
 #define OSM_ALT OSM(MOD_LALT)
 #define OSM_OPT OSM(MOD_LALT)
+
+#define HRSFT_A SFT_T(KC_A) // Home row mod A/Shift
+#define HRCTL_S CTL_T(KC_S) // Home row mod S/Ctrl
+#define HROPT_D OPT_T(KC_D) // Home row mod D/Opt
+#define HRCMD_F CMD_T(KC_F) // Home row mod F/Cmd
 
 // #define O_RSFT OSM(MOD_RSFT) // one-shot right shift
 #define SX_GRV SFT_T(KC_GRV) // shift (hold); grave (tap)
@@ -263,7 +269,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |⇧Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |⇧ `   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  fn  |(Lock)|⌃ Ctrl|⌥ Opt |⌘Cmd ⏎|␣  _SPACE    |⎈ Bksp|#  ⇥  |#  ⏎  |  Esc |␣ ⏎   |
+ * |  fn  |(Lock)|⌃ Ctrl|⌥ Opt |⌘Cmd ⏎|␣ Spc |␣ Spc |⎈ Bksp|#  ⇥  |#  ⏎  |  Esc |⇧⌘  ⏎ |
  * `-----------------------------------------------------------------------------------'
  *
  *  ⇧Shift + QWERTY
@@ -276,49 +282,49 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |⇧Shift|      |      |      |      |      |      |      |   !  |   ?  |   #  |⇧ ~   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  fn  |(Lock)|⌃ Ctrl|⌥ Opt |⌘Cmd ⏎|␣  _SPACE    |⎈ Bksp|#  ⇥  |#  ⏎  |  Esc |␣ ⏎   |
+ * |  fn  |(Lock)|⌃ Ctrl|⌥ Opt |⌘Cmd ⏎|␣ Spc |␣ Spc |⎈ Bksp|#  ⇥  |#  ⏎  |  Esc |⇧⌘  ⏎ |
  * `-----------------------------------------------------------------------------------'
  */
-[_QWERTY] = LAYOUT_preonic_1x2uC(
+[_QWERTY] = LAYOUT_preonic_grid(
   KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    AA_RTOP,
   AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    K_NAV,   KC_L,    KC_SCLN, AA_QUOT,
   TD_SESC, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, AA_RSFT,
-  KC_CAPS, KC_LOCK, OSM_CTL, OSM_OPT, AA_MOD3,     TD_SPC,       AA_MOD4, AA_MOD5, AA_MOD6, KC_ESC,  LT(_SPACE, KC_ENT)
+  KC_CAPS, KC_LOCK, OSM_CTL, OSM_OPT, AA_MOD3, TD_SPC,  TD_SPC,  AA_MOD4, AA_MOD5, AA_MOD6, KC_ESC,  SCMD_T(KC_ENT)
 ),
 
  /* SPACE ␣ (nav controls) - holding Space 
  * ,-----------------------------------------------------------------------------------.
  * |WinSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute |  F12 |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |   ~  | PgUp |      |   ↑  |      |      | PgUp | Home |   ↑  | End  |   _  |  +   |
+ * |   ~  |      |      |      |      |      | PgUp | Home |   ↑  | End  |   _  |  +   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |AppSwi|⇧PgDwn|   ←  |   ↓  |   →  |      |⇧PgDwn|   ←  |   ↓  |   →  |⇧  *  |  ^   |
+ * |AppSwi|⇧  A  |⌃  S  |⌥  D  |⌘  F  |      |⇧PgDwn|   ←  |   ↓  |   →  |⇧  *  |  ^   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |⇧ Esc |⌥  Z  |⇧  X  |⌥  C  |⌘  V  |      |⌥  N  |⌘  M  |   [  |   ]  |⌥  \  |⇧ ⏎   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | MIDI |      |      |      |      |=|||||||||||=|⎈ Del |⌥ Esc |⌃  ⇥  |  Esc |  ⏎   |
+ * | MIDI |      |      |      |      |=|||||||||||=|⌘ Del |⌥ Esc |⌃  ⇥  |  Esc |⇧⌘  ⏎ |
  * `-----------------------------------------------------------------------------------'
  *
  *  ⇧Shift + SPACE ␣ 
  * ,-----------------------------------------------------------------------------------.
  * |WinSwi|      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |   ~  |      |      |      |      |      |      |      |      |      |   _  |   +  |
+ * |   ~  |      |      |      |      |      |      |      |      |      |   _  |  +   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |AppSwi|      |      |      |      |      |      |      |      |      |⇧  ÷  |   °  | // Shift + `*` doesn't actually send ÷ 
+ * |AppSwi|      |      |      |      |      |      |      |      |      |⇧  ÷  |  °   | // Shift + `*` doesn't actually send ÷ 
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |⇧ Esc |      |      |      |      |      |      |      |   {  |   }  |⌥  |  |⇧  ⏎  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | MIDI |      |      |      |      |=|||||||||||=|⎈ Del |⌥ Esc |⌃  ⇥  |  Esc |   ⏎  |
+ * | MIDI |      |      |      |      |=|||||||||||=|⌘ Del |⌥ Esc |⌃  ⇥  |  Esc |⇧⌘  ⏎ |
  * `-----------------------------------------------------------------------------------'
  */
-[_SPACE] = LAYOUT_preonic_1x2uC(
+[_SPACE] = LAYOUT_preonic_grid(
   ALL_APP, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_F12,
   KC_TILD, KC_PGUP, _______, KC_UP,   _______, _______, KC_PGUP, KC_HOME, KC_UP,   KC_END,  KC_UNDS, KC_PLUS,
-  APP_SWI, LSFT_T(KC_PGDN), KC_LEFT, KC_DOWN, KC_RGHT, _______, RSFT_T(KC_PGDN), KC_LEFT, KC_DOWN, KC_RGHT, RSFT_T(KC_ASTR), KC_CIRC,
+  APP_SWI, HRSFT_A, HRCTL_S, HROPT_D, HRCMD_F, _______, RSFT_T(KC_PGDN), KC_LEFT, KC_DOWN, KC_RGHT, RSFT_T(KC_ASTR), KC_CIRC,
   SFT_T(KC_ESC),LOPT_T(KC_Z), SFT_T(KC_X), OPT_T(KC_C), CMD_T(KC_V), _______, ROPT_T(KC_N), RCMD_T(KC_M), KC_LBRC, KC_RBRC, ROPT_T(KC_BSLS), RSFT_T(KC_ENT),
-  MIDI,    _______, _______, _______, _______, MO(_SPACE), RCMD_T(KC_DEL), ROPT_T(KC_ESC), RCTL_T(KC_TAB), KC_ESC, KC_ENT
+  MIDI,    _______, _______, _______, _______, MO(_SPACE), MO(_SPACE), RCMD_T(KC_DEL), ROPT_T(KC_ESC), RCTL_T(KC_TAB), KC_ESC, _______
 ),
 
  /* ⎈EXTENSION   
@@ -326,13 +332,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |WinSwi|  Esc |   €  |AppSwR|AppSwi|SwapCh|   §  |   %  |   =  |   -  |   +  |
+ * |      |WinSwi|  Esc |   €  |AppSwR|AppSwi|SwapCh|   §  |   %  |   =  |   -  |  +   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |§     |⇧Shift|      |      |      |      |WrdSel|      |   &  |   $  |   *  |   ^  |
+ * |§     |⇧Shift|      |      |      |      |WrdSel|   ~  |   &  |   $  |   *  |  ^   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |⇧Shift|      | Cut  | Copy | Paste| Enter|   —  |   –  |   (  |   )  |   @  |⇧  ⏎  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |Qwerty|      |      |      |      |             |=||||=|⌥ Del |⇧ Esc |⌥⇧    |      |
+ * |Qwerty|      |      |      |      |      |      |=||||=|⌥ Del |⇧ Esc |⌥⇧    |  ⏎   |
  * `-----------------------------------------------------------------------------------'
  *
  *  ⇧Shift + ⎈EXTENSION
@@ -341,46 +347,46 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |   ¶  |   %  |   +  |   _  |   +  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |§     |      |      |      |      |      |      |      |   ¬  |   £  |   ÷  |   °  |
+ * |§     |      |      |      |      |      |      |   ~  |   ¬  |   £  |   ÷  |   °  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |⇧Shift|      |      |      |      |      |   –  |   –  |   <  |   >  |   #  |⇧  ⏎  | maybe switch # to &
+ * |⇧Shift|      |      |      |      |      |   –  |   –  |   <  |   >  |   #  |⇧  ⏎  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |Qwerty|      |      |      |      |             |=||||=|⌥ Del |⇧ Esc |⌥⇧    |      |
+ * |Qwerty|      |      |      |      |      |      |=||||=|⌥ Del |⌃ Esc |⌥⇧    |   ⏎  |
  * `-----------------------------------------------------------------------------------'
  */
-[_EXT] = LAYOUT_preonic_1x2uC( // [Ergonomic Keyboard Mods: Extend Layer](http://colemakmods.github.io/ergonomic-mods/extend.html)
+[_EXT] = LAYOUT_preonic_grid( // [Ergonomic Keyboard Mods: Extend Layer](http://colemakmods.github.io/ergonomic-mods/extend.html)
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   KC_TILD, ALL_APP, KC_ESC,  KC_EURO, WN_FOCU, APP_SWI, KX_SWAP, KC_SECT, KC_PERC, KC_EQL, KC_MINS , KC_PLUS,
   LT(_SYM, KC_GRV) // intercept this key and use it for changing tabs, or for chaning windows in the current application
-         , KC_LSFT, _______, _______, _______, _______, TX_SEL,  _______, KC_AMPR, KC_DLR,  KC_ASTR, KC_CIRC,
+         , KC_LSFT, _______, _______, _______, _______, TX_SEL,  KC_TILD, KC_AMPR, KC_DLR,  KC_ASTR, KC_CIRC,
   _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_ENT,  EN_DASH, EM_DASH, KC_LPRN, KC_RPRN, KC_AT,   SFT_T(KC_ENT),
-  TO(_QWERTY),_______,_______,_______,_______,     _______,      MO(_EXT), ROPT_T(KC_DEL), RSFT_T(KC_ESC), S(KC_ROPT), _______
+  TO(_QWERTY),_______,_______,_______,_______, _______, _______, MO(_EXT), ROPT_T(KC_DEL), RCTL_T(KC_ESC), S(KC_ROPT), KC_ENT
 ),
 
  /* Numeric Keypad # - holding MOD5/MOD6
  * ,-----------------------------------------------------------------------------------.
- * |WinSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst|NumLck|Clear⌧|   =  |   -  |   +  |
+ * |WinSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst|NumLck|Clear⌧|   =  |   -  |  +   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Focus|      |      |      |      |      |      |   ,  |   /  |   7  |   8  |   9  |
+ * | Focus|      |      |      |      |      |      |   ,  |   /  |   7  |   8  |  9   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |AppSwi| CmdA |      |      |      |      |      |   .  |   *  |   4  |   5  |§  6  |
+ * |AppSwi| CmdA |      |      |      |      |      |   .  |⌘  *  |   4  |   5  |§  6  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |⇧ Esc |      |      |      |      |      |      |Clear⌧|⇧Enter|   1  |   2  |⇧  3  |
+ * |⇧ Esc |      |      |      |      |      |      |Clear⌧|⌘Enter|   1  |   2  |⇧  3  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  fn  |      |      |      |      |             |⎈ Del |=||||=|   0      0  |   .  |
+ * |  fn  |      |      |      |      |      |      |⌘ Del |=||||=|⇧  0  |   0  |⇧⌘  . |
  * `-----------------------------------------------------------------------------------'
  */
-[_NUM] = LAYOUT_preonic_1x2uC(
+[_NUM] = LAYOUT_preonic_grid(
   ALL_APP, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_NUM,  KC_CLR,  KC_PEQL, KC_PMNS, KC_PPLS,
   WN_FOCU, _______, _______, _______, _______, _______, _______, KC_PCMM, KC_PSLS, KC_7,    KC_8,    KC_9,
-  APP_SWI, G(KC_A), _______, _______, _______, _______, _______, KC_PDOT, KC_PAST, KC_4,    KC_5,    LT(_SYM, KC_6),
-  SFT_T(KC_ESC),_______,_______,_______,_______,_______,_______, KC_PCMM, RSFT_T(KC_PENT), KC_1,    KC_2,    RSFT_T(KC_3),
-  KC_CAPS, _______, _______, _______, _______,     _______,      LT(_EXT, KC_DEL), LT(_NUM,KC_RIGHT), LT(_NUM,KC_0), RCMD_T(KC_0), ROPT_T(KC_PDOT)
+  APP_SWI, G(KC_A), _______, _______, _______, _______, _______, KC_PDOT, RCMD_T(KC_PAST), KC_4, KC_5, LT(_SYM, KC_6),
+  SFT_T(KC_ESC),_______,_______,_______,_______,_______,_______, KC_PCMM, RCMD_T(KC_PENT), KC_1, KC_2, RSFT_T(KC_3),
+  KC_CAPS, _______, _______, _______, _______, _______, _______, LCMD_T(KC_DEL), MO(_NUM), RSFT_T(KC_0), RCMD_T(KC_0), SCMD_T(KC_PDOT)
 ),
 
  /* Numbers and Symbols § - holding _SYM
  * ,-----------------------------------------------------------------------------------.
- * |WinSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute |  F12 |
+ * |WinSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute | F12  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |   ~  |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  =   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -388,15 +394,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | Emoji|   §  |   €  |   £  |   |  |  \   |   {  |   }  |   _  |   [  |   ]  |⎈     |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  fn  |      |      |      |      |             |⌘ Del |⌥ Up  |⌃ Down|   —  |   –  |
+ * |  fn  |      |      |      |      |      |      |⌘ Del |⌥ Up  |⌃ Down|   —  |  –   |
  * `-----------------------------------------------------------------------------------'
  */
-[_SYM] = LAYOUT_preonic_1x2uC(
+[_SYM] = LAYOUT_preonic_grid(
   ALL_APP, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_F12,
   KC_TILD, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   LT(_SYM,KC_GRV),  KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, LT(_SYM,KC_EQL),
   CH_EMOJ, KC_SECT, KC_EURO, KC_BRIT, KC_PIPE, KC_BSLS, KC_LCBR, KC_RCBR, KC_UNDS, KC_LBRC, KC_RBRC, _______,
-  KC_CAPS, _______, _______, _______, _______, LT(_SPACE,KC_SPACE), RCMD_T(KC_DEL), ROPT_T(KC_UP), RCTL_T(KC_DOWN), EM_DASH, EN_DASH
+  KC_CAPS, _______, _______, _______, _______, LT(_SPACE,KC_SPACE), LT(_SPACE,KC_SPACE), RCMD_T(KC_DEL), ROPT_T(KC_UP), RCTL_T(KC_DOWN), EM_DASH, EN_DASH
 ),
 
  /* Navigation - holding K
@@ -413,12 +419,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |      |      |      |      |      |             |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
-[_NAV] = LAYOUT_preonic_1x2uC(
+[_NAV] = LAYOUT_preonic_grid(
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______, _______, _______, _______, KC_UP,   _______, _______, _______, _______,
   _______, _______, _______, _______, _______, _______, _______, KC_LEFT, MO(_NAV),KC_RGHT, _______, _______,
   _______, _______, _______, _______, _______, _______, _______, KC_DOWN, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______,     _______,      _______, _______, _______, _______, _______
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 ),
 
  /* Special (Macros) - holding Space + pinkie modifer (Shift/_EXT/_SYM)
@@ -434,12 +440,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |      |      |      |      |      |=|||||||||||=|      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
-[_SPEC] = LAYOUT_preonic_1x2uC(
+[_SPEC] = LAYOUT_preonic_grid(
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   _______,KC_NO/* Q */,KC_NO/* W */,KC_NO/* E */,KC_NO/* R */,KC_NO/* T */,KC_NO/* Y */,KC_NO/* U */,KC_NO/* I */,KC_NO/* O */,KC_NO/* P */,_______,
   _______,KC_NO/* A */,KC_NO/* S */,KC_NO/* D */,KC_NO/* F */,KC_NO/* G */,KC_NO/* H */,KC_NO/* J */,KC_NO/* K */,KC_NO/* L */,KC_NO/* ; */,_______,
   _______,KC_NO/* Z */,KC_NO/* X */,KC_NO/* C */,KC_NO/* V */,KC_NO/* B */,KC_NO/* N */,KC_NO/* M */,KC_NO/* N */,KC_NO/* . */,KC_NO/* / */,_______,
-  _______, _______, _______, _______, _______,      _______,     _______, _______, _______, _______, _______
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 ),
 
 
@@ -456,23 +462,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |      |      |      |      |      |             |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
-[_EXTRA] = LAYOUT_preonic_1x2uC(
+[_EXTRA] = LAYOUT_preonic_grid(
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
   ALL_APP, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, _______,
   _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_MNXT, KC_VOLD, KC_VOLU,
-  TO(_QWERTY), _______, _______, _______, _______,      _______,     _______, _______, _______, _______, _______
+  TO(_QWERTY), _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 ),
 
 
 // /* CMD1 (Empty - this is just for accessing a tri-layer when CMD1+CMD2 are active simultaneously)
 //  */
-// [_CMD1] = LAYOUT_preonic_1x2uC(
+// [_CMD1] = LAYOUT_preonic_grid(
 //   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
 //   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
 //   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
 //   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-//   _______, _______, _______, _______, _______,      _______,     _______, _______, _______, _______, _______
+//   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 // ),
 
 
@@ -489,12 +495,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |Qwerty| Vel-1| Vel+1| Bend-| Bend+|             |Note-1|Note+1|Oct-1 |Oct+1 |_MIDI8|
  * `-----------------------------------------------------------------------------------'
  */
-[_MIDI4] = LAYOUT_preonic_1x2uC(
+[_MIDI4] = LAYOUT_preonic_grid(
   MI_C_3,  MI_Db_3, MI_D_3,  MI_Eb_3, MI_E_3,  MI_F_3,  MI_Gb_3, MI_G_3,  MI_Ab_3, MI_A_3,  MI_Bb_3, MI_B_3,
   MI_G_2,  MI_Ab_2, MI_A_2,  MI_Bb_2, MI_B_2,  MI_C_3,  MI_Db_3, MI_D_3,  MI_Eb_3, MI_E_3,  MI_F_3,  MI_Gb_3,
   MI_D_2,  MI_Eb_2, MI_E_2,  MI_F_2,  MI_Gb_2, MI_G_2,  MI_Ab_2, MI_A_2,  MI_Bb_2, MI_B_2,  MI_C_3,  MI_Db_3,
   MI_A_1,  MI_Bb_1, MI_B_1,  MI_C_2,  MI_Db_2, MI_D_2,  MI_Eb_2, MI_E_2,  MI_F_2,  MI_Gb_2, MI_G_2,  MI_Ab_2,
-  QWERTY,  MI_VELD, MI_VELU, MI_BENDD,MI_BENDU,    _______,      MI_TRNSD,MI_TRNSU,MI_OCTD, MI_OCTU, TO(_MIDI8)
+  QWERTY,  MI_VELD, MI_VELU, MI_BENDD,MI_BENDU, _______,_______, MI_TRNSD,MI_TRNSU,MI_OCTD, MI_OCTU, TO(_MIDI8)
 ),
 
  /* MIDI - Octaves
@@ -510,12 +516,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |Qwerty| Vel-1| Vel+1| Bend-| Bend+|             |Note-1|Note+1|Oct-1 |Oct+1 |_MIDI4|
  * `-----------------------------------------------------------------------------------'
  */
-[_MIDI8] = LAYOUT_preonic_1x2uC(
+[_MIDI8] = LAYOUT_preonic_grid(
   MI_C,    MI_Db,   MI_D,    MI_Eb,   MI_E,    MI_F,    MI_Gb,   MI_G,    MI_Ab,   MI_A,    MI_Bb,   MI_B,
   MI_C_1,  MI_Db_1, MI_D_1,  MI_Eb_1, MI_E_1,  MI_F_1,  MI_Gb_1, MI_G_1,  MI_Ab_1, MI_A_1,  MI_Bb_1, MI_B_1,
   MI_C_2,  MI_Db_2, MI_D_2,  MI_Eb_2, MI_E_2,  MI_F_2,  MI_Gb_2, MI_G_2,  MI_Ab_2, MI_A_2,  MI_Bb_2, MI_B_2,
   MI_C_3,  MI_Db_3, MI_D_3,  MI_Eb_3, MI_E_3,  MI_F_3,  MI_Gb_3, MI_G_3,  MI_Ab_3, MI_A_3,  MI_Bb_3, MI_B_3,
-  QWERTY,  MI_VELD, MI_VELU, MI_BENDD,MI_BENDU,    _______,      MI_TRNSD,MI_TRNSU,MI_OCTD, MI_OCTU, TO(_MIDI4)
+  QWERTY,  MI_VELD, MI_VELU, MI_BENDD,MI_BENDU, _______,_______, MI_TRNSD,MI_TRNSU,MI_OCTD, MI_OCTU, TO(_MIDI4)
 )
 
 };
