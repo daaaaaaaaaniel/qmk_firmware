@@ -26,9 +26,9 @@
 enum preonic_layers {
   _QWERTY,
   _SPACE,
+  _EXT,
   _NUM,
   _SYM,
-  _EXT,
   _NAV,
   _SPEC,
   _EXTRA,
@@ -70,10 +70,10 @@ static uint8_t spacebar_layer_tracker;
 /* right hand */
 #define AA_RTOP KC_MINS // top key position in rightmost column (below function row)  
 #define AA_QUOT LT(_SYM, KC_QUOT) // quote key position
-#define AA_RSFT LSFT_T(KC_EQL) // right shift key position
+#define AA_RSFT LSFT_T(KC_GRV) // right shift key position
 #define AA_MOD3 CMD_T(KC_ENT) // command (hold); return (tap)
 #define AA_MOD4 LT(_EXT, KC_BSPC) // _EXT (hold); backspace (tap)
-#define AA_MOD5 LT(_NUM, KC_LEFT) // _NUM (hold); left arrow (tap)
+#define AA_MOD5 LT(_NUM, KC_ESC) // _NUM (hold); Escape (tap)
 #define AA_MOD6 LT(_NUM, KC_RIGHT) // _NUM (hold); right arrow (tap)
 
 #define OSM_CTL OSM(MOD_LCTL)
@@ -113,18 +113,20 @@ static uint8_t spacebar_layer_tracker;
 #define KC_EURO S(A(KC_2)) // €
 #define KC_BRITISH_POUND A(KC_3) // £
 // #define KC_YEN A(KC_Y) // ¥
-// #define KC_NOT_SIGN A(KC_L) // ¬
-// #define KC_DIVISION A(KC_SLSH) // ÷
+#define KC_NOT_SIGN A(KC_L) // ¬
+#define KC_DIVISION A(KC_SLSH) // ÷
 // #define KC_DAGGER A(KC_T) // †
 #define KC_SECTION A(KC_6) // §
 // #define KC_PILCROW A(KC_7) // ¶
 #define EN_DASH A(KC_MINS) // –
 #define EM_DASH S(A(KC_MINS)) // —
+#define KC_DEGREE S(A(KC_8)) // °
 
 /* short names / aliases */
 #define CH_EMOJ CHARACTER_VIEWER
 #define KC_BRIT KC_BRITISH_POUND
 #define KC_SECT KC_SECTION
+#define KC_DEGR KC_DEGREE
 #define KC_MCTL KC_MISSION_CONTROL
 #define KC_SPLT KC_SPOTLIGHT
 #define KC_DICT KC_DICTATION
@@ -232,12 +234,12 @@ const key_override_t shift_comma_exclam_override = ko_make_basic(MOD_MASK_SHIFT,
 // Shift + . = ?
 const key_override_t shift_period_question_override = ko_make_basic(MOD_MASK_SHIFT, KC_DOT, S(KC_SLASH));//ko_make_with_layers(MOD_MASK_SHIFT, KC_DOT, S(KC_SLASH), 1<<_QWERTY);
 // Shift + / = `
-const key_override_t shift_slash_asterisk_override = ko_make_basic(MOD_MASK_SHIFT, KC_SLASH, S(KC_8));                                           
+const key_override_t shift_slash_hash_override = ko_make_basic(MOD_MASK_SHIFT, KC_SLASH, S(KC_3));                                           
 // This globally defines all key overrides to be used
 const key_override_t **key_overrides = (const key_override_t *[]){
     &shift_comma_exclam_override,
     &shift_period_question_override,
-    &shift_slash_asterisk_override,
+    &shift_slash_hash_override,
     NULL // Null terminate the array of overrides!
 };
 
@@ -257,11 +259,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |   `  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |  -   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |§ ⇥Tab|   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |§ "   |
+ * |§ ⇥Tab|   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |§ '   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |⇧Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |⇧ `   | // (REMINDER:) replace SHIFTED_SLASHGRAVE_OVERRIDE with `@` 
+ * |⇧Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |⇧ `   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  fn  |(Lock)|⌃ Ctrl|⌥ Opt |⌘Cmd ⏎|␣  _SPACE    |⎈ Bksp|#  ←  |#  →  |   ↑  |⇧ ↓   |
+ * |  fn  |(Lock)|⌃ Ctrl|⌥ Opt |⌘Cmd ⏎|␣  _SPACE    |⎈ Bksp|# Esc |#  →  |   ⇥  |␣ ⏎   |
+ * `-----------------------------------------------------------------------------------'
+ *
+ *  ⇧Shift + QWERTY
+ * ,-----------------------------------------------------------------------------------.
+ * |  Esc |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   &  |   (  |   )  |  +   | // sends _underscore_ instead of +plus+ by accident
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |   ~  |      |      |      |      |      |      |      |      |      |      |  _   |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |§ ⇥Tab|      |      |      |      |      |      |      |      |      |   ;  |§ "   |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |⇧Shift|      |      |      |      |      |      |      |   !  |   ?  |   #  |⇧ ~   |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |  fn  |(Lock)|⌃ Ctrl|⌥ Opt |⌘Cmd ⏎|␣  _SPACE    |⎈ Bksp|# Esc |#     |   ⇥  |␣ ⏎   |
  * `-----------------------------------------------------------------------------------'
  */
 [_QWERTY] = LAYOUT_preonic_1x2uC(
@@ -269,31 +284,80 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    AA_RTOP,
   AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    K_NAV,   KC_L,    KC_SCLN, AA_QUOT,
   TD_SESC, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, AA_RSFT,
-  KC_CAPS, KC_LOCK, OSM_CTL, OSM_OPT, AA_MOD3,     TD_SPC,       AA_MOD4, AA_MOD5, AA_MOD6, KC_UP,   RSFT_T(KC_DOWN)
+  KC_CAPS, KC_LOCK, OSM_CTL, OSM_OPT, AA_MOD3,     TD_SPC,       AA_MOD4, AA_MOD5, AA_MOD6, KC_TAB,  LT(_SPACE, KC_ENT)
 ),
 
-/*  Space ␣ (nav controls) - holding Space 
+ /* SPACE ␣ (nav controls) - holding Space 
  * ,-----------------------------------------------------------------------------------.
  * |WinSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute |  F12 |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |   ~  | PgUp |      |   ↑  |      |      | PgUp | Home |   ↑  | End  |   =  |   +  |
+ * |   ~  | PgUp |      |   ↑  |      |      | PgUp | Home |   ↑  | End  |   =  |  +   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |AppSwi|⇧PgDwn|   ←  |   ↓  |   →  |      |⇧PgDwn|   ←  |   ↓  |   →  |⇧  (  |   )  |
+ * |AppSwi|⇧PgDwn|   ←  |   ↓  |   →  |      |⇧PgDwn|   ←  |   ↓  |   →  |⇧  *  |  ^   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |⇧ Esc |⌥  Z  |⇧  X  |⌥  C  |⌘  V  |      |⌥  N  |⌘  M  |   [  |   ]  |⌥  \  |⇧     |
+ * |⇧ Esc |⌥  Z  |⇧  X  |⌥  C  |⌘  V  |      |⌥  N  |⌘  M  |   [  |   ]  |⌥  \  |⇧ `   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | MIDI |      |      |      |      |=|||||||||||=|⎈ Del |⌥  ←  |⌃  →  |   ↑  |   ↓  |
+ * | MIDI |      |      |      |      |=|||||||||||=|⎈ Del |⌥ Esc |⌃  →  |   ⇥  |  ⏎   |
+ * `-----------------------------------------------------------------------------------'
+ *
+ *  ⇧Shift + SPACE ␣ 
+ * ,-----------------------------------------------------------------------------------.
+ * |WinSwi|      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |   ~  |      |      |      |      |      |      |      |      |      |   _  |   +  |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |AppSwi|      |      |      |      |      |      |      |      |      |⇧  %  |   °  |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |⇧ Esc |      |      |      |      |      |      |      |   {  |   }  |⌥  |  |⇧  ~  |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * | MIDI |      |      |      |      |=|||||||||||=|⎈ Del |⌥ Esc |⌃  →  |   ⇥  |   ⏎  |
  * `-----------------------------------------------------------------------------------'
  */
 [_SPACE] = LAYOUT_preonic_1x2uC(
   ALL_APP, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_F12,
   KC_TILD, KC_PGUP, _______, KC_UP,   _______, _______, KC_PGUP, KC_HOME, KC_UP,   KC_END,  KC_EQL , KC_PLUS,
-  APP_SWI, LSFT_T(KC_PGDN), KC_LEFT, KC_DOWN, KC_RGHT, _______, RSFT_T(KC_PGDN), KC_LEFT, KC_DOWN, KC_RGHT, KC_LPRN, KC_RPRN,
-  SFT_T(KC_ESC),LOPT_T(KC_Z), SFT_T(KC_X), OPT_T(KC_C), CMD_T(KC_V), _______, ROPT_T(KC_N), RCMD_T(KC_M), KC_LBRC, KC_RBRC, ROPT_T(KC_BSLS), KC_RSFT,
-  MIDI,    _______, _______, _______, _______, MO(_SPACE), RCMD_T(KC_DEL), ROPT_T(KC_LEFT), RCTL_T(KC_RGHT), KC_UP, KC_DOWN
+  APP_SWI, LSFT_T(KC_PGDN), KC_LEFT, KC_DOWN, KC_RGHT, _______, RSFT_T(KC_PGDN), KC_LEFT, KC_DOWN, KC_RGHT, RSFT_T(KC_ASTR), KC_CIRC,
+  SFT_T(KC_ESC),LOPT_T(KC_Z), SFT_T(KC_X), OPT_T(KC_C), CMD_T(KC_V), _______, ROPT_T(KC_N), RCMD_T(KC_M), KC_LBRC, KC_RBRC, ROPT_T(KC_BSLS), RSFT_T(KC_GRV),
+  MIDI,    _______, _______, _______, _______, MO(_SPACE), RCMD_T(KC_DEL), ROPT_T(KC_ESC), RCTL_T(KC_RGHT), KC_TAB, KC_ENT
 ),
 
-/* Numeric Keypad # - holding MOD5/MOD6
+ /* ⎈EXTENSION   
+ * replace these with the un-shifted keys, then access this layer only with `LM(layer, mod)` 
+ * ,-----------------------------------------------------------------------------------.
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |WinSwi|  Esc |   €  |AppSwR|AppSwi|SwapCh|      |      |   %  |   =  |   +  |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |§     |⇧Shift|      |      |      |      |WrdSel|   §  |   &  |   $  |   *  |   ^  |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |⇧Shift|      | Cut  | Copy | Paste| Enter|   —  |   –  |   (  |   )  |   @  |⇧  ⏎  |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |Qwerty|      |      |      |      |             |=||||=|⌥ Del |⇧ Esc |⌥⇧    |      |
+ * `-----------------------------------------------------------------------------------'
+ *
+ *  ⇧Shift + ⎈EXTENSION
+ * ,-----------------------------------------------------------------------------------.
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      |      |      |      |      |      |   %  |   _  |   +  |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |§     |      |      |      |      |      |      |      |   ¬  |   £  |   ÷  |   °  |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |⇧Shift|      |      |      |      |      |   –  |   –  |   <  |   >  |   #  |⇧  ⏎  | maybe switch # to &
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |Qwerty|      |      |      |      |             |=||||=|⌥ Del |⇧ Esc |⌥⇧    |      |
+ * `-----------------------------------------------------------------------------------'
+ */
+[_EXT] = LAYOUT_preonic_1x2uC( // [Ergonomic Keyboard Mods: Extend Layer](http://colemakmods.github.io/ergonomic-mods/extend.html)
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  KC_TILD, ALL_APP, KC_ESC,  KC_EURO, WN_FOCU, APP_SWI, KX_SWAP, _______, _______, KC_PERC, KC_EQL , KC_PLUS,
+  LT(_SYM, KC_GRV) // intercept this key and use it for changing tabs, or for chaning windows in the current application
+         , KC_LSFT, _______, _______, _______, _______, TX_SEL,  KC_SECT, KC_AMPR, KC_DLR,  KC_ASTR, KC_CIRC,
+  _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_ENT,  EN_DASH, EM_DASH, KC_LPRN, KC_RPRN, KC_AT,   SFT_T(KC_ENT),
+  TO(_QWERTY),_______,_______,_______,_______,     _______,      MO(_EXT), ROPT_T(KC_DEL), RSFT_T(KC_ESC), S(KC_ROPT), _______
+),
+
+ /* Numeric Keypad # - holding MOD5/MOD6
  * ,-----------------------------------------------------------------------------------.
  * |WinSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst|NumLck|Clear⌧|   =  |   -  |   +  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -314,7 +378,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_CAPS, _______, _______, _______, _______,     _______,      LT(_EXT, KC_DEL), LT(_NUM,KC_RIGHT), LT(_NUM,KC_0), RCMD_T(KC_0), ROPT_T(KC_PDOT)
 ),
 
-/* Numbers and Symbols § - holding _SYM
+ /* Numbers and Symbols § - holding _SYM
  * ,-----------------------------------------------------------------------------------.
  * |WinSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute |  F12 |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -335,30 +399,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_CAPS, _______, _______, _______, _______, LT(_SPACE,KC_SPACE), RCMD_T(KC_DEL), ROPT_T(KC_UP), RCTL_T(KC_DOWN), EM_DASH, EN_DASH
 ),
 
-/* Extended ⎈ 
-// replace these with the un-shifted keys, then access this layer only with `LM(layer, mod)` 
- * ,-----------------------------------------------------------------------------------.
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |WinSwi|  Esc |   ↑  |AppSwR|AppSwi|SwapCh|   !  |   @  |   #  |   $  |   %  |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |§     |⇧Shift|   ←  |   ↓  |   →  |      |WrdSel|   ^  |   &  |   *  |   (  |   )  |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |⇧Shift|      | Cut  | Copy | Paste| Enter|PrvTab|NxtTab|   <  |   >  |   `  |⇧     |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |Qwerty|      |      |      |      |             |=||||=|⌥Opt  |⇧Shift|⌥⇧    |      |
- * `-----------------------------------------------------------------------------------'
- */
-[_EXT] = LAYOUT_preonic_1x2uC( // [Ergonomic Keyboard Mods: Extend Layer](http://colemakmods.github.io/ergonomic-mods/extend.html)
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  KC_TILD, ALL_APP, KC_ESC,  KC_UP,   WN_FOCU, APP_SWI, KX_SWAP, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,
-  LT(_SYM, KC_GRV) // intercept this key and use it for changing tabs, or for chaning windows in the current application
-         , KC_LSFT, KC_LEFT, KC_DOWN, KC_RGHT, KC_NO,   TX_SEL,  KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
-  _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_ENT,  PREVTAB, NEXTTAB, KC_LABK, KC_RABK, KC_GRV,  KC_RSFT,
-  TO(_QWERTY),_______,_______,_______,_______,     _______,      LT(_EXT, KC_DEL), KC_ROPT, KC_RSFT, S(KC_ROPT), _______
-),
-
-/* Navigation - holding K
+ /* Navigation - holding K
  * (keep it minimal so it doesn't interfere with regular typing)
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
@@ -380,7 +421,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, _______, _______,     _______,      _______, _______, _______, _______, _______
 ),
 
-/* Special (Macros) - holding Space + pinkie modifer (Shift/_EXT/_SYM)
+ /* Special (Macros) - holding Space + pinkie modifer (Shift/_EXT/_SYM)
  * ,-----------------------------------------------------------------------------------.
  * |      |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -402,7 +443,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 
 
-/* Extra (Media Functions layer) - holding Left Cmd + Space
+ /* Extra (Media Functions layer) - holding Left Cmd + Space
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -435,7 +476,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // ),
 
 
-/* MIDI - Fourths String Layout
+ /* MIDI - Fourths String Layout
  * ,-----------------------------------------------------------------------------------.
  * |  C3  |  D♭3 |  D3  |  E♭3 |  E3  |  F3  |  G♭3 |  G3  |  A♭3 |  A3  |  B♭3 |  B3  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -456,7 +497,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   QWERTY,  MI_VELD, MI_VELU, MI_BENDD,MI_BENDU,    _______,      MI_TRNSD,MI_TRNSU,MI_OCTD, MI_OCTU, TO(_MIDI8)
 ),
 
-/* MIDI - Octaves
+ /* MIDI - Octaves
  * ,-----------------------------------------------------------------------------------.
  * |  C0  |  D♭0 |  D0  |  E♭0 |  E0  |  F0  |  G♭0 |  G0  |  A♭0 |  A0  |  B♭0 |  B0  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -584,6 +625,45 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 //           }
 //           return false;
 //           break;
+        case RSFT_T(KC_ASTR): // used on _SPACE layer next to arrow cluster. 
+/*         // TO FIX
+           // SEND DIVISION SIGN INSTEAD OF _
+           // UNREGISTER THE MODS, LIKE THE KC_ASTR EXAMPLE BELOW
+         // Send Shift on hold. Send * on tap. Send _ on Shift + tap.
+            {
+            // Initialize a boolean variable that keeps track of the percent key status: registered or not?
+            static bool percentkey_registered;
+            if (record->tap.count && record->event.pressed) {
+                // Detect the activation of either shift keys
+                if (mod_state & MOD_MASK_SHIFT) {
+                    register_code16(KC_PERC);
+                    // Update the boolean variable to reflect the status of KC_PERC
+                    percentkey_registered = true;
+                    return false;
+                } else {
+                    tap_code16(KC_ASTR); // Send KC_ASTR on tap
+                    return false;        // Return false to ignore further processing of key
+                }
+            } else { // on release of KC_ASTR
+                // In case KC_PERC is still being sent even after the release of KC_ASTR
+                if (percentkey_registered) {
+                    unregister_code16(KC_PERC);
+                    percentkey_registered = false;
+                    return false;
+                }
+            }
+            // Let QMK process the KC_ASTR keycode as usual outside of shift
+            return true;
+        }
+*/
+       
+// if the above code broke it, revert to this.
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(KC_ASTR); // Send KC_ASTR on tap
+                return false;        // Return false to ignore further processing of key
+            }
+            break;
+
         case TEXT_SELECT_WORD:
           if (record->event.pressed) { // when keycode TEXT_SELECT_WORD is pressed
               register_code(KC_LOPT);
@@ -731,6 +811,226 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           } 
           return false;
           break;
+        case KC_LPRN: // Shift + `(` = < 
+            {
+            // Initialize a boolean variable that keeps track of the greater-than status: registered or not?
+            static bool greaterthan_registered;
+            if (record->event.pressed) {
+                // Detect the activation of either shift keys
+                if (mod_state & MOD_MASK_SHIFT) {
+                    register_code16(KC_LABK);
+                    // Update the boolean variable to reflect the status of KC_LABK
+                    greaterthan_registered = true;
+                    return false;
+                }
+            } else { // on release of KC_LPRN
+                // In case KC_LABK is still being sent even after the release of KC_LPRN
+                if (greaterthan_registered) {
+                    unregister_code16(KC_LABK);
+                    greaterthan_registered = false;
+                    return false;
+                }
+            }
+            // Let QMK process the KC_LPRN keycode as usual outside of shift
+            return true;
+        }
+        case KC_RPRN: // Shift + `)` = < 
+            {
+            // Initialize a boolean variable that keeps track of the less-than key status: registered or not?
+            static bool lessthan_registered;
+            if (record->event.pressed) {
+                // Detect the activation of either shift keys
+                if (mod_state & MOD_MASK_SHIFT) {
+                    register_code16(KC_RABK);
+                    // Update the boolean variable to reflect the status of KC_RABK
+                    lessthan_registered = true;
+                    return false;
+                }
+            } else { // on release of KC_RPRN
+                // In case KC_RABK is still being sent even after the release of KC_RPRN
+                if (lessthan_registered) {
+                    unregister_code16(KC_RABK);
+                    lessthan_registered = false;
+                    return false;
+                }
+            }
+            // Let QMK process the KC_RPRN keycode as usual outside of shift
+            return true;
+        }
+        case KC_CIRC: // Shift + `^` = ° 
+            {
+            // Initialize a boolean variable that keeps track of the degree key status: registered or not?
+            static bool degreekey_registered;
+            if (record->event.pressed) {
+                // Detect the activation of either shift keys
+                if (mod_state & MOD_MASK_SHIFT) {
+                    register_code16(KC_DEGR);
+                    // Update the boolean variable to reflect the status of KC_DEGR
+                    degreekey_registered = true;
+                    return false;
+                }
+            } else { // on release of KC_CIRC
+                // In case KC_DEGR is still being sent even after the release of KC_CIRC
+                if (degreekey_registered) {
+                    unregister_code16(KC_DEGR);
+                    degreekey_registered = false;
+                    return false;
+                }
+            }
+            // Let QMK process the KC_CIRC keycode as usual outside of shift
+            return true;
+        }
+        case KC_AT: // Shift + `@` = # 
+            {
+            // Initialize a boolean variable that keeps track of the hash key status: registered or not?
+            static bool hashkey_registered;
+            if (record->event.pressed) {
+                // Detect the activation of either shift keys
+                if (mod_state & MOD_MASK_SHIFT) {
+                    register_code16(KC_HASH);
+                    // Update the boolean variable to reflect the status of KC_HASH
+                    hashkey_registered = true;
+                    return false;
+                }
+            } else { // on release of KC_AT
+                // In case KC_HASH is still being sent even after the release of KC_AT
+                if (hashkey_registered) {
+                    unregister_code16(KC_HASH);
+                    hashkey_registered = false;
+                    return false;
+                }
+            }
+            // Let QMK process the KC_AT keycode as usual outside of shift
+            return true;
+        }
+        case KC_EQL: // Shift + `=` = _ 
+            {
+            // Initialize a boolean variable that keeps track of the underscore key status: registered or not?
+            static bool underscore_registered;
+            if (record->event.pressed) {
+                // Detect the activation of either shift keys
+                if (mod_state & MOD_MASK_SHIFT) {
+                    register_code16(KC_UNDS);
+                    // Update the boolean variable to reflect the status of KC_UNDS
+                    underscore_registered = true;
+                    return false;
+                }
+            } else { // on release of KC_EQL
+                // In case KC_UNDS is still being sent even after the release of KC_EQL
+                if (underscore_registered) {
+                    unregister_code16(KC_UNDS);
+                    underscore_registered = false;
+                    return false;
+                }
+            }
+            // Let QMK process the KC_EQL keycode as usual outside of shift
+            return true;
+        }
+//         case KC_ASTR: // Shift + `*` = % 
+//             {
+//             // Initialize a boolean variable that keeps track of the percent key status: registered or not?
+//             static bool percentkey_registered;
+//             if (record->event.pressed) {
+//                 // Detect the activation of either shift keys
+//                 if (mod_state & MOD_MASK_SHIFT) {
+//                     register_code16(KC_PERC);
+//                     // Update the boolean variable to reflect the status of KC_PERC
+//                     percentkey_registered = true;
+//                     return false;
+//                 }
+//             } else { // on release of KC_ASTR
+//                 // In case KC_PERC is still being sent even after the release of KC_ASTR
+//                 if (percentkey_registered) {
+//                     unregister_code16(KC_PERC);
+//                     percentkey_registered = false;
+//                     return false;
+//                 }
+//             }
+//             // Let QMK process the KC_ASTR keycode as usual outside of shift
+//             return true;
+//         }
+        case KC_ASTR: // Shift + `*` = ÷ 
+            {
+            // Initialize a boolean variable that keeps track of the division key status: registered or not?
+            static bool divisionsign_registered;
+            if (record->event.pressed) {
+                // Detect the activation of either shift keys
+                if (mod_state & MOD_MASK_SHIFT) {
+                    // First temporarily canceling both shifts so that shift isn't applied to the KC_DIVISION keycode
+                    del_mods(MOD_MASK_SHIFT);
+                    register_code16(KC_DIVISION);
+                    // Update the boolean variable to reflect the status of KC_DIVISION
+                    divisionsign_registered = true;
+                    // Reapplying modifier state so that the held shift key(s) still work even after having tapped the Astrisk/Division key.
+                    set_mods(mod_state);
+                    return false;
+                }
+            } else { // on release of KC_ASTR
+                // In case KC_DIVISION is still being sent even after the release of KC_ASTR
+                if (divisionsign_registered) {
+                    unregister_code16(KC_DIVISION);
+                    divisionsign_registered = false;
+                    return false;
+                }
+            }
+            // Let QMK process the KC_ASTR keycode as usual outside of shift
+            return true;
+        }
+        case KC_DLR: // Shift + `$` = £ 
+            {
+            // Initialize a boolean variable that keeps track of the british pound key status: registered or not?
+            static bool britishpound_registered;
+            if (record->event.pressed) {
+                // Detect the activation of either shift keys
+                if (mod_state & MOD_MASK_SHIFT) {
+                    // First temporarily canceling both shifts so that shift isn't applied to the KC_BRITISH_POUND keycode
+                    del_mods(MOD_MASK_SHIFT);
+                    register_code16(KC_BRITISH_POUND);
+                    // Update the boolean variable to reflect the status of KC_BRITISH_POUND
+                    britishpound_registered = true;
+                    // Reapplying modifier state so that the held shift key(s) still work even after having tapped the Dollar/British Pound key.
+                    set_mods(mod_state);
+                    return false;
+                }
+            } else { // on release of KC_DLR
+                // In case KC_BRITISH_POUND is still being sent even after the release of KC_DLR
+                if (britishpound_registered) {
+                    unregister_code16(KC_BRITISH_POUND);
+                    britishpound_registered = false;
+                    return false;
+                }
+            }
+            // Let QMK process the KC_DLR keycode as usual outside of shift
+            return true;
+        }
+        case KC_AMPR: // Shift + `&` = ¬ 
+            {
+            // Initialize a boolean variable that keeps track of the not-sign key status: registered or not?
+            static bool notsign_registered;
+            if (record->event.pressed) {
+                // Detect the activation of either shift keys
+                if (mod_state & MOD_MASK_SHIFT) {
+                    // First temporarily canceling both shifts so that shift isn't applied to the KC_NOT_SIGN keycode
+                    del_mods(MOD_MASK_SHIFT);
+                    register_code16(KC_NOT_SIGN);
+                    // Update the boolean variable to reflect the status of KC_NOT_SIGN
+                    notsign_registered = true;
+                    // Reapplying modifier state so that the held shift key(s) still work even after having tapped the Ampersand/Not-Sign key.
+                    set_mods(mod_state);
+                    return false;
+                }
+            } else { // on release of KC_AMPR
+                // In case KC_NOT_SIGN is still being sent even after the release of KC_AMPR
+                if (notsign_registered) {
+                    unregister_code16(KC_NOT_SIGN);
+                    notsign_registered = false;
+                    return false;
+                }
+            }
+            // Let QMK process the KC_AMPR keycode as usual outside of shift
+            return true;
+        }
+
         case SHIFTED_SLASHGRAVE_OVERRIDE:
           if (record->event.pressed) {
             if (mod_state & MOD_MASK_SHIFT) { 
