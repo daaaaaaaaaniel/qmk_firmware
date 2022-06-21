@@ -26,7 +26,7 @@
 enum preonic_layers {
   _QWERTY,
   _SPACE,
-  _SPACE_L,
+  _L_SPACE,
   _EXT,
   _NUM,
   _SYM,
@@ -66,6 +66,7 @@ enum preonic_keycodes {
 bool is_alt_tab_active = false;
 uint16_t bespoke_tap_timer = 0;
 static uint8_t spacebar_layer_tracker;
+static uint8_t leftspacebar_layer_tracker;
 
 /* alias for keys in high-use positions */
 /* right hand */
@@ -154,7 +155,9 @@ static uint8_t spacebar_layer_tracker;
 // #define TX_DSEL TEXT_DESELECT
 #define TX_SEL  TEXT_SELECT_WORD
 #define TD_SESC TD(TD_SHIFT_ESC)
-#define TD_SPC  TD(TD_SPACEBAR)
+// #define TD_SPC  TD(TD_SPACEBAR)
+#define TD_LSPC LT(_L_SPACE, KC_SPC)//TD(TD_LEFT_SPACEBAR)
+#define TD_RSPC TD(TD_SPACEBAR)
 
 // #define WN_REV APP_SWITCHER_REVERSE // same effect as WN_FOCU (command-grave)
 /* keycodes for Amethyst */
@@ -174,7 +177,7 @@ static uint8_t spacebar_layer_tracker;
 // When both SPACE keys are tapped together, execute ENTER. When both SPACE keys are HELD, activate _EXTRA layer.
 enum combos {
   CMD_CAPSLOCKS,
-  SPACE_LTEXTRA,
+//   SPACE_LTEXTRA, // KC_LSPC + KC_RSPC = space_combo - _EXTRA (hold); OSM(MOD_MEH) (tap)
   QGRAVE_FOCUS, // Q+adjacent key on far right 
   TABA_ESCAPE,
   JK_LEFT,
@@ -191,7 +194,7 @@ uint16_t COMBO_LEN = COMBO_LENGTH;
 
 /* press these keys together to trigger combo */
 const uint16_t PROGMEM cmd_combo[] = {AA_MOD3, AA_MOD4, COMBO_END};
-const uint16_t PROGMEM space_combo[] = {AA_MOD3, AA_RSPC, COMBO_END};
+// const uint16_t PROGMEM space_combo[] = {TD_LSPC, TD_RSPC, COMBO_END}; // 
 const uint16_t PROGMEM focus_combo[] = {KC_GRV, KC_Q, COMBO_END}; // possibly switch to QK_GESC ? 
 const uint16_t PROGMEM escape_combo[] = {AA_TAB, KC_A, COMBO_END};
 const uint16_t PROGMEM left_combo[] = {KC_J, K_NAV, COMBO_END};// {KC_AMPR, KC_ASTR, COMBO_END};
@@ -206,7 +209,7 @@ const uint16_t PROGMEM backspace_combo[] = {KC_P, AA_RTOP, COMBO_END};
 /* triggering combo has this effect */
 combo_t key_combos[] = {
  [CMD_CAPSLOCKS] = COMBO(cmd_combo, KC_CAPS),
- [SPACE_LTEXTRA] = COMBO(space_combo, LT(_EXTRA, OSM(MOD_MEH))),
+//  [SPACE_LTEXTRA] = COMBO(space_combo, LT(_EXTRA, OSM(MOD_MEH))),
  [QGRAVE_FOCUS] = COMBO(focus_combo, G(KC_GRV)),
  [TABA_ESCAPE] = COMBO(escape_combo, KC_ESC),
  [JK_LEFT] = COMBO(left_combo, KC_LEFT),
@@ -274,7 +277,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *
  *  ⇧Shift + QWERTY
  * ,-----------------------------------------------------------------------------------.
- * |  Esc |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   &  |   (  |   )  |  +   | // sends _underscore_ instead of +plus+ by accident
+ * |  Esc |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   &  |   (  |   )  |  +   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |   ~  |      |      |      |      |      |      |      |      |      |      |  _   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -290,10 +293,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    AA_RTOP,
   AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    K_NAV,   KC_L,    KC_SCLN, AA_QUOT,
   TD_SESC, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, AA_RSFT,
-  KC_CAPS, KC_LOCK, OSM_CTL, OSM_OPT, AA_MOD3, TD_SPC,  TD_SPC,  AA_MOD4, AA_MOD5, AA_MOD6, KC_ESC,  SCMD_T(KC_ENT)
+  KC_CAPS, KC_LOCK, OSM_CTL, OSM_OPT, AA_MOD3, TD_LSPC, TD_RSPC, AA_MOD4, AA_MOD5, AA_MOD6, KC_ESC,  SCMD_T(KC_ENT)
 ),
 
- /* SPACE ␣ (nav controls) - holding Space 
+ /* RIGHT SPACE ␣ (nav controls) - holding Space 
  * ,-----------------------------------------------------------------------------------.
  * |WinSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute |  F12 |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -324,7 +327,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TILD, KC_PGUP, _______, KC_UP,   _______, _______, KC_PGUP, KC_HOME, KC_UP,   KC_END,  KC_UNDS, KC_PLUS,
   APP_SWI, HRSFT_A, HRCTL_S, HROPT_D, HRCMD_F, _______, RSFT_T(KC_PGDN), KC_LEFT, KC_DOWN, KC_RGHT, RSFT_T(KC_ASTR), KC_CIRC,
   SFT_T(KC_ESC),LOPT_T(KC_Z), SFT_T(KC_X), OPT_T(KC_C), CMD_T(KC_V), _______, ROPT_T(KC_N), RCMD_T(KC_M), KC_LBRC, KC_RBRC, ROPT_T(KC_BSLS), RSFT_T(KC_ENT),
-  MIDI,    _______, _______, _______, _______, MO(_SPACE), MO(_SPACE), RCMD_T(KC_DEL), ROPT_T(KC_ESC), RCTL_T(KC_TAB), KC_ESC, _______
+  MIDI,    _______, _______, _______, _______, LT(_L_SPACE,KC_SPC), LT(_SPACE,KC_SPC), RCMD_T(KC_DEL), ROPT_T(KC_ESC), RCTL_T(KC_TAB), KC_ESC, _______
+),
+
+ /* LEFT SPACE ␣ 
+ * ,-----------------------------------------------------------------------------------.
+ * |WinSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute |  F12 |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |   ~  |      | Home |   ↑  | End  | PgUp | PgUp | Home |   ↑  | End  |   _  |  +   |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |AppSwi|      |   ←  |   ↓  |   →  | PgDwn|⇧PgDwn|   ←  |   ↓  |   →  |⇧  *  |  ^   |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |⇧ Esc |      |      |      |      |      |⌥  N  |⌘  M  |   [  |   ]  |⌥  \  |⇧ ⏎   |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * | MIDI |      |      |      |      |=|||||||||||=|⌘ Del |⌥ Esc |⌃  ⇥  |  Esc |⇧⌘  ⏎ |
+ * `-----------------------------------------------------------------------------------'
+ */
+[_L_SPACE] = LAYOUT_preonic_grid(
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, KC_HOME, KC_UP,   KC_END,  KC_PGUP, _______, _______, _______, _______, _______, _______,
+  _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGDN, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  MIDI,    _______, _______, _______, _______, LT(_L_SPACE,KC_SPC), LT(_SPACE,KC_SPC), RCMD_T(KC_DEL), ROPT_T(KC_ESC), RCTL_T(KC_TAB), KC_ESC, _______
 ),
 
  /* ⎈EXTENSION   
@@ -355,7 +379,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_EXT] = LAYOUT_preonic_grid( // [Ergonomic Keyboard Mods: Extend Layer](http://colemakmods.github.io/ergonomic-mods/extend.html)
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  _______, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_F12,
   KC_TILD, ALL_APP, KC_ESC,  KC_EURO, WN_FOCU, APP_SWI, KX_SWAP, KC_SECT, KC_PERC, KC_EQL, KC_MINS , KC_PLUS,
   LT(_SYM, KC_GRV) // intercept this key and use it for changing tabs, or for chaning windows in the current application
          , KC_LSFT, _______, _______, _______, _______, TX_SEL,  KC_TILD, KC_AMPR, KC_DLR,  KC_ASTR, KC_CIRC,
@@ -416,7 +440,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |      |      |      | Down |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |             |      |      |      |      |      |
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_NAV] = LAYOUT_preonic_grid(
@@ -459,7 +483,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |      |      | Next | Vol- | Vol+ |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |             |      |      |      |      |      |
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_EXTRA] = LAYOUT_preonic_grid(
@@ -492,7 +516,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |  A1  |  B♭1 |  B1  |  C2  |  D♭2 |  D2  |  E♭2 |  E2  |  F2  |  G♭2 |  G2  |  A♭2 |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |Qwerty| Vel-1| Vel+1| Bend-| Bend+|             |Note-1|Note+1|Oct-1 |Oct+1 |_MIDI8|
+ * |Qwerty| Vel-1| Vel+1| Bend-| Bend+|      |      |Note-1|Note+1|Oct-1 |Oct+1 |_MIDI8|
  * `-----------------------------------------------------------------------------------'
  */
 [_MIDI4] = LAYOUT_preonic_grid(
@@ -513,7 +537,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |  C3  |  D♭3 |  D3  |  E♭3 |  E3  |  F3  |  G♭3 |  G3  |  A♭3 |  A3  |  B♭3 |  B3  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |Qwerty| Vel-1| Vel+1| Bend-| Bend+|             |Note-1|Note+1|Oct-1 |Oct+1 |_MIDI4|
+ * |Qwerty| Vel-1| Vel+1| Bend-| Bend+|      |      |Note-1|Note+1|Oct-1 |Oct+1 |_MIDI4|
  * `-----------------------------------------------------------------------------------'
  */
 [_MIDI8] = LAYOUT_preonic_grid(
@@ -530,6 +554,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // layer_state_t layer_state_set_user(layer_state_t state) {
 //   return update_tri_layer_state(state, _LOWER, _RAISE, _EXTRA);
 // }
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+  state = update_tri_layer_state(state, _L_SPACE, _SPACE, _EXTRA);
+//   state = update_tri_layer_state(state, _RAISE, _SYMB, _SPECIAL);
+  return state;
+}
 
 uint8_t mod_state; // Initialize variable holding the binary representation of active modifiers.
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -1112,7 +1142,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // processed after regular keypress        
 void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case TD_SPC:
+    /* case TD_SPC: */ case TD_LSPC: case TD_RSPC:
       if (record->event.pressed) {
         bespoke_tap_timer = timer_read();
       } else if (timer_elapsed(bespoke_tap_timer) < TAPPING_TERM) { // if tapped, don't use _SPACE layer

@@ -3,6 +3,7 @@
 enum td_keycodes {
     TD_SHIFT_ESC,
     TD_SPACEBAR,
+    TD_LEFT_SPACEBAR,
 };
  
 /* Define a type containing as many tapdance states as you need */
@@ -39,6 +40,10 @@ void shiftesc_reset(qk_tap_dance_state_t *state, void *user_data);
 void spacebar_finished(qk_tap_dance_state_t *state, void *user_data);
 void spacebar_reset(qk_tap_dance_state_t *state, void *user_data);
 
+void leftspacebar_finished(qk_tap_dance_state_t *state, void *user_data);
+void leftspacebar_reset(qk_tap_dance_state_t *state, void *user_data);
+
+/************************************************************************/
 
 #elif defined TAPDANCE_BOTTOM
 
@@ -76,6 +81,10 @@ static td_tap_t sftesc_tap_state = {
     .state = TD_NONE
 };
 static td_tap_t spacebar_tap_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+static td_tap_t leftspacebar_tap_state = {
     .is_press_action = true,
     .state = TD_NONE
 };
@@ -181,13 +190,45 @@ void spacebar_reset(qk_tap_dance_state_t *state, void *user_data) {
     spacebar_tap_state.state = TD_NONE;
 }
 
+void leftspacebar_finished(qk_tap_dance_state_t *state, void *user_data) {
+    leftspacebar_tap_state.state = cur_dance(state);
+    switch (leftspacebar_tap_state.state) {
+        case TD_SINGLE_TAP:
+            break;
+        case TD_SINGLE_HOLD:
+            leftspacebar_layer_tracker++; // this should allow the `post_process_record_user` to go to work!
+            layer_on(_L_SPACE);
+            break;
+        case TD_DOUBLE_TAP:
+            break;
+        case TD_DOUBLE_HOLD:
+            break;
+        case TD_DOUBLE_SINGLE_TAP:
+            break;
+        default:
+            break;
+    }
+}
+void leftspacebar_reset(qk_tap_dance_state_t *state, void *user_data) {
+    if(leftspacebar_layer_tracker) {
+        layer_off(_L_SPACE);
+        leftspacebar_layer_tracker--;
+    }
+    if (is_alt_tab_active) { // release alt_tab when releasing this spacebar
+        is_alt_tab_active = false;
+        unregister_code(KC_LCMD);
+    }
+    leftspacebar_tap_state.state = TD_NONE;
+}
+
 
 /* Tap Dance definitions */
 // Define `ACTION_TAP_DANCE_DOUBLE` or `ACTION_TAP_DANCE_FN_ADVANCED()` for each tapdance keycode, passing in `finished` and `reset` functions
 qk_tap_dance_action_t tap_dance_actions[] = {
 //     [TD_SHIFT_ESC] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_ESC), // Tap once for Shift, twice for Escape
     [TD_SHIFT_ESC] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, shiftesc_finished, shiftesc_reset), // Tap once for Shift, twice for Escape, 
-    [TD_SPACEBAR] = ACTION_TAP_DANCE_FN_ADVANCED(spacebar_each, spacebar_finished, spacebar_reset)
+    [TD_SPACEBAR] = ACTION_TAP_DANCE_FN_ADVANCED(spacebar_each, spacebar_finished, spacebar_reset),
+    [TD_LEFT_SPACEBAR] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, leftspacebar_finished, leftspacebar_reset)
 };
 
 
