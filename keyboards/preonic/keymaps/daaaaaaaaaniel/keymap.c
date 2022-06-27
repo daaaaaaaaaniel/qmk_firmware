@@ -69,17 +69,26 @@ static uint8_t spacebar_layer_tracker;
 static uint8_t leftspacebar_layer_tracker;
 
 /* Short syntax for mod-tap keys */
+#define SFT_(K)  LSFT_T(KC_##K) //  left shift   (hold) - (kc) tap
+#define CTL_(K)  LCTL_T(KC_##K) //  left control (hold) - (kc) tap
+#define OPT_(K)  LALT_T(KC_##K) //  left option  (hold) - (kc) tap
+#define CMD_(K)  LGUI_T(KC_##K) //  left command (hold) - (kc) tap
+#define RSFT_(K) RSFT_T(KC_##K) // right shift   (hold) - (kc) tap
+#define RCTL_(K) RCTL_T(KC_##K) // right control (hold) - (kc) tap
+#define ROPT_(K) RALT_T(KC_##K) // right option  (hold) - (kc) tap
+#define RCMD_(K) RGUI_T(KC_##K) // right command (hold) - (kc) tap
+
 #define LS(K) LSFT_T(KC_##K) //  left shift   (hold) - (kc) tap
-#define LA(K) LCTL_T(KC_##K) //  left control (hold) - (kc) tap
+#define LC(K) LCTL_T(KC_##K) //  left control (hold) - (kc) tap
 #define LO(K) LALT_T(KC_##K) //  left option  (hold) - (kc) tap
-#define LC(K) LGUI_T(KC_##K) //  left command (hold) - (kc) tap
+#define LG(K) LGUI_T(KC_##K) //  left command (hold) - (kc) tap
 #define RS(K) RSFT_T(KC_##K) // right shift   (hold) - (kc) tap
-#define RA(K) RCTL_T(KC_##K) // right control (hold) - (kc) tap
+#define RC(K) RCTL_T(KC_##K) // right control (hold) - (kc) tap
 #define RO(K) RALT_T(KC_##K) // right option  (hold) - (kc) tap
-#define RC(K) RGUI_T(KC_##K) // right command (hold) - (kc) tap
+#define RG(K) RGUI_T(KC_##K) // right command (hold) - (kc) tap
 	
-#define YR(K) LT(_SPACE, KC_##K)
-#define YL(K) LT(_L_SPACE, KC_##K)
+#define L_RSP(K) LT(_SPACE, KC_##K)
+#define L_SP(K)  LT(_L_SPACE, KC_##K)
 
 
 /* alias for keys in high-use positions */
@@ -96,10 +105,10 @@ static uint8_t leftspacebar_layer_tracker;
 #define OSM_ALT OSM(MOD_LALT)
 #define OSM_OPT OSM(MOD_LALT)
 
-#define HRSFT_A SFT_T(KC_A) // Home row mod A/Shift
-#define HRCTL_S CTL_T(KC_S) // Home row mod S/Ctrl
-#define HROPT_D OPT_T(KC_D) // Home row mod D/Opt
-#define HRCMD_F CMD_T(KC_F) // Home row mod F/Cmd
+// #define HRSFT_A SFT_T(KC_A) // Home row mod A/Shift
+// #define HRCTL_S CTL_T(KC_S) // Home row mod S/Ctrl
+// #define HROPT_D OPT_T(KC_D) // Home row mod D/Opt
+// #define HRCMD_F CMD_T(KC_F) // Home row mod F/Cmd
 
 // #define O_RSFT OSM(MOD_RSFT) // one-shot right shift
 #define SX_GRV SFT_T(KC_GRV) // shift (hold); grave (tap)
@@ -337,11 +346,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_SPACE] = LAYOUT_preonic_grid(
-  ALL_APP, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_F12,
-  KC_TILD, KC_PGUP, _______, KC_UP,   _______, _______, KC_PGUP, KC_HOME, KC_UP,   KC_END,  KC_UNDS, KC_PLUS,
-  APP_SWI, HRSFT_A, HRCTL_S, HROPT_D, HRCMD_F, _______, RSFT_T(KC_PGDN), KC_LEFT, KC_DOWN, KC_RGHT, RSFT_T(KC_ASTR), KC_CIRC,
-  SFT_T(KC_ESC),LOPT_T(KC_Z), SFT_T(KC_X), OPT_T(KC_C), CMD_T(KC_V), _______, ROPT_T(KC_N), RCMD_T(KC_M), KC_LBRC, KC_RBRC, ROPT_T(KC_BSLS), RSFT_T(KC_ENT),
-  MIDI,    _______, _______, _______, CMD_T(KC_ENT), LT(_L_SPACE,KC_ENT), LT(_SPACE,KC_SPC), RCMD_T(KC_DEL), ROPT_T(KC_ESC), RCTL_T(KC_TAB), KC_ESC, _______
+  ALL_APP,   KC_BRID,   KC_BRIU,   KC_MCTL,   KC_LPAD,   KC_DICT,   KC_DOND,   KC_MRWD,   KC_MPLY,   KC_MFFD,   KC_MUTE,   KC_F12,
+  KC_TILD,   KC_PGUP,   _______,   KC_UP,     _______,   _______,   KC_PGUP,   KC_HOME,   KC_UP,     KC_END,    KC_UNDS,   KC_PLUS,
+  APP_SWI,   SFT_(A),   CTL_(S),   OPT_(D),   CMD_(F),   _______,   RSFT_(PGDN),KC_LEFT,  KC_DOWN,   KC_RGHT,   RSFT_(ASTR),KC_CIRC,
+  SFT_(ESC), OPT_(Z),   SFT_(X),   OPT_(C),   CMD_(V),   _______,   ROPT_(N),  RCMD_(M),  KC_LBRC,   KC_RBRC,   ROPT_(BSLS),RSFT_T(KC_ENT),
+  MIDI,      _______,   _______,   _______,   CMD_(ENT), L_SP(ENT), L_RSP(SPC),RCMD_(DEL),ROPT_(ESC),RCTL_(TAB),KC_ESC,    _______
 ),
 
  /* LEFT SPACE ␣ 
@@ -361,8 +370,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   _______, _______, KC_HOME, KC_UP,   KC_END,  KC_PGUP, _______, _______, _______, _______, _______, _______,
   _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGDN, _______, _______, _______, _______, _______, _______,
-  SFT_T(KC_ENT), LOPT_T(KC_Z), SFT_T(KC_X), OPT_T(KC_C), CMD_T(KC_V), _______, _______, _______, _______, _______, _______, _______,
-  MIDI,    _______, _______, _______, CMD_T(KC_ENT), LT(_L_SPACE,KC_SPC), LT(_SPACE,KC_SPC), RCMD_T(KC_DEL), ROPT_T(KC_ESC), RCTL_T(KC_TAB), KC_ESC, _______
+  SFT_(ENT),OPT_(Z),SFT_(X), OPT_(C), CMD_(V), _______, _______, _______, _______, _______, _______, _______,
+  MIDI,    _______, _______, _______, CMD_(ENT), LT(_L_SPACE,KC_SPC), LT(_SPACE,KC_SPC), RCMD_T(KC_DEL), ROPT_T(KC_ESC), RCTL_T(KC_TAB), KC_ESC, _______
 ),
 
  /* ⎈EXTENSION   
