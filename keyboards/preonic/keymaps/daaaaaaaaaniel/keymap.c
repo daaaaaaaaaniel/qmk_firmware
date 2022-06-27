@@ -68,12 +68,26 @@ uint16_t bespoke_tap_timer = 0;
 static uint8_t spacebar_layer_tracker;
 static uint8_t leftspacebar_layer_tracker;
 
+/* Short syntax for mod-tap keys */
+#define LS(K) LSFT_T(KC_##K) //  left shift   (hold) - (kc) tap
+#define LA(K) LCTL_T(KC_##K) //  left control (hold) - (kc) tap
+#define LO(K) LALT_T(KC_##K) //  left option  (hold) - (kc) tap
+#define LC(K) LGUI_T(KC_##K) //  left command (hold) - (kc) tap
+#define RS(K) RSFT_T(KC_##K) // right shift   (hold) - (kc) tap
+#define RA(K) RCTL_T(KC_##K) // right control (hold) - (kc) tap
+#define RO(K) RALT_T(KC_##K) // right option  (hold) - (kc) tap
+#define RC(K) RGUI_T(KC_##K) // right command (hold) - (kc) tap
+	
+#define YR(K) LT(_SPACE, KC_##K)
+#define YL(K) LT(_L_SPACE, KC_##K)
+
+
 /* alias for keys in high-use positions */
 /* right hand */
-#define AA_RTOP KC_MINS // top key position in rightmost column (below function row)  
+#define AA_RTOP KC_EQL // top key position in rightmost column (below function row)  
 #define AA_QUOT LT(_SYM, KC_QUOT) // quote key position
-#define AA_RSFT LSFT_T(KC_GRV) // right shift key position
-#define AA_MOD3 CMD_T(KC_ENT) // command (hold); return (tap)
+#define AA_RSFT LSFT_T(KC_MINS) // right shift key position
+#define AA_MOD3 KC_LCMD // command
 #define AA_MOD4 LT(_EXT, KC_BSPC) // _EXT (hold); backspace (tap)
 #define AA_MOD5 LT(_NUM, KC_TAB) // _NUM (hold); Tab (tap)
 #define AA_MOD6 LT(_NUM, KC_ENT) // _NUM (hold); Enter (tap)
@@ -238,17 +252,17 @@ void oneshot_mods_changed_user(uint8_t mods) {
 
 
 /* KEY OVERRIDES */
-// Shift + , = !
-const key_override_t shift_comma_exclam_override = ko_make_basic(MOD_MASK_SHIFT, KC_COMMA, S(KC_1)); //ko_make_with_layers(MOD_MASK_SHIFT, KC_COMMA, S(KC_1), 1<<_QWERTY);
-// Shift + . = ?
-const key_override_t shift_period_question_override = ko_make_basic(MOD_MASK_SHIFT, KC_DOT, S(KC_SLASH));//ko_make_with_layers(MOD_MASK_SHIFT, KC_DOT, S(KC_SLASH), 1<<_QWERTY);
-// Shift + / = `
-const key_override_t shift_slash_hash_override = ko_make_basic(MOD_MASK_SHIFT, KC_SLASH, S(KC_3));                                           
+// Shift + , = #
+const key_override_t shift_comma_exclam_override = ko_make_basic(MOD_MASK_SHIFT, KC_COMMA, S(KC_3)); //ko_make_with_layers(MOD_MASK_SHIFT, KC_COMMA, S(KC_1), 1<<_QWERTY);
+// Shift + . = !
+const key_override_t shift_period_question_override = ko_make_basic(MOD_MASK_SHIFT, KC_DOT, S(KC_1));//ko_make_with_layers(MOD_MASK_SHIFT, KC_DOT, S(KC_SLASH), 1<<_QWERTY);
+// Shift + / = #
+// const key_override_t shift_slash_hash_override = ko_make_basic(MOD_MASK_SHIFT, KC_SLASH, S(KC_3));                                           
 // This globally defines all key overrides to be used
 const key_override_t **key_overrides = (const key_override_t *[]){
     &shift_comma_exclam_override,
     &shift_period_question_override,
-    &shift_slash_hash_override,
+//     &shift_slash_hash_override,
     NULL // Null terminate the array of overrides!
 };
 
@@ -266,11 +280,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |  Esc |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  =   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |   `  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |  -   |
+ * |   `  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |  =   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |§ ⇥Tab|   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |§ '   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |⇧Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |⇧ `   |
+ * |⇧Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |⇧ -   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |  fn  |(Lock)|⌃ Ctrl|⌥ Opt |⌘Cmd ⏎|␣ Spc |␣ Spc |⎈ Bksp|#  ⇥  |#  ⏎  |  Esc |⇧⌘  ⏎ |
  * `-----------------------------------------------------------------------------------'
@@ -279,11 +293,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |  Esc |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   &  |   (  |   )  |  +   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |   ~  |      |      |      |      |      |      |      |      |      |      |  _   |
+ * |   ~  |      |      |      |      |      |      |      |      |      |      |  +   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |§ ⇥Tab|      |      |      |      |      |      |      |      |      |   ;  |§ "   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |⇧Shift|      |      |      |      |      |      |      |   !  |   ?  |   #  |⇧ ~   |
+ * |⇧Shift|      |      |      |      |      |      |      |   !  |   ?  |   #  |⇧ _   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |  fn  |(Lock)|⌃ Ctrl|⌥ Opt |⌘Cmd ⏎|␣ Spc |␣ Spc |⎈ Bksp|#  ⇥  |#  ⏎  |  Esc |⇧⌘  ⏎ |
  * `-----------------------------------------------------------------------------------'
@@ -306,7 +320,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |⇧ Esc |⌥  Z  |⇧  X  |⌥  C  |⌘  V  |      |⌥  N  |⌘  M  |   [  |   ]  |⌥  \  |⇧ ⏎   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | MIDI |      |      |      |      |=|||||||||||=|⌘ Del |⌥ Esc |⌃  ⇥  |  Esc |⇧⌘  ⏎ |
+ * | MIDI |      |      |      |⌘Cmd ⏎|␣  ⏎  |=||||=|⌘ Del |⌥ Esc |⌃  ⇥  |  Esc |⇧⌘  ⏎ |
  * `-----------------------------------------------------------------------------------'
  *
  *  ⇧Shift + SPACE ␣ 
@@ -319,7 +333,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |⇧ Esc |      |      |      |      |      |      |      |   {  |   }  |⌥  |  |⇧  ⏎  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | MIDI |      |      |      |      |=|||||||||||=|⌘ Del |⌥ Esc |⌃  ⇥  |  Esc |⇧⌘  ⏎ |
+ * | MIDI |      |      |      |      |␣  ⏎  |=||||=|⌘ Del |⌥ Esc |⌃  ⇥  |  Esc |⇧⌘  ⏎ |
  * `-----------------------------------------------------------------------------------'
  */
 [_SPACE] = LAYOUT_preonic_grid(
@@ -327,7 +341,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TILD, KC_PGUP, _______, KC_UP,   _______, _______, KC_PGUP, KC_HOME, KC_UP,   KC_END,  KC_UNDS, KC_PLUS,
   APP_SWI, HRSFT_A, HRCTL_S, HROPT_D, HRCMD_F, _______, RSFT_T(KC_PGDN), KC_LEFT, KC_DOWN, KC_RGHT, RSFT_T(KC_ASTR), KC_CIRC,
   SFT_T(KC_ESC),LOPT_T(KC_Z), SFT_T(KC_X), OPT_T(KC_C), CMD_T(KC_V), _______, ROPT_T(KC_N), RCMD_T(KC_M), KC_LBRC, KC_RBRC, ROPT_T(KC_BSLS), RSFT_T(KC_ENT),
-  MIDI,    _______, _______, _______, _______, LT(_L_SPACE,KC_SPC), LT(_SPACE,KC_SPC), RCMD_T(KC_DEL), ROPT_T(KC_ESC), RCTL_T(KC_TAB), KC_ESC, _______
+  MIDI,    _______, _______, _______, CMD_T(KC_ENT), LT(_L_SPACE,KC_ENT), LT(_SPACE,KC_SPC), RCMD_T(KC_DEL), ROPT_T(KC_ESC), RCTL_T(KC_TAB), KC_ESC, _______
 ),
 
  /* LEFT SPACE ␣ 
@@ -338,17 +352,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |AppSwi|      |   ←  |   ↓  |   →  | PgDwn|⇧PgDwn|   ←  |   ↓  |   →  |⇧  *  |  ^   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |⇧ Esc |      |      |      |      |      |⌥  N  |⌘  M  |   [  |   ]  |⌥  \  |⇧ ⏎   |
+ * |⇧  ⏎  |⌥  Z  |⇧  X  |⌥  C  |⌘  V  |      |⌥  N  |⌘  M  |   [  |   ]  |⌥  \  |⇧ ⏎   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | MIDI |      |      |      |      |=|||||||||||=|⌘ Del |⌥ Esc |⌃  ⇥  |  Esc |⇧⌘  ⏎ |
+ * | MIDI |      |      |      |⌘Cmd ⏎|=||||=|␣     |⌘ Del |⌥ Esc |⌃  ⇥  |  Esc |⇧⌘  ⏎ |
  * `-----------------------------------------------------------------------------------'
  */
 [_L_SPACE] = LAYOUT_preonic_grid(
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   _______, _______, KC_HOME, KC_UP,   KC_END,  KC_PGUP, _______, _______, _______, _______, _______, _______,
   _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGDN, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  MIDI,    _______, _______, _______, _______, LT(_L_SPACE,KC_SPC), LT(_SPACE,KC_SPC), RCMD_T(KC_DEL), ROPT_T(KC_ESC), RCTL_T(KC_TAB), KC_ESC, _______
+  SFT_T(KC_ENT), LOPT_T(KC_Z), SFT_T(KC_X), OPT_T(KC_C), CMD_T(KC_V), _______, _______, _______, _______, _______, _______, _______,
+  MIDI,    _______, _______, _______, CMD_T(KC_ENT), LT(_L_SPACE,KC_SPC), LT(_SPACE,KC_SPC), RCMD_T(KC_DEL), ROPT_T(KC_ESC), RCTL_T(KC_TAB), KC_ESC, _______
 ),
 
  /* ⎈EXTENSION   
