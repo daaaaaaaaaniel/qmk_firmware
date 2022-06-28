@@ -891,7 +891,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     return false;
                 }
             }
-            // Let QMK process the KC_LPRN keycode as usual outside of shift
+            // Let QMK process the KC_LABK keycode as usual outside of shift
             return true;
         }
         case KC_LCBR: // Shift + `{` = `}`
