@@ -30,7 +30,6 @@ enum preonic_layers {
   _EXT,
   _NUM,
   _SYM,
-  _NAV,
   _SPEC,
   _EXTRA,
 //   _CMD1,
@@ -134,7 +133,6 @@ static uint8_t leftspacebar_layer_tracker;
 // #define AA_TAB  LT(_EXT, KC_TAB)
 // #define AA_RSPC LSFT_T(KC_SPACE) // shift (hold); space (tap) // /* alt version:*/ LT(_SYM,KC_SPACE)
 // #define AA_LSPC  LT(_SYM,KC_ENT)
-#define K_NAV LT(_NAV, KC_K)
 #define WN_FOCU G(KC_GRV) // window focus - Cmd + `
 #define SHOW_ALL_APP_WINDOWS LCTL(KC_DOWN) // Control-Down Arrow
 #define CHARACTER_VIEWER G(C(KC_SPC)) // emoji/character viewer
@@ -220,10 +218,10 @@ const uint16_t PROGMEM cmd_combo[] = {AA_MOD3, AA_MOD4, COMBO_END};
 // const uint16_t PROGMEM space_combo[] = {TD_LSPC, TD_RSPC, COMBO_END}; // 
 const uint16_t PROGMEM focus_combo[] = {KC_GRV, KC_Q, COMBO_END}; // possibly switch to QK_GESC ? 
 const uint16_t PROGMEM escape_combo[] = {AA_TAB, KC_A, COMBO_END};
-const uint16_t PROGMEM left_combo[] = {KC_J, K_NAV, COMBO_END};// {KC_AMPR, KC_ASTR, COMBO_END};
-const uint16_t PROGMEM right_combo[] = {K_NAV, KC_L, COMBO_END};// {KC_ASTR, KC_LPRN, COMBO_END};
+const uint16_t PROGMEM left_combo[] = {KC_J, KC_K, COMBO_END};// {KC_AMPR, KC_ASTR, COMBO_END};
+const uint16_t PROGMEM right_combo[] = {KC_K, KC_L, COMBO_END};// {KC_ASTR, KC_LPRN, COMBO_END};
 const uint16_t PROGMEM up_combo[] = {KC_J, KC_I, COMBO_END};// {KC_AMPR, KC_8, COMBO_END};
-const uint16_t PROGMEM down_combo[] = {KC_M, K_NAV, COMBO_END};// {KC_RCBR, KC_ASTR, COMBO_END};
+const uint16_t PROGMEM down_combo[] = {KC_M, KC_K, COMBO_END};// {KC_RCBR, KC_ASTR, COMBO_END};
 const uint16_t PROGMEM delete_combo[] = {KC_COMM, AA_MOD4, COMBO_END};
 const uint16_t PROGMEM right2_combo[] = {KC_DOT, AA_MOD5, COMBO_END};
 const uint16_t PROGMEM enter_combo[] = {KC_SCLN, AA_QUOT, COMBO_END};
@@ -314,7 +312,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_QWERTY] = LAYOUT_preonic_grid(
   KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    AA_RTOP,
-  AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    K_NAV,   KC_L,    KC_SCLN, AA_QUOT,
+  AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,   KC_L,    KC_SCLN, AA_QUOT,
   TD_SESC, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, AA_RSFT,
   KC_CAPS, KC_LOCK, KC_LCTL, KC_LOPT, AA_MOD3, TD_LSPC, TD_RSPC, AA_MOD4, AA_MOD5, AA_MOD6, KC_ESC,  SCMD_T(KC_ENT)
 ),
@@ -450,28 +448,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   LT(_SYM,KC_GRV),  KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, LT(_SYM,KC_EQL),
   CH_EMOJ, KC_SECT, KC_EURO, KC_BRIT, KC_PIPE, KC_BSLS, KC_LCBR, KC_RCBR, KC_UNDS, KC_LBRC, KC_RBRC, _______,
   KC_CAPS, _______, _______, _______, _______, LT(_SPACE,KC_SPACE), LT(_SPACE,KC_SPACE), RCMD_T(KC_DEL), ROPT_T(KC_UP), RCTL_T(KC_DOWN), EM_DASH, EN_DASH
-),
-
- /* Navigation - holding K
- * (keep it minimal so it doesn't interfere with regular typing)
- * ,-----------------------------------------------------------------------------------.
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |  Up  |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      | Left |=||||=| Right|      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      | Down |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * `-----------------------------------------------------------------------------------'
- */
-[_NAV] = LAYOUT_preonic_grid(
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, KC_UP,   _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, KC_LEFT, MO(_NAV),KC_RGHT, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, KC_DOWN, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 ),
 
  /* Special (Macros) - holding Space + pinkie modifer (Shift/_EXT/_SYM)
