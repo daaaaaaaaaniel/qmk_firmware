@@ -21,7 +21,7 @@ CUSTOM_MATRIX = yes
 # ENCODER_ENABLE = yes
 # DIP_SWITCH_ENABLE = yes
 KEY_OVERRIDE_ENABLE = yes   # Key overrides
-KEY_LOCK_ENABLE = no        # Key locks (hardware)
+KEY_LOCK_ENABLE = no        # Key locks (hardware + software)
 LTO_ENABLE = yes            # Reduce firmware size (slower to compile)	
 
 

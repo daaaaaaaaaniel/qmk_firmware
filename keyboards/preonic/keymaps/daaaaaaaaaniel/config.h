@@ -119,7 +119,7 @@
  */
 
 // // sets the USB polling rate in milliseconds for the keyboard, mouse, and shared (NKRO/media keys) interfaces
-// #define USB_POLLING_INTERVAL_MS 20
+#define USB_POLLING_INTERVAL_MS 11
 
 // prevent acccidentally triggered modifer keys when interrupting a mod tap key.
 #define IGNORE_MOD_TAP_INTERRUPT
