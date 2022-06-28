@@ -25,12 +25,11 @@
 /* declare layers */
 enum preonic_layers {
   _QWERTY,
-  _SPACE,
   _L_SPACE,
+  _SPACE,
   _EXT,
   _NUM,
   _SYM,
-  _SPEC,
   _EXTRA,
 //   _CMD1,
   _MIDI4,
@@ -49,6 +48,7 @@ enum preonic_keycodes {
   KC_DO_NOT_DISTURB,
   KC_LOCK_SCREEN,
   KC_LAUNCHPAD, // _AC_SHOW_ALL_APPS // AC Desktop Show All Applications 
+  KC_SHOW_DESKTOP,
 //   TEXT_DESELECT,
   TEXT_SELECT_WORD,
 //   AA_RCMD,
@@ -116,8 +116,8 @@ static uint8_t leftspacebar_layer_tracker;
 #define KX_COPY LCMD(KC_C) // command-c
 #define KX_PSTE LCMD(KC_V) // command-v
 // #define KX_PALT LCMD(LSFT(KC_X))
-#define NEXTTAB RCTL(KC_TAB) // RControl-Tab (for some reason there's no left-equivalent keycode) // /* alt version: */ SCMD(KC_RBRC) // Command-Shift-] - or RSG(KC_RBRC)
-#define PREVTAB RCS(KC_TAB) // RControl-Shift-Tab (for some reason there's no left-equivalent keycode) // /* alt version: */ SCMD(KC_LBRC) // Command-Shift-[ - or RSG(KC_LBRC)
+#define NEXTTAB CTL(KC_TAB) // RControl-Tab (for some reason there's no left-equivalent keycode) // /* alt version: */ SCMD(KC_RBRC) // Command-Shift-] - or RSG(KC_RBRC)
+#define PREVTAB CS(KC_TAB) // RControl-Shift-Tab (for some reason there's no left-equivalent keycode) // /* alt version: */ SCMD(KC_LBRC) // Command-Shift-[ - or RSG(KC_LBRC)
 // #define NEXT_WORD_DELETE LOPT(KC_DEL) // Option-Delete
 // #define PREVIOUS_WORD_BACKSPACE LOPT(KC_BSPC) // Option-Backspace
 #define NEXT_WORD LOPT(KC_RGHT) // Option-Right Arrow. Alternatively, use Opt-Cmd-F (or a custom keybind in DefaultKeyBinding.dict).
@@ -163,6 +163,7 @@ static uint8_t leftspacebar_layer_tracker;
 #define KC_LPAD KC_LAUNCHPAD
 #define ALL_APP SHOW_ALL_APP_WINDOWS // window switcher
 #define APP_SWI APP_SWITCHER // alt-tab
+#define KC_DSTP KC_SHOW_DESKTOP // command + mission control
 // #define WD_DEL NEXT_WORD_DELETE
 // #define WD_BSPC PREVIOUS_WORD_BACKSPACE
 #define WD_NEXT NEXT_WORD
@@ -293,7 +294,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |⇧Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |⇧ -   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  fn  |(Lock)|⌃ Ctrl|⌥ Opt |⌘Cmd ⏎|␣ Spc |␣ Spc |⎈ Bksp|#  ⏎  |#  ⏎  |  Esc |⇧⌘  ⏎ |
+ * |  fn  |(Lock)|⌃ Ctrl|⌥ Opt |⌘Cmd ⏎|␣  ⏎  |␣ Spc |⎈ Bksp|#  ⏎  |#  ⏎  |  Esc |⇧⌘  ⏎ |
  * `-----------------------------------------------------------------------------------'
  *
  *  ⇧Shift + QWERTY
@@ -306,15 +307,36 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |⇧Shift|      |      |      |      |      |      |      |   !  |   ?  |   #  |⇧ _   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  fn  |(Lock)|⌃ Ctrl|⌥ Opt |⌘Cmd ⏎|␣ Spc |␣ Spc |⎈ Bksp|#  ⏎  |#  ⇥  |  Esc |⇧⌘  ⏎ |
+ * |  fn  |(Lock)|⌃ Ctrl|⌥ Opt |⌘Cmd ⏎|␣  ⏎  |␣ Spc |⎈ Bksp|#  ⏎  |#  ⇥  |  Esc |⇧⌘  ⏎ |
  * `-----------------------------------------------------------------------------------'
  */
 [_QWERTY] = LAYOUT_preonic_grid(
   KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL,
   KC_GRV,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    AA_RTOP,
-  AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,   KC_L,    KC_SCLN, AA_QUOT,
+  AA_TAB,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, AA_QUOT,
   TD_SESC, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, AA_RSFT,
   KC_CAPS, KC_LOCK, KC_LCTL, KC_LOPT, AA_MOD3, TD_LSPC, TD_RSPC, AA_MOD4, AA_MOD5, AA_MOD6, KC_ESC,  SCMD_T(KC_ENT)
+),
+
+ /* LEFT SPACE ␣ 
+ * ,-----------------------------------------------------------------------------------.
+ * |WinSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute |  F12 |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |FocusR| Focus|      |MsnCtl|Lnchpd| PgUp |      |      |      |      |      |      | // FocusR == Window focus reverse
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |PrvTab|NxtTab|←Space|Dsktop|Space→| PgDwn|      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |⇧ Esc |WinSwi|⌃⌥    |⌃⌘    |⌥⌘    |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * | MIDI |      |      |      |⌘Cmd ⏎|=||||=|␣     |⌘ Del |⌥ Esc |⌃  ⇥  |  Esc |⇧⌘  ⏎ |
+ * `-----------------------------------------------------------------------------------'
+ */
+[_L_SPACE] = LAYOUT_preonic_grid(
+  ALL_APP,   KC_BRID,   KC_BRIU,   KC_MCTL,   KC_LPAD,   KC_DICT,   KC_DOND,   KC_MRWD,   KC_MPLY,   KC_MFFD,   KC_MUTE,   KC_F12,
+  S(G(KC_GRV)),G(KC_GRV),_______,  KC_MCTL,   KC_LPAD,   KC_PGUP,   _______,   _______,   _______,   _______,   _______,   _______,
+  S(C(KC_TAB)),C(KC_TAB),C(KC_LEFT),KC_DSTP,  C(KC_RGHT),KC_PGDN,   _______,   _______,   _______,   _______,   _______,   _______,
+  SFT_(ESC), ALL_APP,   C(KC_LOPT),G(KC_LCTL),G(KC_LOPT),_______,   _______,   _______,   _______,   _______,   _______,   _______,
+  MIDI,      _______,   _______,   _______,   CMD_(ENT), L_SP(SPC), L_RSP(SPC),RCMD_(DEL),ROPT_(ESC),RCTL_(TAB),KC_ESC,    _______
 ),
 
  /* RIGHT SPACE ␣ (nav controls) - holding Space 
@@ -323,10 +345,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |   ~  |      |      |      |      |      | PgUp | Home |   ↑  | End  |   _  |  +   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |AppSwi|⇧  A  |⌃  S  |⌥  D  |⌘  F  |      |⇧PgDwn|   ←  |   ↓  |   →  |⇧  *  |  ^   |
+ * |AppSwi|⇧  A  |⌃  S  |⌥  D  |⌘  F  |      |⇧PgDwn|   ←  |   ↓  |   →  |⇧  *  |  `   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |⇧ Esc |⌥  Z  |⇧  X  |⌥  C  |⌘  V  |      |⌥  N  |   (  |   [  |   {  |   <  |⇧ ⏎   |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |⇧ Esc |⌥  Z  |⇧  X  |⌥  C  |⌘  V  |      |⌥  N  |NxtTab|NxtWin|AllWin|   \  |⇧ ⏎   | // NxtTab == Control-Tab; PrvTab == Shift-Control-Tab
+ * |------+------+------+------+------+------+------+------+------+------+------+------| // NxtWin == Cmd + 
  * | MIDI |      |      |      |⌘Cmd ⏎|⌥  ⏎  |=||||=|⌘ Del |⌥ Esc |⌃  ⇥  |  Esc |⇧⌘  ⏎ |
  * `-----------------------------------------------------------------------------------'
  *
@@ -336,7 +358,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |   ~  |      |      |      |      |      |      |      |      |      |   _  |  +   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |AppSwi|      |      |      |      |      |      |      |      |      |⇧  ÷  |  °   | // Shift + `*` doesn't actually send ÷ 
+ * |AppSwi|      |      |      |      |      |      |      |      |      |⇧  ÷  |  ~   | // Shift + `*` doesn't actually send ÷ 
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |⇧ Esc |      |      |      |      |      |      |   )  |   ]  |   }  |   >  |⇧  ⏎  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -346,30 +368,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_SPACE] = LAYOUT_preonic_grid(
   ALL_APP,   KC_BRID,   KC_BRIU,   KC_MCTL,   KC_LPAD,   KC_DICT,   KC_DOND,   KC_MRWD,   KC_MPLY,   KC_MFFD,   KC_MUTE,   KC_F12,
   KC_TILD,   KC_PGUP,   _______,   KC_UP,     _______,   _______,   KC_PGUP,   KC_HOME,   KC_UP,     KC_END,    KC_UNDS,   KC_PLUS,
-  APP_SWI,   SFT_(A),   CTL_(S),   OPT_(D),   CMD_(F),   _______,   RSFT_(PGDN),KC_LEFT,  KC_DOWN,   KC_RGHT,   RSFT_(ASTR),KC_CIRC,
-  SFT_(ESC), OPT_(Z),   SFT_(X),   OPT_(C),   CMD_(V),   _______,   ROPT_(N),  KC_LPRN,   KC_LBRC,   KC_LCBR,   KC_LABK,   SFT_T(KC_ENT),
+  APP_SWI,   SFT_(A),   CTL_(S),   OPT_(D),   CMD_(F),   _______,   RSFT_(PGDN),KC_LEFT,  KC_DOWN,   KC_RGHT,   RSFT_(ASTR),KC_GRV,
+  SFT_(ESC), OPT_(Z),   SFT_(X),   OPT_(C),   CMD_(V),   _______,   ROPT_(N),  KC_LPRN,   KC_LBRC,   KC_LCBR,   KC_LABK,   RSFT_T(KC_ENT),
   MIDI,      _______,   _______,   _______,   CMD_(ENT), OPT_(ENT), L_RSP(SPC),RCMD_(DEL),ROPT_(ESC),RCTL_(TAB),KC_ESC,    _______
-),
-
- /* LEFT SPACE ␣ 
- * ,-----------------------------------------------------------------------------------.
- * |WinSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute |  F12 |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |   ~  |      | Home |   ↑  | End  | PgUp |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |   ←  |   ↓  |   →  | PgDwn|      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |⇧  ⏎  |⌥  Z  |⇧  X  |⌥  C  |⌘  V  |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | MIDI |      |      |      |⌘Cmd ⏎|=||||=|␣     |⌘ Del |⌥ Esc |⌃  ⇥  |  Esc |⇧⌘  ⏎ |
- * `-----------------------------------------------------------------------------------'
- */
-[_L_SPACE] = LAYOUT_preonic_grid(
-  ALL_APP,   KC_BRID,   KC_BRIU,   KC_MCTL,   KC_LPAD,   KC_DICT,   KC_DOND,   KC_MRWD,   KC_MPLY,   KC_MFFD,   KC_MUTE,   KC_F12,
-  KC_TILD,   _______,   KC_HOME,   KC_UP,     KC_END,    KC_PGUP,   _______,   _______,   _______,   _______,   _______,   _______,
-  _______,   _______,   KC_LEFT,   KC_DOWN,   KC_RGHT,   KC_PGDN,   _______,   _______,   _______,   _______,   _______,   _______,
-  SFT_(ENT), CTL_(Z),   OPT_(X),   OPT_(C),   CMD_(V),   _______,   _______,   _______,   _______,   _______,   _______,   _______,
-  MIDI,      _______,   _______,   _______,   CMD_(ENT), L_SP(SPC), L_RSP(SPC),RCMD_(DEL),ROPT_(ESC),RCTL_(TAB),KC_ESC,    _______
 ),
 
  /* ⎈EXTENSION   
@@ -377,11 +378,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |WinSwi|  Esc |   €  |AppSwR|AppSwi|SwapCh|   §  |   %  |   =  |   -  |  +   |
+ * |      |WinSwi|  Esc |   €  |AppSwR|AppSwi|SwapCh|   ^  |   %  |   =  |   -  |  +   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |§     |⇧Shift|      |      |      |      |WrdSel|   @  |   &  |   $  |   *  |  ^   |
+ * |§     |⇧Shift|      |      |      |      |WrdSel|   @  |   &  |   $  |   *  |  `   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |⇧Shift|      | Cut  | Copy | Paste| Enter|   —  |   )  |   ]  |   }  |   >  |  ~   |
+ * |⇧Shift|      | Cut  | Copy | Paste| Enter|   —  |   )  |   ]  |   }  |   >  |⇧  ⏎  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |Qwerty|      |      |      |      |␣     |␣     |=||||=|⌥ Del |⇧ Esc |⌥⇧    |  ⏎   |
  * `-----------------------------------------------------------------------------------'
@@ -390,9 +391,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |   ¶  |   %  |   +  |   _  |  +   |
+ * |      |      |      |      |      |      |      |   °  |   %  |   +  |   _  |  +   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |§     |      |      |      |      |      |      |   #  |   ¬  |   £  |   ÷  |  °   |
+ * |§     |      |      |      |      |      |      |   #  |   ¬  |   £  |   ÷  |  ~   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |⇧Shift|      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -401,10 +402,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_EXT] = LAYOUT_preonic_grid( // [Ergonomic Keyboard Mods: Extend Layer](http://colemakmods.github.io/ergonomic-mods/extend.html)
   _______, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, KC_F12,
-  KC_TILD, ALL_APP, KC_ESC,  KC_EURO, WN_FOCU, APP_SWI, KX_SWAP, KC_SECT, KC_PERC, KC_EQL, KC_MINS , KC_PLUS,
+  KC_TILD, ALL_APP, KC_ESC,  KC_EURO, WN_FOCU, APP_SWI, KX_SWAP, KC_CIRC, KC_PERC, KC_EQL, KC_MINS , KC_PLUS,
   LT(_SYM, KC_GRV) // intercept this key and use it for changing tabs, or for chaning windows in the current application
-         , KC_LSFT, _______, _______, _______, _______, TX_SEL,  KC_AT,   KC_AMPR, KC_DLR,  KC_ASTR, KC_CIRC,
-  _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_ENT,  EN_DASH, KC_RPRN, KC_RBRC, KC_RCBR, KC_RABK, KC_TILD,
+         , KC_LSFT, _______, _______, _______, _______, TX_SEL,  KC_AT,   KC_AMPR, KC_DLR,  KC_ASTR, KC_GRV,
+  _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_ENT,  EN_DASH, KC_RPRN, KC_RBRC, KC_RCBR, KC_RABK, SFT_T(KC_ENT),
   TO(_QWERTY),_______,_______,_______,_______, _______, _______, MO(_EXT), ROPT_T(KC_DEL), RCTL_T(KC_ESC), S(KC_ROPT), KC_ENT
 ),
 
@@ -449,28 +450,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   CH_EMOJ, KC_SECT, KC_EURO, KC_BRIT, KC_PIPE, KC_BSLS, KC_LCBR, KC_RCBR, KC_UNDS, KC_LBRC, KC_RBRC, _______,
   KC_CAPS, _______, _______, _______, _______, LT(_SPACE,KC_SPACE), LT(_SPACE,KC_SPACE), RCMD_T(KC_DEL), ROPT_T(KC_UP), RCTL_T(KC_DOWN), EM_DASH, EN_DASH
 ),
-
- /* Special (Macros) - holding Space + pinkie modifer (Shift/_EXT/_SYM)
- * ,-----------------------------------------------------------------------------------.
- * |      |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |=||||=|   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |=||||=|
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |=||||=|   Z  |   X  |   C  |   V  |   B  |   N  |Paletr|   ,  |   .  |   /  |=||||=|
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |=|||||||||||=|      |      |      |      |      |
- * `-----------------------------------------------------------------------------------'
- */
-[_SPEC] = LAYOUT_preonic_grid(
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______,KC_NO/* Q */,KC_NO/* W */,KC_NO/* E */,KC_NO/* R */,KC_NO/* T */,KC_NO/* Y */,KC_NO/* U */,KC_NO/* I */,KC_NO/* O */,KC_NO/* P */,_______,
-  _______,KC_NO/* A */,KC_NO/* S */,KC_NO/* D */,KC_NO/* F */,KC_NO/* G */,KC_NO/* H */,KC_NO/* J */,KC_NO/* K */,KC_NO/* L */,KC_NO/* ; */,_______,
-  _______,KC_NO/* Z */,KC_NO/* X */,KC_NO/* C */,KC_NO/* V */,KC_NO/* B */,KC_NO/* N */,KC_NO/* M */,KC_NO/* N */,KC_NO/* . */,KC_NO/* / */,_______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
-),
-
 
  /* Extra (Media Functions layer) - holding Left Space + Right Space
  * ,-----------------------------------------------------------------------------------.
@@ -649,6 +628,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             host_consumer_send(0x2A0);
           } else {
             host_system_send(0);
+          }
+          return false;
+          break;
+        case KC_SHOW_DESKTOP:
+          if (record->event.pressed) {
+            register_mods(MOD_BIT(KC_LCMD));
+            host_consumer_send(0x29F);
+          } else {
+            unregister_mods(MOD_BIT(KC_LCMD));
+            host_consumer_send(0);
           }
           return false;
           break;
@@ -846,55 +835,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           } 
           return false;
           break;
-
-        case KC_LABK: // Shift + `<` = `>`
+        case KC_LPRN: // Shift + `(` = < 
             {
             // Initialize a boolean variable that keeps track of the greater-than status: registered or not?
             static bool greaterthan_registered;
             if (record->event.pressed) {
                 // Detect the activation of either shift keys
                 if (mod_state & MOD_MASK_SHIFT) {
-                    register_code16(KC_RABK);
-                    // Update the boolean variable to reflect the status of KC_RABK
+                    register_code16(KC_LABK);
+                    // Update the boolean variable to reflect the status of KC_LABK
                     greaterthan_registered = true;
                     return false;
                 }
-            } else { // on release of KC_LABK
-                // In case KC_RABK is still being sent even after the release of KC_LABK
+            } else { // on release of KC_LPRN
+                // In case KC_LABK is still being sent even after the release of KC_LPRN
                 if (greaterthan_registered) {
-                    unregister_code16(KC_RABK);
+                    unregister_code16(KC_LABK);
                     greaterthan_registered = false;
                     return false;
                 }
             }
-            // Let QMK process the KC_LABK keycode as usual outside of shift
+            // Let QMK process the KC_LPRN keycode as usual outside of shift
             return true;
         }
-        case KC_LCBR: // Shift + `{` = `}`
-            {
-            // Initialize a boolean variable that keeps track of the close-curly-bracked status: registered or not?
-            static bool closecurlybracket_registered;
-            if (record->event.pressed) {
-                // Detect the activation of either shift keys
-                if (mod_state & MOD_MASK_SHIFT) {
-                    register_code16(KC_RCBR);
-                    // Update the boolean variable to reflect the status of KC_RCBR
-                    closecurlybracket_registered = true;
-                    return false;
-                }
-            } else { // on release of KC_LCBR
-                // In case KC_RCBR is still being sent even after the release of KC_LCBR
-                if (closecurlybracket_registered) {
-                    unregister_code16(KC_RCBR);
-                    closecurlybracket_registered = false;
-                    return false;
-                }
-            }
-            // Let QMK process the KC_LCBR keycode as usual outside of shift
-            return true;
-        }
-
-/* // DISABLED BC KC_LPRN CONFLICTED WITH THE OTHER USE OF SHIFT + `(` ==>> `)` 
         case KC_RPRN: // Shift + `)` = < 
             {
             // Initialize a boolean variable that keeps track of the less-than key status: registered or not?
@@ -918,8 +881,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             // Let QMK process the KC_RPRN keycode as usual outside of shift
             return true;
         }   
-*/
-         case KC_CIRC: // Shift + `^` = ° 
+        case KC_CIRC: // Shift + `^` = ° 
             {
             // Initialize a boolean variable that keeps track of the degree key status: registered or not?
             static bool degreekey_registered;
@@ -963,29 +925,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             }
             // Let QMK process the KC_AT keycode as usual outside of shift
-            return true;
-        }
-        case KC_LPRN: // Shift + `(` = `)` 
-            {
-            // Initialize a boolean variable that keeps track of the right parenthesis key status: registered or not?
-            static bool rightparenth_registered;
-            if (record->event.pressed) {
-                // Detect the activation of either shift keys
-                if (mod_state & MOD_MASK_SHIFT) {
-                    register_code16(KC_RPRN);
-                    // Update the boolean variable to reflect the status of KC_RPRN
-                    rightparenth_registered = true;
-                    return false;
-                }
-            } else { // on release of KC_LPRN
-                // In case KC_RPRN is still being sent even after the release of KC_LPRN
-                if (rightparenth_registered) {
-                    unregister_code16(KC_RPRN);
-                    rightparenth_registered = false;
-                    return false;
-                }
-            }
-            // Let QMK process the KC_LPRN keycode as usual outside of shift
             return true;
         }
 //         case KC_EQL: // Shift + `=` = _ 
@@ -1034,33 +973,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 //             // Let QMK process the KC_ASTR keycode as usual outside of shift
 //             return true;
 //         }
-        case KC_LBRC: // Shift + `[` = `]` 
-            {
-            // Initialize a boolean variable that keeps track of the close-bracket status: registered or not?
-            static bool closebracket_registered;
-            if (record->event.pressed) {
-                // Detect the activation of either shift keys
-                if (mod_state & MOD_MASK_SHIFT) {
-                    // First temporarily canceling both shifts so that shift isn't applied to the KC_RBRC keycode
-                    del_mods(MOD_MASK_SHIFT);
-                    register_code16(KC_RBRC);
-                    // Update the boolean variable to reflect the status of KC_RBRC
-                    closebracket_registered = true;
-                    // Reapplying modifier state so that the held shift key(s) still work even after having tapped the bracket key.
-                    set_mods(mod_state);
-                    return false;
-                }
-            } else { // on release of KC_LBRC
-                // In case KC_RBRC is still being sent even after the release of KC_LBRC
-                if (closebracket_registered) {
-                    unregister_code16(KC_RBRC);
-                    closebracket_registered = false;
-                    return false;
-                }
-            }
-            // Let QMK process the KC_LBRC keycode as usual outside of shift
-            return true;
-        }
         case KC_ASTR: // Shift + `*` = ÷ 
             {
             // Initialize a boolean variable that keeps track of the division key status: registered or not?
@@ -1225,6 +1137,13 @@ void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
         tap_code(KC_SPACE);
       }
       break;
+//     case TD_LSPC:    // this works! but it sends CMD with _EVERY_ keypress, which i don't like ie. if i'm pressing fwd delete.
+//       if (record->event.pressed) {
+//         register_code(KC_LCMD);
+//       } else {
+//         unregister_code(KC_LCMD);
+//       }
+//       break;
   }
 }
 
