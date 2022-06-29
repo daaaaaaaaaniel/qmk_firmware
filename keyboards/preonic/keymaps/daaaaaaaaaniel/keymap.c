@@ -92,7 +92,7 @@ static uint8_t leftspacebar_layer_tracker;
 
 /* alias for keys in high-use positions */
 /* right hand */
-#define AA_RTOP KC_EQL // top key position in rightmost column (below function row)  
+#define AA_RTOP KC_HASH // top key position in rightmost column (below function row)  
 #define AA_QUOT LT(_SYM, KC_QUOT) // quote key position
 #define AA_RSFT LSFT_T(KC_MINS) // right shift key position
 #define AA_MOD3 KC_LCMD // command
@@ -260,16 +260,16 @@ void oneshot_mods_changed_user(uint8_t mods) {
 
 
 /* KEY OVERRIDES */
-// Shift + , = #
-const key_override_t shift_comma_exclam_override = ko_make_basic(MOD_MASK_SHIFT, KC_COMMA, S(KC_3)); //ko_make_with_layers(MOD_MASK_SHIFT, KC_COMMA, S(KC_1), 1<<_QWERTY);
+// Shift + , = *
+const key_override_t shift_comma_asterisk_override = ko_make_basic(MOD_MASK_SHIFT, KC_COMMA, S(KC_8)); //ko_make_with_layers(MOD_MASK_SHIFT, KC_COMMA, S(KC_1), 1<<_QWERTY);
 // Shift + . = !
-const key_override_t shift_period_question_override = ko_make_basic(MOD_MASK_SHIFT, KC_DOT, S(KC_1));//ko_make_with_layers(MOD_MASK_SHIFT, KC_DOT, S(KC_SLASH), 1<<_QWERTY);
+const key_override_t shift_period_exclam_override = ko_make_basic(MOD_MASK_SHIFT, KC_DOT, S(KC_1));//ko_make_with_layers(MOD_MASK_SHIFT, KC_DOT, S(KC_SLASH), 1<<_QWERTY);
 // Shift + / = #
 // const key_override_t shift_slash_hash_override = ko_make_basic(MOD_MASK_SHIFT, KC_SLASH, S(KC_3));                                           
 // This globally defines all key overrides to be used
 const key_override_t **key_overrides = (const key_override_t *[]){
-    &shift_comma_exclam_override,
-    &shift_period_question_override,
+    &shift_comma_asterisk_override,
+    &shift_period_exclam_override,
 //     &shift_slash_hash_override,
     NULL // Null terminate the array of overrides!
 };
@@ -288,7 +288,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |  Esc |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  =   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |   `  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |  =   |
+ * |   `  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |  #   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |§ ⇥Tab|   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |§ '   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -301,11 +301,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |  Esc |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   &  |   (  |   )  |  +   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |   ~  |      |      |      |      |      |      |      |      |      |      |  +   |
+ * |   ~  |      |      |      |      |      |      |      |      |      |      |  @   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |§ ⇥Tab|      |      |      |      |      |      |      |      |      |   ;  |§ "   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |⇧Shift|      |      |      |      |      |      |      |   !  |   ?  |   #  |⇧ _   |
+ * |⇧Shift|      |      |      |      |      |      |      |   *  |   !  |   ?  |⇧ _   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |  fn  |(Lock)|⌃ Ctrl|⌥ Opt |⌘Cmd ⏎|␣  ⏎  |␣ Spc |⎈ Bksp|#  ⏎  |#  ⇥  |  Esc |⇧⌘  ⏎ |
  * `-----------------------------------------------------------------------------------'
@@ -322,9 +322,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |WinSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute |  F12 |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |FocusR| Focus|      |MsnCtl|Lnchpd| PgUp |      |      |      |      |      |      | // FocusR == Window focus reverse
+ * |FocusR| Focus|      |MsnCtl|Lnchpd| PgUp |      |      |      |   -  |   =  |  ~   | // FocusR == Window focus reverse
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |PrvTab|NxtTab|←Space|Dsktop|Space→| PgDwn|      |      |      |      |      |      |
+ * |PrvTab|NxtTab|←Space|Dsktop|Space→| PgDwn|      |   (  |   )  |   [  |   ]  |  `   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |⇧ Esc |WinSwi|⌃⌥    |⌃⌘    |⌥⌘    |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -333,8 +333,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_L_SPACE] = LAYOUT_preonic_grid(
   ALL_APP,   KC_BRID,   KC_BRIU,   KC_MCTL,   KC_LPAD,   KC_DICT,   KC_DOND,   KC_MRWD,   KC_MPLY,   KC_MFFD,   KC_MUTE,   KC_F12,
-  S(G(KC_GRV)),G(KC_GRV),_______,  KC_MCTL,   KC_LPAD,   KC_PGUP,   _______,   _______,   _______,   _______,   _______,   _______,
-  S(C(KC_TAB)),C(KC_TAB),C(KC_LEFT),KC_DSTP,  C(KC_RGHT),KC_PGDN,   _______,   _______,   _______,   _______,   _______,   _______,
+  S(G(KC_GRV)),G(KC_GRV),_______,  KC_MCTL,   KC_LPAD,   KC_PGUP,   _______,   _______,   _______,   KC_MINS,   KC_EQL,    KC_TILD,
+  S(C(KC_TAB)),C(KC_TAB),C(KC_LEFT),KC_DSTP,  C(KC_RGHT),KC_PGDN,   _______,   KC_LPRN,   KC_RPRN,   KC_LBRC,   KC_RBRC,   KC_GRV,
   SFT_(ESC), ALL_APP,   C(KC_LOPT),G(KC_LCTL),G(KC_LOPT),_______,   _______,   _______,   _______,   _______,   _______,   _______,
   MIDI,      _______,   _______,   _______,   CMD_(ENT), L_SP(SPC), L_RSP(SPC),RCMD_(DEL),ROPT_(ESC),RCTL_(TAB),KC_ESC,    _______
 ),
@@ -343,12 +343,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |WinSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute |  F12 |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |   ~  |      |      |      |      |      | PgUp | Home |   ↑  | End  |   _  |  +   |
+ * |   ~  | Focus|      |MsnCtl|Lnchpd| PgUp | PgUp | Home |   ↑  |  ⌘-  |  ⌘=  |  ~   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |AppSwi|⇧  A  |⌃  S  |⌥  D  |⌘  F  |      |⇧PgDwn|   ←  |   ↓  |   →  |⇧  *  |  `   |
+ * |AppSwi|NxtTab|←Space|Dsktop|Space→| PgDwn|⇧PgDwn|   ←  |   ↓  |   →  |⇧  *  |  `   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |⇧ Esc |⌥  Z  |⇧  X  |⌥  C  |⌘  V  |      |⌥  N  |NxtTab|NxtWin|AllWin|   \  |⇧ ⏎   | // NxtTab == Control-Tab; PrvTab == Shift-Control-Tab
- * |------+------+------+------+------+------+------+------+------+------+------+------| // NxtWin == Cmd + 
+ * |⇧ Esc |WinSwi|⌃⌥    |⌃⌘    |⌥⌘    |      |⌥  N  |   (  |   )  |   *  |   &  |⇧ ⏎   |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | MIDI |      |      |      |⌘Cmd ⏎|⌥  ⏎  |=||||=|⌘ Del |⌥ Esc |⌃  ⇥  |  Esc |⇧⌘  ⏎ |
  * `-----------------------------------------------------------------------------------'
  *
@@ -356,20 +356,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |WinSwi|      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |   ~  |      |      |      |      |      |      |      |      |      |   _  |  +   |
+ * |   ~  |      |      |      |      |      |      |      |      |  ⌘_  |  ⌘+  |  ~   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |AppSwi|      |      |      |      |      |      |      |      |      |⇧  ÷  |  ~   | // Shift + `*` doesn't actually send ÷ 
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |⇧ Esc |      |      |      |      |      |      |   )  |   ]  |   }  |   >  |⇧  ⏎  |
+ * |⇧ Esc |      |      |      |      |      |      |   <  |   >  |      |      |⇧  ⏎  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | MIDI |      |      |      |      |␣  ⏎  |=||||=|⌘ Del |⌥ Esc |⌃  ⇥  |  Esc |⇧⌘  ⏎ |
  * `-----------------------------------------------------------------------------------'
  */
 [_SPACE] = LAYOUT_preonic_grid(
   ALL_APP,   KC_BRID,   KC_BRIU,   KC_MCTL,   KC_LPAD,   KC_DICT,   KC_DOND,   KC_MRWD,   KC_MPLY,   KC_MFFD,   KC_MUTE,   KC_F12,
-  KC_TILD,   KC_PGUP,   _______,   KC_UP,     _______,   _______,   KC_PGUP,   KC_HOME,   KC_UP,     KC_END,    KC_UNDS,   KC_PLUS,
-  APP_SWI,   SFT_(A),   CTL_(S),   OPT_(D),   CMD_(F),   _______,   RSFT_(PGDN),KC_LEFT,  KC_DOWN,   KC_RGHT,   RSFT_(ASTR),KC_GRV,
-  SFT_(ESC), OPT_(Z),   SFT_(X),   OPT_(C),   CMD_(V),   _______,   ROPT_(N),  KC_LPRN,   KC_LBRC,   KC_LCBR,   KC_LABK,   RSFT_T(KC_ENT),
+  KC_TILD,   G(KC_GRV),_______,    KC_MCTL,   KC_LPAD,   KC_PGUP,   KC_PGUP,   KC_HOME,   KC_UP,     G(KC_MINS),G(KC_EQL), KC_TILD,
+  APP_SWI,   C(KC_TAB),C(KC_LEFT),  KC_DSTP,  C(KC_RGHT),KC_PGDN,   RSFT_(PGDN),KC_LEFT,  KC_DOWN,   KC_RGHT,   RSFT_(ASTR),KC_GRV,
+  SFT_(ESC), ALL_APP, C(KC_LOPT),  G(KC_LCTL),G(KC_LOPT),_______,   ROPT_(N),  KC_LPRN,   KC_RPRN,   KC_ASTR,   KC_AMPR,   RSFT_T(KC_ENT),
   MIDI,      _______,   _______,   _______,   CMD_(ENT), OPT_(ENT), L_RSP(SPC),RCMD_(DEL),ROPT_(ESC),RCTL_(TAB),KC_ESC,    _______
 ),
 
@@ -382,7 +382,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |§     |⇧Shift|      |      |      |      |WrdSel|   @  |   &  |   $  |   *  |  `   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |⇧Shift|      | Cut  | Copy | Paste| Enter|   —  |   )  |   ]  |   }  |   >  |⇧  ⏎  |
+ * |⇧Shift|      | Cut  | Copy | Paste| Enter|   —  |   —  |   [  |   ]  |   \  |⇧  ⏎  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |Qwerty|      |      |      |      |␣     |␣     |=||||=|⌥ Del |⇧ Esc |⌥⇧    |  ⏎   |
  * `-----------------------------------------------------------------------------------'
@@ -395,7 +395,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |§     |      |      |      |      |      |      |   #  |   ¬  |   £  |   ÷  |  ~   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |⇧Shift|      |      |      |      |      |      |      |      |      |      |      |
+ * |⇧Shift|      |      |      |      |      |      |   —  |   {  |   }  |   |  |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |Qwerty|      |      |      |      |␣     |␣     |=||||=|⌥ Del |⌃ Esc |⌥⇧    |  ⏎   |
  * `-----------------------------------------------------------------------------------'
@@ -405,7 +405,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TILD, ALL_APP, KC_ESC,  KC_EURO, WN_FOCU, APP_SWI, KX_SWAP, KC_CIRC, KC_PERC, KC_EQL, KC_MINS , KC_PLUS,
   LT(_SYM, KC_GRV) // intercept this key and use it for changing tabs, or for chaning windows in the current application
          , KC_LSFT, _______, _______, _______, _______, TX_SEL,  KC_AT,   KC_AMPR, KC_DLR,  KC_ASTR, KC_GRV,
-  _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_ENT,  EN_DASH, KC_RPRN, KC_RBRC, KC_RCBR, KC_RABK, SFT_T(KC_ENT),
+  _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_ENT,  EN_DASH, EM_DASH, KC_LBRC, KC_RBRC, KC_BSLS, SFT_T(KC_ENT),
   TO(_QWERTY),_______,_______,_______,_______, _______, _______, MO(_EXT), ROPT_T(KC_DEL), RCTL_T(KC_ESC), S(KC_ROPT), KC_ENT
 ),
 
