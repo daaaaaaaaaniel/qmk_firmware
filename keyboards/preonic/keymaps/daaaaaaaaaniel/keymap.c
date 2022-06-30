@@ -42,6 +42,7 @@ enum preonic_keycodes {
   LOWER,
   RAISE,
   MIDI,
+  DOUBLE_SPACES_COMBO_LAYER,
   KC_MISSION_CONTROL, // _AC_SHOW_ALL_WINDOWS // AC Desktop Show All Windows
   KC_SPOTLIGHT,
   KC_DICTATION,
@@ -236,7 +237,7 @@ const uint16_t PROGMEM backspace_combo[] = {KC_P, AA_RTOP, COMBO_END};
 /* triggering combo has this effect */
 combo_t key_combos[] = {
  [CMD_CAPSLOCKS] = COMBO(cmd_combo, KC_CAPS),
- [DOUBLE_SPACE] = COMBO(spaces_combo, LT(_EXTRA, KC_TAB)),
+ [DOUBLE_SPACE] = COMBO(spaces_combo, DOUBLE_SPACES_COMBO_LAYER),
  [QGRAVE_FOCUS] = COMBO(focus_combo, G(KC_GRV)),
  [TABA_ESCAPE] = COMBO(escape_combo, KC_ESC),
  [JK_LEFT] = COMBO(left_combo, KC_LEFT),
@@ -546,7 +547,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-//   state = update_tri_layer_state(state, _L_SPACE, _SPACE, _EXTRA);
+  state = update_tri_layer_state(state, _L_SPACE, _SPACE, _EXTRA);
 //   state = update_tri_layer_state(state, _RAISE, _SYMB, _SPECIAL);
   return state;
 }
@@ -571,6 +572,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             layer_on(_MIDI4);
             stop_all_notes();
             PLAY_SONG(song_preonic_sound);
+          }
+          return false;
+          break;
+        case DOUBLE_SPACES_COMBO_LAYER:
+          if (record->event.pressed) {
+            layer_on(_SPACE);
+            layer_on(_L_SPACE);
+            layer_on(_EXTRA);
           }
           return false;
           break;
