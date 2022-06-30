@@ -195,11 +195,16 @@ static uint8_t leftspacebar_layer_tracker;
   float song_plover_gb[][2]  = SONG(PLOVER_GOODBYE_SOUND);  // song for switching out of MIDI layer (back to QWERTY)
 #endif
 
+#define TAPDANCE_TOP
+#include "tapdance.inc"
+#undef TAPDANCE_TOP
+
+
 /* Combos */
 // When both SPACE keys are tapped together, execute ENTER. When both SPACE keys are HELD, activate _EXTRA layer.
 enum combos {
   CMD_CAPSLOCKS,
-//   SPACE_LTEXTRA, // KC_LSPC + KC_RSPC = space_combo - _EXTRA (hold); OSM(MOD_MEH) (tap)
+  DOUBLE_SPACE,
   QGRAVE_FOCUS, // Q+adjacent key on far right 
   TABA_ESCAPE,
   JK_LEFT,
@@ -216,7 +221,7 @@ uint16_t COMBO_LEN = COMBO_LENGTH;
 
 /* press these keys together to trigger combo */
 const uint16_t PROGMEM cmd_combo[] = {AA_MOD3, AA_MOD4, COMBO_END};
-// const uint16_t PROGMEM space_combo[] = {TD_LSPC, TD_RSPC, COMBO_END}; // 
+const uint16_t PROGMEM spaces_combo[] = {TD_LSPC, TD_RSPC, COMBO_END}; // 
 const uint16_t PROGMEM focus_combo[] = {KC_GRV, KC_Q, COMBO_END}; // possibly switch to QK_GESC ? 
 const uint16_t PROGMEM escape_combo[] = {AA_TAB, KC_A, COMBO_END};
 const uint16_t PROGMEM left_combo[] = {KC_J, KC_K, COMBO_END};// {KC_AMPR, KC_ASTR, COMBO_END};
@@ -231,7 +236,7 @@ const uint16_t PROGMEM backspace_combo[] = {KC_P, AA_RTOP, COMBO_END};
 /* triggering combo has this effect */
 combo_t key_combos[] = {
  [CMD_CAPSLOCKS] = COMBO(cmd_combo, KC_CAPS),
-//  [SPACE_LTEXTRA] = COMBO(space_combo, LT(_EXTRA, OSM(MOD_MEH))),
+ [DOUBLE_SPACE] = COMBO(spaces_combo, LT(_EXTRA, KC_TAB)),
  [QGRAVE_FOCUS] = COMBO(focus_combo, G(KC_GRV)),
  [TABA_ESCAPE] = COMBO(escape_combo, KC_ESC),
  [JK_LEFT] = COMBO(left_combo, KC_LEFT),
@@ -275,9 +280,7 @@ const key_override_t **key_overrides = (const key_override_t *[]){
 };
 
 
-#define TAPDANCE_TOP
-#include "tapdance.inc"
-#undef TAPDANCE_TOP
+
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -294,7 +297,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |⇧Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |⇧ -   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  fn  |(Lock)|⌃ Ctrl|⌥ Opt |⌘Cmd ⏎|␣  ⏎  |␣ Spc |⎈ Bksp|#  ⏎  |#  ⏎  |  Esc |⇧⌘  ⏎ |
+ * |  fn  |(Lock)|⌃ Ctrl|⌥ Opt |⌘Cmd ⏎|   ⏎  |   ␣  |⎈ Bksp|#  ⏎  |#  ⏎  |  Esc |⇧⌘  ⏎ |
  * `-----------------------------------------------------------------------------------'
  *
  *  ⇧Shift + QWERTY
@@ -307,7 +310,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |⇧Shift|      |      |      |      |      |      |      |   *  |   !  |   ?  |⇧ _   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  fn  |(Lock)|⌃ Ctrl|⌥ Opt |⌘Cmd ⏎|␣  ⏎  |␣ Spc |⎈ Bksp|#  ⏎  |#  ⇥  |  Esc |⇧⌘  ⏎ |
+ * |  fn  |(Lock)|⌃ Ctrl|⌥ Opt |⌘Cmd ⏎|   ⏎  |   ␣  |⎈ Bksp|#  ⏎  |#  ⇥  |  Esc |⇧⌘  ⏎ |
  * `-----------------------------------------------------------------------------------'
  */
 [_QWERTY] = LAYOUT_preonic_grid(
@@ -322,7 +325,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |WinSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute |  F12 |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |   -  |   7  |   8  |   9  |      |   *  |   &  |   ^  |   €  |   %  |  ~   |
+ * |   ~  |   -  |   7  |   8  |   9  |      |   *  |   &  |   ^  |   €  |   %  |  ~   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |   +  |   4  |   5  |   6  |      |   §  |   (  |   )  |   $  |   -  |  =   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -335,7 +338,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |WinSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute |  F12 |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |   ÷  |   ¬  |   °  |   _  |   %  |  ~   |
+ * |   ~  |      |      |      |      |      |   ÷  |   ¬  |   °  |   _  |   %  |  ~   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |      |      |   ¶  |   <  |   >  |   £  |   _  |  +   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -346,7 +349,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_L_SPACE] = LAYOUT_preonic_grid(
   ALL_APP,   KC_BRID,   KC_BRIU,   KC_MCTL,   KC_LPAD,   KC_DICT,   KC_DOND,   KC_MRWD,   KC_MPLY,   KC_MFFD,   KC_MUTE,   KC_F12,
-  _______,   KC_PMNS,   KC_7,      KC_8,      KC_9,      KC_NO,     KC_ASTR,   KC_AMPR,   KC_CIRC,   KC_EURO,   KC_PERC,   KC_TILD,
+  KC_TILD,   KC_PMNS,   KC_7,      KC_8,      KC_9,      KC_NO,     KC_ASTR,   KC_AMPR,   KC_CIRC,   KC_EURO,   KC_PERC,   KC_TILD,
   _______,   KC_PPLS,   KC_4,      KC_5,      KC_6,      KC_NO,     KC_SECT,   KC_LPRN,   KC_RPRN,   KC_DLR,    KC_MINS,   KC_EQL,
   SFT_(ESC), KC_0,      KC_1,      KC_2,      KC_3,      KC_NO,     KC_NO,     KC_LBRC,   KC_RBRC,   KC_YEN,    KC_BSLS,   EN_DASH,
   MIDI,      _______,   _______,   _______,   CMD_(ENT), L_SP(SPC), L_RSP(SPC),RCMD_(DEL),ROPT_(ESC),RCTL_(TAB),KC_ESC,    _______
@@ -356,22 +359,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |WinSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute |  F12 |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |   ~  | Focus|      |MsnCtl|Lnchpd| PgUp | PgUp | Home |   ↑  |      |      |  ⌘~  |
+ * |  ⌘~  |  ⌘`  |      |MsnCtl|Lnchpd| PgUp | PgUp | Home |   ↑  |  End |      |  ⌘~  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |AppSwi|NxtTab|←Space|Dsktop|Space→| PgDwn|⇧PgDwn|   ←  |   ↓  |   →  |  ⌘-  |  ⌘=  |
+ * |AppSwi|NxtTab|←Space|Dsktop|Space→| PgDwn|⇧PgDwn|   ←  |   ↓  |   →  |      |  `   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |⇧ Esc |WinSwi|⌃⌥    |⌃⌘    |⌥⌘    |      |      |  ⌘[  |  ⌘]  |      |      |⇧ ⏎   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * | MIDI |      |      |      |⌘Cmd ⏎|⌥  ⏎  |=||||=|⌘ Del |⌥ Esc |⌃  ⇥  |  Esc |⇧⌘  ⏎ |
  * `-----------------------------------------------------------------------------------'
  *
- *  ⇧Shift + SPACE ␣ 
+ *  ⇧Shift + RIGHT SPACE ␣ 
  * ,-----------------------------------------------------------------------------------.
  * |WinSwi|      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |   ~  |      |      |      |      |      |      |      |      |      |      |      |
+ * |  ⌘~  |  ⌘~  |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |AppSwi|      |      |      |      |      |      |      |      |      |  ⌘_  |  ⌘+  |
+ * |AppSwi|      |      |      |      |      |      |      |      |      |      |  ~   |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |⇧ Esc |      |      |      |      |      |      |  ⌘{  |  ⌘}  |      |      |⇧  ⏎  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -380,10 +383,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_SPACE] = LAYOUT_preonic_grid(
   ALL_APP,   KC_BRID,   KC_BRIU,   KC_MCTL,   KC_LPAD,   KC_DICT,   KC_DOND,   KC_MRWD,   KC_MPLY,   KC_MFFD,   KC_MUTE,   KC_F12,
-  KC_TILD,   G(KC_GRV), KC_NO,     KC_MCTL,   KC_LPAD,   KC_PGUP,   KC_PGUP,   KC_HOME,   KC_UP,     _______,   _______,   G(KC_TILD),
-  APP_SWI,   C(KC_TAB),C(KC_LEFT), KC_DSTP,   C(KC_RGHT),KC_PGDN,   RSFT_(PGDN),KC_LEFT,  KC_DOWN,   KC_RGHT,   G(KC_MINS),G(KC_EQL),
+  G(KC_TILD),G(KC_GRV), KC_NO,     KC_MCTL,   KC_LPAD,   KC_PGUP,   KC_PGUP,   KC_HOME,   KC_UP,     KC_END,    KC_NO,     G(KC_TILD),
+  APP_SWI,   C(KC_TAB),C(KC_LEFT), KC_DSTP,   C(KC_RGHT),KC_PGDN,   RSFT_(PGDN),KC_LEFT,  KC_DOWN,   KC_RGHT,   KC_NO,     KC_GRV,
   SFT_(ESC), ALL_APP, C(KC_LOPT),  G(KC_LCTL),G(KC_LOPT),_______,   _______,   G(KC_LBRC),G(KC_RBRC),_______,   _______,   RSFT_T(KC_ENT),
   MIDI,      _______,   _______,   _______,   CMD_(ENT), OPT_(ENT), L_RSP(SPC),RCMD_(DEL),ROPT_(ESC),RCTL_(TAB),KC_ESC,    _______
+),
+
+ /* Extra (Media Functions layer) - holding Left Space + Right Space
+ * ,-----------------------------------------------------------------------------------.
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |WinSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd |  ⌘-  |  ⌘=  |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      |      |      |      | Next | Vol- | Vol+ | Mute |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      |      |=|||||=|||||=|      |      |      |      |      |
+ * `-----------------------------------------------------------------------------------'
+ */
+[_EXTRA] = LAYOUT_preonic_grid(
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
+  ALL_APP, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, G(KC_MINS),G(KC_EQL),
+  _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_NO,   KC_MNXT, KC_VOLD, KC_VOLU, KC_MUTE, _______,
+  TO(_QWERTY), _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 ),
 
  /* ⎈EXTENSION   
@@ -462,27 +486,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   LT(_SYM,KC_GRV),  KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, LT(_SYM,KC_EQL),
   CH_EMOJ, KC_SECT, KC_EURO, KC_BRIT, KC_PIPE, KC_BSLS, KC_LCBR, KC_RCBR, KC_UNDS, KC_LBRC, KC_RBRC, _______,
   KC_CAPS, _______, _______, _______, _______, LT(_SPACE,KC_SPACE), LT(_SPACE,KC_SPACE), RCMD_T(KC_DEL), ROPT_T(KC_UP), RCTL_T(KC_DOWN), EM_DASH, EN_DASH
-),
-
- /* Extra (Media Functions layer) - holding Left Space + Right Space
- * ,-----------------------------------------------------------------------------------.
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |WinSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd | Mute |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      | Next | Vol- | Vol+ | Mute |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |=|||||=|||||=|      |      |      |      |      |
- * `-----------------------------------------------------------------------------------'
- */
-[_EXTRA] = LAYOUT_preonic_grid(
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
-  ALL_APP, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, KC_MUTE, _______,
-  _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_NO,   KC_MNXT, KC_VOLD, KC_VOLU, KC_MUTE, _______,
-  TO(_QWERTY), _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 ),
 
 
