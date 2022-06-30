@@ -544,13 +544,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-// // i think this is what made it possible to distingish between the combo and the staggered pressing of both space keys?
-// layer_state_t layer_state_set_user(layer_state_t state) {
-//   return update_tri_layer_state(state, _LOWER, _RAISE, _EXTRA);
-// }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-  state = update_tri_layer_state(state, _L_SPACE, _SPACE, _EXTRA);
+//   state = update_tri_layer_state(state, _L_SPACE, _SPACE, _EXTRA);
 //   state = update_tri_layer_state(state, _RAISE, _SYMB, _SPECIAL);
   return state;
 }
