@@ -398,7 +398,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |WinSwi|Brght-|Brght+|MsnCtl|Lnchpd| Dict |DoNDst| Rwnd | Play | Ffwd |  ⌘-  |  ⌘=  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |      |      | Next | Vol- | Vol+ | Mute |      |
+ * |⇧ Esc |      |      |      |      |      |      | Next | Vol- | Vol+ | Mute |⇧  ⏎  |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |      |=|||||=|||||=|      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
@@ -407,8 +407,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
   ALL_APP, KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_DICT, KC_DOND, KC_MRWD, KC_MPLY, KC_MFFD, G(KC_MINS),G(KC_EQL),
-  _______, KC_NO,   KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_NO,   KC_MNXT, KC_VOLD, KC_VOLU, KC_MUTE, _______,
-  TO(_QWERTY), _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+  SFT_(ESC),KC_NO,  KX_CUT,  KX_COPY, KX_PSTE, KC_NO,   KC_NO,   KC_MNXT, KC_VOLD, KC_VOLU, KC_MUTE, RSFT_T(KC_ENT),
+  TO(_QWERTY),_______,KC_LCTL,KC_LOPT,KC_LCMD, _______, _______, KC_RCMD, KC_ROPT, KC_RCTL, _______, _______
 ),
 
  /* ⎈EXTENSION   
@@ -579,7 +579,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           if (record->event.pressed) {
             layer_on(_SPACE);
             layer_on(_L_SPACE);
-            layer_on(_EXTRA);
+            update_tri_layer(_L_SPACE, _SPACE, _EXTRA);
+          } else {
+            layer_off(_SPACE);
+            layer_off(_L_SPACE);
+//             layer_off(_EXTRA);
+            update_tri_layer(_L_SPACE, _SPACE, _EXTRA);
           }
           return false;
           break;
